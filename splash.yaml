@@ -1,0 +1,21 @@
+flutter_native_splash:
+  color: "hex_color" # Background color of the splash screen
+  
+  android: true # Generate splash screen for Android
+  ios: true # Generate splash screen for iOS
+ 
+  color_dark: "#272727"
+  image: assets/logos/ecommerce.png
+  image_dark: assets/logos/ecommerce.png
+
+  android_12:
+    color: "hex_color" # Background color of the splash screen
+    color_dark: "#272727"
+ 
+ 
+ 
+    image: assets/logos/ecommerce.png
+    image_dark: assets/logos/ecommerce.png
+
+  web: false
+    
