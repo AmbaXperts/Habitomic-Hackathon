@@ -56,7 +56,6 @@ dependencies:
   cloud_firestore: ^4.15.9
   google_sign_in: ^6.2.1
   shimmer: ^3.0.0
-<<<<<<< HEAD
   image_picker: ^1.0.7
   emoji_picker_flutter: ^2.1.1
   uuid: ^4.3.3
@@ -64,8 +63,6 @@ dependencies:
   provider: ^6.1.2
   timeline_tile: ^2.0.0  
   flutter_vector_icons: ^2.0.0
-=======
->>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   
 dev_dependencies:
   flutter_test:
