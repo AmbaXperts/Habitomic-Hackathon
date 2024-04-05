@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/common/model/user/user_model.dart';
 import '/data/repositories/repositories.authentication/authentication_repository.dart';
-import '/utils/exception/custom_exception.dart';
 import '/utils/exception/firebaseauthexception.dart';
 import '/utils/exception/format_exception.dart';
 import '/utils/exception/platform_exception.dart';
@@ -24,8 +23,8 @@ class UserRepository extends GetxController {
       print('User record saved successfully');
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
-    } on FormatException catch (e) {
-      throw TFormatException();
+    } on FormatException {
+      throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
@@ -41,8 +40,8 @@ class UserRepository extends GetxController {
       print('User deleted sucessfully');
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
-    } on FormatException catch (e) {
-      throw TFormatException();
+    } on FormatException {
+      throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
@@ -64,8 +63,8 @@ class UserRepository extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
-    } on FormatException catch (e) {
-      throw TFormatException();
+    } on FormatException {
+      throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
@@ -83,8 +82,8 @@ class UserRepository extends GetxController {
           .update(updateUser.tojson());
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
-    } on FormatException catch (e) {
-      throw TFormatException();
+    } on FormatException {
+      throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
@@ -101,8 +100,8 @@ class UserRepository extends GetxController {
           .update(json);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
-    } on FormatException catch (e) {
-      throw TFormatException();
+    } on FormatException {
+      throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {

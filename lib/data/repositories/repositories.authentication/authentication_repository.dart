@@ -3,7 +3,6 @@ import '/features/authentication/screens/login/login.dart';
 import '/features/authentication/screens/onboarding/onboarding.dart';
 import '/features/authentication/screens/signup/verify_email.dart';
 import '/navigation_menu.dart';
-import '/utils/exception/custom_exception.dart';
 import '/utils/exception/firebase_exception.dart';
 import '/utils/exception/firebaseauthexception.dart';
 import '/utils/exception/format_exception.dart';
@@ -14,7 +13,6 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -69,7 +67,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
@@ -88,7 +86,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
@@ -108,7 +106,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
@@ -125,7 +123,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
@@ -156,7 +154,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
@@ -179,7 +177,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
@@ -202,7 +200,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
@@ -220,7 +218,7 @@ class AuthenticationRepository extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on PlatformException catch (e) {
       throw TPlatformException(e.code).message;
