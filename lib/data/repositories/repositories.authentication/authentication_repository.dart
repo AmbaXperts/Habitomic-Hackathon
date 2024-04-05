@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -24,12 +25,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
 
+//firebase firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   //variable
 
   final deviceStorage = GetStorage();
   final _auth = FirebaseAuth.instance;
-//firebase firestore instance
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   // get authenticated user data
   User? get authUser => _auth.currentUser;
 
@@ -83,11 +86,14 @@ class AuthenticationRepository extends GetxController {
   }
 
   //eail auth- register
+
   Future<UserCredential> registerWithEmailAndPassword(
       String email, String password) async {
     try {
       return await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

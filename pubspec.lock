@@ -5,10 +5,17 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
+<<<<<<< HEAD
       sha256: "79b6452b4066fcbdd74c2aac354e80c591a727e0364bedccecdb5a5321784fa2"
       url: "https://pub.dev"
     source: hosted
     version: "1.3.28"
+=======
+      sha256: "554f148e71e9e016d9c04d4af6b103ca3f74a1ceed7d7307b70a0f41e991eb77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.26"
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   ansicolor:
     dependency: transitive
     description:
@@ -121,6 +128,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+<<<<<<< HEAD
   cross_file:
     dependency: transitive
     description:
@@ -129,6 +137,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.4+1"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   crypto:
     dependency: transitive
     description:
@@ -161,6 +171,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.10"
+<<<<<<< HEAD
   emoji_picker_flutter:
     dependency: "direct main"
     description:
@@ -169,6 +180,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   fake_async:
     dependency: transitive
     description:
@@ -185,6 +198,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+<<<<<<< HEAD
   file:
     dependency: transitive
     description:
@@ -225,6 +239,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3+1"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   firebase_auth:
     dependency: "direct main"
     description:
@@ -253,10 +269,17 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
+<<<<<<< HEAD
       sha256: "4b45655ec1b21a1783681f72f840a2e74d298046c2b7c286ab0e4f0efbf93d0a"
       url: "https://pub.dev"
     source: hosted
     version: "2.28.0"
+=======
+      sha256: "67bf0d5fd78f12f51c6b54a72f6141314136a1a90e98b1b7c45e7fac883254ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.27.1"
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -269,6 +292,7 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
+<<<<<<< HEAD
       sha256: "28e30e00748497b9a70db2025942a42c5d752534eb678e9b9b98db056cf404ba"
       url: "https://pub.dev"
     source: hosted
@@ -305,6 +329,12 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+=======
+      sha256: "5377eaac3b9fe8aaf22638d87f92b62784f23572e132dfc029195e84d6cb37de"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.12.0"
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   flutter:
     dependency: "direct main"
     description: flutter
@@ -326,6 +356,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
+<<<<<<< HEAD
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -334,11 +365,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.17"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   flutter_vector_icons:
     dependency: "direct main"
     description:
@@ -347,6 +381,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -456,6 +492,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.7"
+<<<<<<< HEAD
   image_picker:
     dependency: "direct main"
     description:
@@ -520,6 +557,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   intl:
     dependency: "direct main"
     description:
@@ -608,6 +647,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+<<<<<<< HEAD
   mime:
     dependency: transitive
     description:
@@ -624,6 +664,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   nm:
     dependency: transitive
     description:
@@ -720,6 +762,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.4"
+<<<<<<< HEAD
   provider:
     dependency: "direct main"
     description:
@@ -784,6 +827,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   shimmer:
     dependency: "direct main"
     description:
@@ -813,6 +858,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+<<<<<<< HEAD
   sprintf:
     dependency: transitive
     description:
@@ -821,6 +867,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   stack_trace:
     dependency: transitive
     description:
@@ -861,6 +909,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+<<<<<<< HEAD
   timeline_tile:
     dependency: "direct main"
     description:
@@ -869,6 +918,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   typed_data:
     dependency: transitive
     description:
@@ -949,6 +1000,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+<<<<<<< HEAD
   uuid:
     dependency: "direct main"
     description:
@@ -957,6 +1009,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.3.3"
+=======
+>>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   vector_math:
     dependency: transitive
     description:
