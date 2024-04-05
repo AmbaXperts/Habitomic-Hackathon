@@ -89,12 +89,10 @@ flutter:
 
 
   assets:
-    - assets/icons/
     - assets/images/
     - assets/images/on_boarding_images/
     - assets/animations/
     - assets/logos/
-    - assets/videos/
     - assets/fonts/
 
   fonts:
