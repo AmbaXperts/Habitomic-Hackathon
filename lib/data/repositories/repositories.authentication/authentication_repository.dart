@@ -1,3 +1,7 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
+
 import '/data/repositories/user/user_repository.dart';
 import '/features/authentication/screens/login/login.dart';
 import '/features/authentication/screens/onboarding/onboarding.dart';
@@ -20,6 +24,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
+
+//firebase firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //variable
 
@@ -79,11 +86,14 @@ class AuthenticationRepository extends GetxController {
   }
 
   //eail auth- register
+
   Future<UserCredential> registerWithEmailAndPassword(
       String email, String password) async {
     try {
       return await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -95,6 +105,74 @@ class AuthenticationRepository extends GetxController {
     } catch (e) {
       throw "Something Went Wrong. Please try again";
     }
+  }
+
+  /// user post
+
+  Future<String> UserPosts(
+    String uid,
+    String username,
+    String discription,
+    String Userphotourl,
+    String postphotourl,
+    List following,
+    List like,
+  ) async {
+    String res = 'something occured';
+    try {
+      String userPostId = Uuid().v1();
+      if (postphotourl.isNotEmpty && discription.isNotEmpty) {
+        await _firestore
+            .collection('posts')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('post')
+            .doc(userPostId)
+            .set({
+          'uid': uid,
+          'username': username,
+          'UserphotoUrl': Userphotourl,
+          'PostphotoUrl': postphotourl,
+          'discription': discription,
+          'following': following,
+          'like': like,
+        });
+        res = 'success';
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  // for comment in the feed screen
+
+  Future<String> PostComment(
+    String clickedUid,
+    String CurrentUsername,
+    String ClickedUsername,
+    String ClickeduserPhoto,
+    String CurrentuserPhoto,
+    String discription,
+    String currentUserUid,
+  ) async {
+    String res = 'something occured';
+    try {
+      String kk = Uuid().v1();
+      await _firestore
+          .collection('comments')
+          .doc(clickedUid)
+          .collection('comment')
+          .doc(kk)
+          .set({
+        'CurrentUid': currentUserUid,
+        'Currentusername': CurrentUsername,
+        'discription': discription,
+        'CureentphotoUrl': CurrentuserPhoto,
+      });
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
   }
 
   //email auth- reauthenticate user
