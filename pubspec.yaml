@@ -62,6 +62,7 @@ dependencies:
   provider: ^6.1.2
   timeline_tile: ^2.0.0  
   flutter_vector_icons: ^2.0.0
+  file_picker: ^8.0.0+1
   
 dev_dependencies:
   flutter_test:
