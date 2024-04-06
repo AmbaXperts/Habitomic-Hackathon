@@ -17,15 +17,6 @@ class _FeedState extends State<Feed> {
   @override
   void initState() {
     super.initState();
-    getUserFollowing();
-  }
-
-  getUserFollowing() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    FollowingUid = snap['followings'];
   }
 
   @override
@@ -40,7 +31,6 @@ class _FeedState extends State<Feed> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                //   bottom: tabbar(),
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: true,

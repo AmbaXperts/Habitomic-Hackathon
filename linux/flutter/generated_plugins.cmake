@@ -3,11 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-<<<<<<< HEAD
   emoji_picker_flutter
   file_selector_linux
-=======
->>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   url_launcher_linux
 )
 

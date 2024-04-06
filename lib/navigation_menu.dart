@@ -5,6 +5,7 @@ import '/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import '/features/ANYTHING/screens/Home/widgets/feedScreenui/feedScreen.dart';
 
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
@@ -44,9 +45,7 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final screens = [
     const HomeScreen(),
-    Container(
-      color: const Color.fromARGB(255, 221, 255, 0),
-    ),
+    Feed(),
     Container(
       color: const Color.fromARGB(255, 236, 59, 0),
     ),

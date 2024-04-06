@@ -5,16 +5,11 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   cloud_firestore
   connectivity_plus
-<<<<<<< HEAD
   emoji_picker_flutter
   file_selector_windows
   firebase_auth
   firebase_core
   firebase_storage
-=======
-  firebase_auth
-  firebase_core
->>>>>>> 299238a5aaf06c9d7d42e8b6a0f24723065e4c83
   url_launcher_windows
 )
 

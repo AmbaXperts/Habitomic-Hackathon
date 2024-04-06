@@ -1,6 +1,7 @@
 import '/common/widgets/custome_shapes/primery_header_container.dart';
 import '/features/ANYTHING/screens/Home/widgets/home_appbar.dart';
 import '/utils/constants/sizes.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/home_body.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,18 +9,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: Color(0xffF6F7FB),
       body: SingleChildScrollView(
         child: Column(
           children: [
             TPrimeryHeaderContainer(
                 child: Column(
-              children: [
-                THomeAppBar(),
-                SizedBox(
-                  height: TSizes.spaceBtwSections * 8,
-                ), // reduce this when we have more widgets inside
-              ],
+              children: [THomeAppBar(), THomeBody()],
             )),
           ],
         ),

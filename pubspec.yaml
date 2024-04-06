@@ -63,6 +63,7 @@ dependencies:
   provider: ^6.1.2
   timeline_tile: ^2.0.0  
   flutter_vector_icons: ^2.0.0
+  date_picker_timeline: ^1.2.5
   
 dev_dependencies:
   flutter_test:
