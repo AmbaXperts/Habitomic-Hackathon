@@ -2,15 +2,10 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/createCommunity/createComm.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/feedScreen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/postPage/postscreen.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/userProfilePage.dart';
 
 import '/features/ANYTHING/screens/Home/widgets/home.dart';
-import '/features/personalization/screens/settings/settings.dart';
-import '/utils/constants/colors.dart';
-import '/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import '/features/ANYTHING/screens/Home/widgets/feedScreenui/feedScreen.dart';
 
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({super.key});
@@ -21,11 +16,11 @@ class NavigationMenu extends StatefulWidget {
 
 class _NavigationMenuState extends State<NavigationMenu> {
   final pages = [
-    HomeScreen(),
+    const HomeScreen(),
+    const CreateCommunity(),
     const PostData(),
     const Feed(),
-    const CreateCommunity(),
-    const SettingScreen(),
+    const userProfileScreen(),
   ];
   int page = 0;
   @override
