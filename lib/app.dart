@@ -1,5 +1,4 @@
 import '/bindings/general_bindings.dart';
-import '/features/authentication/screens/onboarding/onboarding.dart';
 import '/utils/constants/colors.dart';
 import '/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
