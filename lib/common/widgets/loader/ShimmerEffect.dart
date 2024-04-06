@@ -1,6 +1,5 @@
 import '/utils/constants/colors.dart';
 import '/utils/helpers/helper_function.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
