@@ -33,10 +33,6 @@ class _ProfileUtilState extends State<ProfileUtil> {
       ),
       height: 380,
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -85,7 +81,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                       Text(
                         '${widget.fullname}',
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -108,7 +104,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                                   'Member since ${widget.date.format(DateTime.now())}',
                                 )
                               : MaterialButton(
-                                  height: 60,
+                                  height: 50,
                                   minWidth: 150,
                                   color: Colors.blue,
                                   shape: RoundedRectangleBorder(
@@ -118,7 +114,9 @@ class _ProfileUtilState extends State<ProfileUtil> {
                                   child: Text(
                                     'Follow',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                         ],
