@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -7,7 +6,6 @@ import '/features/authentication/screens/login/login.dart';
 import '/features/authentication/screens/onboarding/onboarding.dart';
 import '/features/authentication/screens/signup/verify_email.dart';
 import '/navigation_menu.dart';
-import '/utils/exception/custom_exception.dart';
 import '/utils/exception/firebase_exception.dart';
 import '/utils/exception/firebaseauthexception.dart';
 import '/utils/exception/format_exception.dart';
@@ -18,7 +16,6 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
