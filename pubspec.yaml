@@ -63,7 +63,11 @@ dependencies:
   timeline_tile: ^2.0.0  
   flutter_vector_icons: ^2.0.0
   file_picker: ^8.0.0+1
+<<<<<<< HEAD
   convex_bottom_bar: ^3.2.0
+=======
+  date_picker_timeline: ^1.2.5
+>>>>>>> 201735f5ae121e0022582d2532ead75378eb0108
   
 dev_dependencies:
   flutter_test:
