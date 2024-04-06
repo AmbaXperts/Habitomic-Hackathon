@@ -57,12 +57,12 @@ dependencies:
   google_sign_in: ^6.2.1
   shimmer: ^3.0.0
   image_picker: ^1.0.7
-  emoji_picker_flutter: ^2.1.1
   uuid: ^4.3.3
   firebase_storage: ^11.7.0
   provider: ^6.1.2
   timeline_tile: ^2.0.0  
   flutter_vector_icons: ^2.0.0
+  file_picker: ^8.0.0+1
   date_picker_timeline: ^1.2.5
   
 dev_dependencies:
@@ -97,12 +97,10 @@ flutter:
 
 
   assets:
-    - assets/icons/
     - assets/images/
     - assets/images/on_boarding_images/
     - assets/animations/
     - assets/logos/
-    - assets/videos/
     - assets/fonts/
 
   fonts:

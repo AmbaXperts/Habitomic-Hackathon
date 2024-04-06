@@ -1,3 +1,7 @@
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/createCommunity/createComm.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/feedScreen.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/postPage/postscreen.dart';
+
 import '/features/ANYTHING/screens/Home/widgets/home.dart';
 import '/features/personalization/screens/settings/settings.dart';
 import '/utils/constants/colors.dart';
@@ -44,11 +48,9 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final screens = [
-    const HomeScreen(),
-    Feed(),
-    Container(
-      color: const Color.fromARGB(255, 236, 59, 0),
-    ),
+    const PostData(),
+    const Feed(),
+    const CreateCommunity(),
     const SettingScreen(),
   ];
 }

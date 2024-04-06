@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/forYouFeedScreen.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
 
 class Feed extends StatefulWidget {
@@ -12,7 +13,7 @@ class Feed extends StatefulWidget {
   State<Feed> createState() => _FeedState();
 }
 
-class _FeedState extends State<Feed> {
+class _FeedState extends State<Feed> with TickerProviderStateMixin {
   List<String?> FollowingUid = [];
   @override
   void initState() {
@@ -22,6 +23,10 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UserController());
+    TabController tabController = TabController(
+      length: 2,
+      vsync: this,
+    );
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
@@ -35,90 +40,131 @@ class _FeedState extends State<Feed> {
                 pinned: true,
                 floating: true,
                 backgroundColor: Colors.grey[200],
-                expandedHeight: 450,
-                flexibleSpace: SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Column(
-                        children: [
-                          Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(30),
-                                bottomRight: Radius.circular(30),
-                              ),
-                              color: Colors.white,
+                expandedHeight: 150,
+                flexibleSpace: ListView(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                            color: Colors.white,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Feed  ',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  MaterialButton(
+                                    height: 50,
+                                    minWidth: 50,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    color: Color.fromARGB(255, 62, 70, 182),
+                                    onPressed: () {},
+                                    child: Icon(Icons.format_align_left_sharp),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 60),
+                                child: Row(
                                   children: [
-                                    Text(
-                                      'Feed  ',
-                                      style: TextStyle(
-                                        fontSize: 20,
+                                    Container(
+                                      height: 25,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.black,
                                       ),
-                                    ),
-                                    MaterialButton(
-                                      height: 50,
-                                      minWidth: 50,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      color: Color.fromARGB(255, 62, 70, 182),
-                                      onPressed: () {},
-                                      child:
-                                          Icon(Icons.format_align_left_sharp),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 60),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 25,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.black,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            'Yared',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
+                                      child: Center(
+                                        child: Text(
+                                          'Yared',
+                                          style: TextStyle(
+                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      CircleAvatar(
-                                        radius: 40,
-                                        backgroundImage: NetworkImage(
-                                          'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                        ),
+                                    ),
+                                    CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: NetworkImage(
+                                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              )
+                bottom: TabBar(
+                  controller: tabController,
+                  tabs: [
+                    Tab(
+                      child: Container(
+                        height: 50,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          border: Border.all(
+                            color: Colors.greenAccent,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Center(
+                          child: Text('For You'),
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      child: Container(
+                        height: 50,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          border: Border.all(
+                            color: Colors.greenAccent,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Center(
+                          child: Text('Following'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               //////////////////////////////
             ];
           },
-          body: Container(),
+          body: TabBarView(
+            controller: tabController,
+            children: [
+              ForYouScreen(),
+              Container(
+                color: Colors.blue,
+              ),
+            ],
+          ),
         ),
       ),
     );
