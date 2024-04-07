@@ -37,7 +37,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         activeColor: Color(0xffFFBD59),
         items: [
           TabItem(icon: Icons.home, title: 'Today'),
-          TabItem(icon: Icons.people_alt_sharp, title: 'Community'),
+          TabItem(icon: Icons.people_alt_sharp, title: 'Lobby'),
           TabItem(icon: Icons.add, title: ''),
           TabItem(icon: Icons.feed, title: 'Feed'),
           TabItem(icon: Icons.person_2, title: 'Profile'),

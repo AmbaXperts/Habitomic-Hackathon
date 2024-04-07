@@ -1,9 +1,7 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:date_picker_timeline/extra/color.dart';
 
-import '/common/widgets/appbar/appbar.dart';
 import '/common/widgets/loader/ShimmerEffect.dart';
-import '/common/widgets/notification/natification.dart';
 import '/features/personalization/controllers/user_controller.dart';
 import '/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
