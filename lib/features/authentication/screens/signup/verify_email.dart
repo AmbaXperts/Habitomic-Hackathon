@@ -1,7 +1,5 @@
-import '/common/widgets/sucess_screen/sucessscreen.dart';
 import '/data/repositories/repositories.authentication/authentication_repository.dart';
 import '/features/authentication/controllers/signup/verifyemail_controller.dart';
-import '/features/authentication/screens/login/login.dart';
 import '/utils/constants/image_strings.dart';
 import '/utils/constants/sizes.dart';
 import '/utils/constants/text_strings.dart';

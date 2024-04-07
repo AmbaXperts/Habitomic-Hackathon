@@ -2,7 +2,6 @@ import '/common/widgets/loader/animation_loader.dart';
 import '/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '/utils/helpers/helper_function.dart';
 
 class FullScreenloader {

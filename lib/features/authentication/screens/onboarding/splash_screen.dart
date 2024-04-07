@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class Splash extends StatefulWidget {
   final bool isUserLoggedIn;
 
-  const Splash({Key? key, required this.isUserLoggedIn}) : super(key: key);
+  const Splash({super.key, required this.isUserLoggedIn});
 
   @override
   State<Splash> createState() => _SplashState();
@@ -18,7 +18,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     Timer(
-      Duration(seconds: 3),
+      const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(

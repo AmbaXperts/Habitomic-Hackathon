@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class TFirebaseAuthException implements Exception {
   final String code;

@@ -1,10 +1,8 @@
 import '/features/authentication/controllers/forgot+password/forgotpasword+controller.dart';
-import '/features/authentication/screens/password_configration/reser_password.dart';
 import '/utils/constants/sizes.dart';
 import '/utils/constants/text_strings.dart';
 import '/utils/validators/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class forgotpassword extends StatelessWidget {

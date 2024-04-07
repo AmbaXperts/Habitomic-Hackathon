@@ -91,7 +91,7 @@ class UserController extends GetxController {
         confirm: ElevatedButton(
           onPressed: () async => deleteuserAccount(),
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red, side: BorderSide(color: Colors.red)),
+              backgroundColor: Colors.red, side: const BorderSide(color: Colors.red)),
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: TSizes.lg),
             child: Text('Delete'),
