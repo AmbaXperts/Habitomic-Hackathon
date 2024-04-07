@@ -3,7 +3,6 @@ import '/features/personalization/controllers/user_edit_controller/update_name_c
 import '/utils/constants/sizes.dart';
 import '/utils/constants/text_strings.dart';
 import '/utils/validators/validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -69,7 +68,7 @@ class ChangeName extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                   onPressed: () => controller.updateUserName(),
-                  child: Text('Save')),
+                  child: const Text('Save')),
             )
           ],
         ),
