@@ -46,7 +46,9 @@ class _joinCommunityState extends State<joinCommunity>
           leading: Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               icon: Icon(
                 Icons.arrow_back,
                 size: 30,
@@ -418,14 +420,14 @@ class _ExfeedState extends State<Exfeed> {
                         Text(
                           controller.user.value.fullName.substring(0, 7),
                           style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           '@${controller.user.value.fullName.substring(0, 7)}',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: Colors.grey[500],
                           ),
                         ),

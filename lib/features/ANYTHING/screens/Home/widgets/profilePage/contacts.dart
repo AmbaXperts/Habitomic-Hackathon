@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/createCommunity/widget/textForm.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/widget/textForm.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/otherUserProfile.dart';
 
 class Contacts extends StatefulWidget {
@@ -117,7 +117,7 @@ class _ContactsState extends State<Contacts> {
                 ),
               ),
 
-              /////////// this backind is a demo please change it
+              /////////// this backend is a demo please change it
 
               StreamBuilder(
                 stream: FirebaseFirestore.instance
