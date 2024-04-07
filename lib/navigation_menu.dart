@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/createCommunity/createComm.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/createComm.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/communitySearch.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/feedScreen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/postPage/postscreen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/userProfilePage.dart';
@@ -17,7 +18,7 @@ class NavigationMenu extends StatefulWidget {
 class _NavigationMenuState extends State<NavigationMenu> {
   final pages = [
     const HomeScreen(),
-    const CreateCommunity(),
+    const commSearch(),
     const PostData(),
     const Feed(),
     const userProfileScreen(),

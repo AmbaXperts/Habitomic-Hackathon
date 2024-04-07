@@ -42,7 +42,7 @@ class _PostDataState extends State<PostData> {
                 children: [
                   Container(
                     height: 600,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30),
@@ -56,18 +56,8 @@ class _PostDataState extends State<PostData> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 15),
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_back_ios,
-                                    size: 30,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 15),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 15, left: 20),
                                 child: Text(
                                   'Post',
                                   style: TextStyle(
@@ -96,7 +86,8 @@ class _PostDataState extends State<PostData> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.only(
+                                        right: 10, bottom: 10),
                                     child: CircleAvatar(
                                       radius: 40,
                                       backgroundImage: NetworkImage(
@@ -109,6 +100,17 @@ class _PostDataState extends State<PostData> {
                             ],
                           ),
                           TextFormField(
+                            decoration: InputDecoration(
+                              label: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Text(
+                                  'Write some discription here',
+                                  style: TextStyle(
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ),
+                            ),
                             controller: discriptionController,
                           ),
                           SizedBox(
@@ -117,44 +119,57 @@ class _PostDataState extends State<PostData> {
                           Stack(
                             children: [
                               file == null
-                                  ? Container(
-                                      height: 300,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                            'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Container(
+                                          height: 300,
+                                          width: 2,
+                                          color: Colors.black45,
+                                        ),
+                                        Container(
+                                          height: 250,
+                                          width: 300,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: NetworkImage(
+                                                'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     )
-                                  : Container(
-                                      height: 300,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: MemoryImage(file!),
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Container(
+                                          height: 300,
+                                          width: 2,
+                                          color: Colors.black45,
                                         ),
-                                      ),
+                                        Container(
+                                          height: 250,
+                                          width: 300,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: MemoryImage(file!),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 60),
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.file_upload_outlined,
-                                      size: 100,
-                                      color: Color.fromARGB(255, 64, 83, 167),
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 40,
                           ),
                           Row(
@@ -215,9 +230,24 @@ class _PostDataState extends State<PostData> {
                                   Icons.emoji_emotions,
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.people_alt_outlined),
+                              const Icon(
+                                Icons.people_alt_outlined,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: DropdownMenu(
+                                  label: Text('Community'),
+                                  dropdownMenuEntries: [
+                                    DropdownMenuEntry(
+                                      value: Colors.green,
+                                      label: 'hh',
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           )
