@@ -10,23 +10,29 @@ class CommunityModel {
   String? bio;
   String? imgUrl;
 
-  CommunityModel(
-      {this.communityId,this.communityName, this.habits, this.followers, this.rating, this.bio, this.imgUrl});
+  CommunityModel({
+    this.communityId,
+    this.communityName,
+    this.habits,
+    this.followers,
+    this.rating,
+    this.bio,
+    this.imgUrl,
+  });
 
   factory CommunityModel.fromJson(Map<String, dynamic> json) {
     return CommunityModel(
-      communityName: json['communityName'],
-      communityId: json['communityId'],
-      habits: (json['habits'] as List<dynamic>?)
-          ?.map((habitJson) => HabitModel.fromSnapshot(habitJson))
-          .toList(),
-      followers: (json['followers'] as List<dynamic>?)
-          ?.map((followerJson) => UserModel.fromSnapshot(followerJson))
-          .toList(),
-      rating: json['rating'],
-      bio: json['bio'],
-      imgUrl: json['imgUrl']
-    );
+        communityName: json['communityName'],
+        communityId: json['communityId'],
+        habits: (json['habits'] as List<dynamic>?)
+            ?.map((habitJson) => HabitModel.fromSnapshot(habitJson))
+            .toList(),
+        followers: (json['followers'] as List<dynamic>?)
+            ?.map((followerJson) => UserModel.fromSnapshot(followerJson))
+            .toList(),
+        rating: json['rating'],
+        bio: json['bio'],
+        imgUrl: json['imgUrl']);
   }
 
   Map<String, dynamic> toJson() {

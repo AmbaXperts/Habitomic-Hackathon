@@ -63,7 +63,9 @@ class _CheckHabitsState extends State<CheckHabits>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
                                     icon: Icon(
                                       Icons.arrow_back,
                                       size: 30,

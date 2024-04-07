@@ -4,7 +4,6 @@ import '/common/widgets/layouts/list_tiles/setting_menu_tile.dart';
 import '/common/widgets/layouts/list_tiles/userprofile_tile.dart';
 import '/common/widgets/section_heading.dart';
 import '/data/repositories/repositories.authentication/authentication_repository.dart';
-import '/features/authentication/controllers/signup/signup_controller.dart';
 import '/features/personalization/screens/profile/profile.dart';
 import '/utils/constants/colors.dart';
 import '/utils/constants/sizes.dart';

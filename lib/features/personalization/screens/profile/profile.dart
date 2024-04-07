@@ -17,13 +17,13 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = UserController.instance;
     return Scaffold(
-      appBar: TAppBar(
+      appBar: const TAppBar(
         title: Text('User Profile'),
         showBackArrow: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(TSizes.defaultSpace),
+          padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
             children: [
               SizedBox(

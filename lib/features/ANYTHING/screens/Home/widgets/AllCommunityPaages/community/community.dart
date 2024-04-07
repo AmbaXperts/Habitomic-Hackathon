@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:habitomic_app/common/model/community/community_model.dart';
 import 'package:habitomic_app/common/widgets/circular_image/circular_image.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
-import 'package:habitomic_app/features/personalization/screens/community/community_card.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/community_card.dart';
 
 class CommunityPage extends StatelessWidget {
   CommunityPage({super.key, required this.community});
@@ -16,22 +16,30 @@ class CommunityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Community Page'), actions: [
-          GetBuilder<UserController>(
-            builder: (_) {
-              final user = userController.user;
-              return TCircularImage(
-                  image: user.value.profilePicture,
-                  fit: BoxFit.cover,
-                  isNetworkImage: true);
-            },
+      appBar: AppBar(
+          title: const Text(
+            'Community Page',
           ),
-        ]),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(children: [
-              SearchBar(controller: _searchController, hintText: 'Search'),
+          actions: [
+            GetBuilder<UserController>(
+              builder: (_) {
+                final user = userController.user;
+                return TCircularImage(
+                    image: user.value.profilePicture,
+                    fit: BoxFit.cover,
+                    isNetworkImage: true);
+              },
+            ),
+          ]),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              SearchBar(
+                controller: _searchController,
+                hintText: 'Search',
+              ),
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -77,7 +85,7 @@ class CommunityPage extends StatelessWidget {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  const Text('Recen Habits'),
+                  const Text('Recent Habits'),
                   const Spacer(),
                   GestureDetector(
                     onTap: () {},
@@ -86,13 +94,16 @@ class CommunityPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              SizedBox(height: Get.width * 0.3,
-              child: const Center(
-                child:  Text('No Data')
-              )),
-
-            ]),
+              SizedBox(
+                height: Get.width * 0.3,
+                child: const Center(
+                  child: Text('No Data'),
+                ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

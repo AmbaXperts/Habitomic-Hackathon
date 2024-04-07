@@ -5,9 +5,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/imagePicker.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/createCommunity/creator.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/createCommunity/widget/text.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/createCommunity/widget/textForm.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/creator.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/widget/text.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/widget/textForm.dart';
 import 'package:habitomic_app/utils/popups/loaders.dart';
 import 'package:habitomic_app/utils/snackBar/snackbar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -110,7 +110,9 @@ class _CreateCommunityState extends State<CreateCommunity> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
           icon: const Icon(
             Icons.clear_outlined,
             size: 30,

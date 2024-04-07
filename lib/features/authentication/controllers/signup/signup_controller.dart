@@ -6,7 +6,6 @@ import '/localization/internet/network_manager.dart';
 import '/utils/constants/image_strings.dart';
 import '/utils/popups/fullscreen_loader.dart';
 import '/utils/popups/loaders.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
