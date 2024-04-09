@@ -17,6 +17,7 @@ class YAuth {
 
   Future<String> createCommunity({
     required String commName,
+    required List commLikes,
     required String commOwner,
     required String? commPicture,
     required String commBio,
@@ -47,6 +48,7 @@ class YAuth {
         'commOwner': commOwner,
         'commBio': commBio,
         'commRating': commRating,
+        'commLikes': commLikes,
       });
       await _Yfirestore.collection('Ycommunity')
           .doc(Yuid)
@@ -90,7 +92,7 @@ class YAuth {
   ///join the user to community backend
 
   Future<String> updateAchivedHabits({
-    required Map<String, dynamic> habitt,
+    required List<Map<String, dynamic>> habitt,
     required String commUid,
     required String whichWeek,
     required int whichIndex,
@@ -102,7 +104,7 @@ class YAuth {
           .collection('achievedHabits')
           .doc(_YAuth.currentUser!.uid)
           .update({
-        'habitt': [habitt]
+        'habitt': habitt
         // '${habitt[0][whichWeek][whichIndex]}': !(habitt[0][whichWeek]
         //     [whichIndex])
       }).then((value) {
@@ -114,9 +116,26 @@ class YAuth {
     }
     return res;
   }
+
+  ////********************************************* */
+  ///join the user to community backend
+
+  Future<String> likeCommunity({
+    required String commUid,
+    required List commLikes,
+    required String likeUserId,
+  }) async {
+    String res = 'Error : unExpected error';
+    try {
+      await _Yfirestore.collection('Ycommunity').doc(commUid).update({
+        if (commLikes.contains(likeUserId))
+          'commLikes': FieldValue.arrayRemove([likeUserId]),
+        'commLikes': FieldValue.arrayUnion([likeUserId]),
+      });
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
 }
- // 'habitt': [
-        //   {
-        //     '${habitt[0][whichWeek]}': !(habitt[0][whichWeek][whichIndex]),
-        //   }
-        // ]

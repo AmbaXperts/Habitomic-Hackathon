@@ -9,6 +9,7 @@ import 'package:habitomic_app/features/personalization/controllers/user_controll
 
 class joinCommunity extends StatefulWidget {
   final String comPicture;
+  final List like;
   final String comname;
   final String comBio;
   final List comMembers;
@@ -17,6 +18,7 @@ class joinCommunity extends StatefulWidget {
   final String uuid;
   const joinCommunity({
     super.key,
+    required this.like,
     required this.comBio,
     required this.comHabits,
     required this.comMembers,
@@ -65,9 +67,16 @@ class _joinCommunityState extends State<joinCommunity>
                 child: Material(
                   color: Colors.grey,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String res = await YAuth().likeCommunity(
+                        commUid: widget.uuid,
+                        commLikes: widget.like,
+                        likeUserId: FirebaseAuth.instance.currentUser!.uid,
+                      );
+                    },
                     icon: Icon(
                       Icons.favorite,
+                      color: Colors.red,
                     ),
                   ),
                 ),

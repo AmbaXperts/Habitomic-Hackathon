@@ -190,6 +190,8 @@ class _commSearchState extends State<commSearch> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => joinCommunity(
+                                        like: snapshot.data!.docs[index]
+                                            ['commLikes'],
                                         uuid: snapshot.data!.docs[index]
                                             ['Uuid'],
                                         comBio: 'this is some discription',

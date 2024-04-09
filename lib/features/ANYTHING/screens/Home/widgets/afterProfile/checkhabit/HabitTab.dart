@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/smallticker.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/timeline.dart';
@@ -128,15 +129,11 @@ class commonHabitContainer extends StatefulWidget {
 }
 
 class _commonHabitContainerState extends State<commonHabitContainer> {
+  bool isclicked = false;
+
   @override
   Widget build(BuildContext context) {
-    bool boo = false;
-    Map<String, dynamic> modifiedList = {
-      'week1': [false, false, false],
-      'week2': [false, false, false],
-      'week3': [false, false, false],
-      'week4': [false, false, false],
-    };
+    List<Map<String, dynamic>> modifiedList = [habitt[0]];
 
     return Container(
       height: 300,
@@ -157,7 +154,7 @@ class _commonHabitContainerState extends State<commonHabitContainer> {
           const SizedBox(
             height: 10,
           ),
-          const SizedBox(
+          SizedBox(
             height: 40,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -168,22 +165,17 @@ class _commonHabitContainerState extends State<commonHabitContainer> {
                   timeline(
                     isfirst: false,
                     islast: false,
-                    ispast: true,
+                    ispast: habitt[0][widget.weekName][0],
                   ),
                   timeline(
                     isfirst: false,
                     islast: false,
-                    ispast: true,
+                    ispast: habitt[0][widget.weekName][1],
                   ),
                   timeline(
                     isfirst: false,
                     islast: false,
-                    ispast: false,
-                  ),
-                  timeline(
-                    isfirst: false,
-                    islast: true,
-                    ispast: false,
+                    ispast: habitt[0][widget.weekName][2],
                   ),
                 ],
               ),
@@ -224,26 +216,34 @@ class _commonHabitContainerState extends State<commonHabitContainer> {
                             SizedBox(
                               width: 30,
                             ),
-                            GestureDetector(
-                              onTap: () async {
-                                modifiedList[widget.weekName][0] =
-                                    !(modifiedList[widget.weekName][0]);
-                                print(
-                                    '######################################################');
-                                print(modifiedList);
-                                await YAuth().updateAchivedHabits(
-                                  whichIndex: 0,
-                                  habitt: modifiedList,
-                                  commUid: widget.widget.commuid,
-                                  whichWeek: widget.weekName,
+                            StatefulBuilder(
+                              builder: (context, setState) {
+                                return InkWell(
+                                  onTap: () async {
+                                    setState(() {
+                                      modifiedList[0][widget.weekName][0] =
+                                          !(modifiedList[0][widget.weekName]
+                                              [0]);
+                                    });
+
+                                    print(
+                                        '######################################################');
+                                    print(modifiedList);
+                                    await YAuth().updateAchivedHabits(
+                                      whichIndex: 0,
+                                      habitt: modifiedList,
+                                      commUid: widget.widget.commuid,
+                                      whichWeek: widget.weekName,
+                                    );
+                                  },
+                                  child: smallDots(
+                                    colors: habitt[0][widget.weekName][0]
+                                        ? Colors.green
+                                        : Colors.white,
+                                    isdone: false,
+                                  ),
                                 );
                               },
-                              child: smallDots(
-                                colors: modifiedList[widget.weekName][0]
-                                    ? Colors.green
-                                    : Colors.white,
-                                isdone: false,
-                              ),
                             ),
                             const SizedBox(
                               width: 10,
@@ -264,22 +264,24 @@ class _commonHabitContainerState extends State<commonHabitContainer> {
                             SizedBox(
                               width: 30,
                             ),
-                            GestureDetector(
+                            InkWell(
                               onTap: () async {
-                                modifiedList[widget.weekName][1] =
-                                    !(modifiedList[widget.weekName][1]);
+                                setState(() {
+                                  modifiedList[0][widget.weekName][1] =
+                                      !(modifiedList[0][widget.weekName][1]);
+                                });
                                 print(
                                     '######################################################');
                                 print(modifiedList);
                                 await YAuth().updateAchivedHabits(
-                                  whichIndex: 0,
+                                  whichIndex: 1,
                                   habitt: modifiedList,
                                   commUid: widget.widget.commuid,
                                   whichWeek: widget.weekName,
                                 );
                               },
                               child: smallDots(
-                                colors: modifiedList[widget.weekName][0]
+                                colors: habitt[0][widget.weekName][1]
                                     ? Colors.green
                                     : Colors.white,
                                 isdone: false,
@@ -304,44 +306,34 @@ class _commonHabitContainerState extends State<commonHabitContainer> {
                             SizedBox(
                               width: 30,
                             ),
-                            GestureDetector(
-                              onTap: () async {
-                                modifiedList[widget.weekName][2] =
-                                    !(modifiedList[widget.weekName][2]);
+                            StatefulBuilder(
+                              builder: (context, setState) {
+                                return InkWell(
+                                  onTap: () async {
+                                    setState(() {
+                                      modifiedList[0][widget.weekName][2] =
+                                          !(modifiedList[0][widget.weekName]
+                                              [2]);
+                                    });
 
-                                print(
-                                    '######################################################');
-                                print(modifiedList);
-                                await YAuth().updateAchivedHabits(
-                                  whichIndex: 0,
-                                  habitt: modifiedList,
-                                  commUid: widget.widget.commuid,
-                                  whichWeek: widget.weekName,
+                                    print(
+                                        '######################################################');
+                                    print(modifiedList);
+                                    await YAuth().updateAchivedHabits(
+                                      whichIndex: 2,
+                                      habitt: modifiedList,
+                                      commUid: widget.widget.commuid,
+                                      whichWeek: widget.weekName,
+                                    );
+                                  },
+                                  child: smallDots(
+                                    colors: habitt[0][widget.weekName][2]
+                                        ? Colors.green
+                                        : Colors.white,
+                                    isdone: false,
+                                  ),
                                 );
                               },
-                              child: StatefulBuilder(
-                                builder: (context, setState) {
-                                  return habitt[0][widget.weekName][0]
-                                      ? Container(
-                                          height: 15,
-                                          width: 15,
-                                          decoration: BoxDecoration(
-                                            color: Colors.green,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                        )
-                                      : Container(
-                                          height: 15,
-                                          width: 15,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                        );
-                                },
-                              ),
                             ),
                             SizedBox(
                               width: 10,

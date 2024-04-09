@@ -99,7 +99,13 @@ class _CheckHabitsState extends State<CheckHabits>
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      // DropdownButton(
+                                      //   items: [
+                                      //   DropdownMenuItem(child: child)
+                                      //   ],
+                                      // );
+                                    },
                                     icon: Icon(
                                       Icons.more_vert,
                                       size: 30,
@@ -226,7 +232,10 @@ class _CheckHabitsState extends State<CheckHabits>
               commuid: widget.commUid,
               habits: widget.habits,
             ),
-            AchivedTab(),
+            AchivedTab(
+              commuid: widget.commUid,
+              habits: widget.habits,
+            ),
             Resources(),
           ],
         ),

@@ -656,6 +656,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                       });
                       String result = await YAuth().createCommunity(
                         commName: commName.text.trim(),
+                        commLikes: [],
                         commOwner: FirebaseAuth.instance.currentUser!.uid,
                         commPicture: photolink,
                         commBio: commBio.text.trim(),
