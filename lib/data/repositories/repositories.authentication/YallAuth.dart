@@ -1,0 +1,122 @@
+import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
+class YAuth {
+  final FirebaseAuth _YAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _Yfirestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  ////********************************************* */
+  ///Creating community backend
+
+  Future<String> createCommunity({
+    required String commName,
+    required String commOwner,
+    required String? commPicture,
+    required String commBio,
+    required int commRating,
+    required String? commPdf,
+    required String? commaudio,
+    required List<Map<String, dynamic>> habits,
+    required List<Map<String, dynamic>> members,
+    required List videoTumnel,
+    required List videoLink,
+    required List videoName,
+    required List<Map<String, dynamic>> habitt,
+  }) async {
+    String res = 'Error : UnExpected error';
+    try {
+      String Yuid = Uuid().v1();
+      await _Yfirestore.collection('Ycommunity').doc(Yuid).set({
+        'commName': commName,
+        'commPictrue': commPicture,
+        'Uuid': Yuid,
+        'commTumnel': videoTumnel,
+        'commVideoLink': videoLink,
+        'commVideoName': videoName,
+        'commPdf': commPdf,
+        'commAudio': commaudio,
+        'commMembers': members,
+        'commHabits': habits,
+        'commOwner': commOwner,
+        'commBio': commBio,
+        'commRating': commRating,
+      });
+      await _Yfirestore.collection('Ycommunity')
+          .doc(Yuid)
+          .collection('achievedHabits')
+          .doc(_YAuth.currentUser!.uid)
+          .set({
+        'habitt': habitt,
+      });
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  ////********************************************* */
+  ///join the user to community backend
+
+  Future<void> joinUserToCommunity({
+    required List members,
+    required String uuid,
+  }) async {
+    DateTime now = DateTime.now();
+
+    Timestamp timestamp = Timestamp.fromDate(now);
+    if (!members.contains(_YAuth.currentUser!.uid)) {
+      await _Yfirestore.collection('Ycommunity').doc(uuid).update(
+        {
+          'commMembers': [
+            {
+              'userId': _YAuth.currentUser!.uid,
+              'date': timestamp,
+            },
+          ],
+        },
+      );
+    }
+  }
+
+  ////********************************************* */
+  ///join the user to community backend
+
+  Future<String> updateAchivedHabits({
+    required Map<String, dynamic> habitt,
+    required String commUid,
+    required String whichWeek,
+    required int whichIndex,
+  }) async {
+    String res = 'Error : unExpected error';
+    try {
+      await _Yfirestore.collection('Ycommunity')
+          .doc(commUid)
+          .collection('achievedHabits')
+          .doc(_YAuth.currentUser!.uid)
+          .update({
+        'habitt': [habitt]
+        // '${habitt[0][whichWeek][whichIndex]}': !(habitt[0][whichWeek]
+        //     [whichIndex])
+      }).then((value) {
+        return res;
+      });
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+}
+ // 'habitt': [
+        //   {
+        //     '${habitt[0][whichWeek]}': !(habitt[0][whichWeek][whichIndex]),
+        //   }
+        // ]

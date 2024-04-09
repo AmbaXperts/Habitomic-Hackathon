@@ -103,6 +103,7 @@ class _AchivedTabState extends State<AchivedTab> {
                                     width: 30,
                                   ),
                                   smallDots(
+                                    colors: Colors.white,
                                     isdone: true,
                                   ),
                                   SizedBox(
@@ -125,6 +126,7 @@ class _AchivedTabState extends State<AchivedTab> {
                                     width: 30,
                                   ),
                                   smallDots(
+                                    colors: Colors.white,
                                     isdone: true,
                                   ),
                                   SizedBox(
@@ -147,6 +149,7 @@ class _AchivedTabState extends State<AchivedTab> {
                                     width: 30,
                                   ),
                                   smallDots(
+                                    colors: Colors.green,
                                     isdone: true,
                                   ),
                                   SizedBox(

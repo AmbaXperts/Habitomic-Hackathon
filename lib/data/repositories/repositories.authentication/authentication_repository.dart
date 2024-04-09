@@ -141,6 +141,41 @@ class AuthenticationRepository extends GetxController {
     return res;
   }
 
+  Future<String> createCommunity({
+    required String commName,
+    required String commOwner,
+    required Uint8List commPicture,
+    required String commBio,
+    required String? commPdf,
+    required String? commaudio,
+    required List<Map<String, dynamic>> habits,
+    required List members,
+    required List videoTumnel,
+    required List videoLink,
+    required List videoName,
+  }) async {
+    String res = 'Error : UnExpected error';
+    try {
+      String Yuid = Uuid().v1();
+      await _firestore.collection('Ycommunity').doc(Yuid).set({
+        'commName': commName,
+        'commPicture': commPicture,
+        'commTumnel': videoTumnel,
+        'commVideoLink': videoLink,
+        'commVideoName': videoName,
+        'commPdf': commPdf,
+        'commAudio': commaudio,
+        'commMembers': members,
+        'commHabits': habits,
+        'commOwner': commOwner,
+      });
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   // for comment in the feed screen
 
   Future<String> PostComment(

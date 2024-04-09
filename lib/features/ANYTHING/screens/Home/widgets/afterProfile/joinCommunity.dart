@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/checkHabits.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
@@ -10,9 +11,10 @@ class joinCommunity extends StatefulWidget {
   final String comPicture;
   final String comname;
   final String comBio;
-  final String comMembers;
-  final String comHabits;
-  final String rating;
+  final List comMembers;
+  final List comHabits;
+  final int rating;
+  final String uuid;
   const joinCommunity({
     super.key,
     required this.comBio,
@@ -21,6 +23,7 @@ class joinCommunity extends StatefulWidget {
     required this.comPicture,
     required this.comname,
     required this.rating,
+    required this.uuid,
   });
 
   @override
@@ -103,8 +106,8 @@ class _joinCommunityState extends State<joinCommunity>
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: AssetImage(
+                                  radius: 40,
+                                  backgroundImage: NetworkImage(
                                     widget.comPicture,
                                   ),
                                 ),
@@ -165,7 +168,7 @@ class _joinCommunityState extends State<joinCommunity>
                                       Icons.people_outline_rounded,
                                     ),
                                     Text(
-                                      '${widget.comMembers} Members',
+                                      '${widget.comMembers.length} Members',
                                     ),
                                   ],
                                 ),
@@ -175,7 +178,7 @@ class _joinCommunityState extends State<joinCommunity>
                                       Icons.people_outline_rounded,
                                     ),
                                     Text(
-                                      '${widget.comHabits} Habits',
+                                      '${widget.comHabits.length} Habits',
                                     ),
                                   ],
                                 ),
@@ -185,7 +188,7 @@ class _joinCommunityState extends State<joinCommunity>
                                       Icons.people_outline_rounded,
                                     ),
                                     Text(
-                                      '${widget.comMembers} Members',
+                                      '${widget.comMembers.length} Members',
                                     ),
                                   ],
                                 ),
@@ -194,7 +197,9 @@ class _joinCommunityState extends State<joinCommunity>
                             SizedBox(
                               height: 30,
                             ),
-                            !isfollowing
+                            !widget.comMembers.any((element) =>
+                                    element['userId'] ==
+                                    FirebaseAuth.instance.currentUser!.uid)
                                 ? Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -208,10 +213,11 @@ class _joinCommunityState extends State<joinCommunity>
                                             Color.fromARGB(255, 139, 87, 148),
                                         height: 50,
                                         minWidth: 200,
-                                        onPressed: () {
-                                          setState(() {
-                                            isfollowing = true;
-                                          });
+                                        onPressed: () async {
+                                          await YAuth().joinUserToCommunity(
+                                            members: widget.comMembers,
+                                            uuid: widget.uuid,
+                                          );
                                         },
                                         child: Center(
                                           child: Text(
@@ -248,9 +254,34 @@ class _joinCommunityState extends State<joinCommunity>
                                             255, 155, 85, 168),
                                         height: 50,
                                         minWidth: 200,
-                                        onPressed: () {
-                                          Get.to(
-                                            CheckHabits(),
+                                        onPressed: () async {
+                                          Timestamp? stamp;
+                                          for (int i = 0;
+                                              i < widget.comMembers.length;
+                                              i++) {
+                                            if (widget.comMembers[i]
+                                                    ['userId'] ==
+                                                FirebaseAuth.instance
+                                                    .currentUser!.uid) {
+                                              setState(() {
+                                                stamp = widget.comMembers[i]
+                                                    ['date'];
+                                              });
+                                            }
+                                          }
+                                          print(
+                                              '###########################################');
+                                          print(stamp);
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => CheckHabits(
+                                                commUid: widget.uuid,
+                                                stamp: stamp,
+                                                habits: widget.comHabits,
+                                                commName: widget.comname,
+                                                commPhotoUrl: widget.comPicture,
+                                              ),
+                                            ),
                                           );
                                         },
                                         child: Center(
