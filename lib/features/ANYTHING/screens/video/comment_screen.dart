@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/comment_controller.dart';
 import 'package:timeago/timeago.dart' as tago;
-
 class CommentScreen extends StatelessWidget {
   final String id;
   CommentScreen({Key? key, required this.id}) : super(key: key);
@@ -14,7 +13,7 @@ class CommentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    commentController.updatePostId(id);
+    commentController.updatePostId(id); // Update the postId in the controller
     return Scaffold(
         body: SingleChildScrollView(
       child: SizedBox(

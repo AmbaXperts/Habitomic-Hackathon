@@ -4,19 +4,15 @@ import 'dart:core';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/model/comment.dart';
-
 class CommentController extends GetxController {
   final Rx<List<Comment>> _comments = Rx<List<Comment>>([]);
-
-  //firebase firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   List<Comment> get comments => _comments.value;
-
   String _postId = "";
 
   updatePostId(String id) {
-    _postId = id;
+    _postId = id; // Update the postId variable
     getComment();
   }
 
