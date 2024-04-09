@@ -1,5 +1,4 @@
 import '/features/authentication/controllers/signup/signup_controller.dart';
-import '/features/authentication/screens/signup/verify_email.dart';
 import '/features/authentication/screens/signup/widgets/termand_condition.dart';
 import '/utils/constants/sizes.dart';
 import '/utils/constants/text_strings.dart';
@@ -7,7 +6,6 @@ import '/utils/helpers/helper_function.dart';
 import '/utils/validators/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SignupForm extends StatelessWidget {
@@ -99,7 +97,7 @@ class SignupForm extends StatelessWidget {
 
               decoration: InputDecoration(
                   labelText: TTexts.password,
-                  prefixIcon: Icon(Iconsax.password_check),
+                  prefixIcon: const Icon(Iconsax.password_check),
                   suffixIcon: IconButton(
                       onPressed: () => controller.hidePassword.value =
                           !controller.hidePassword.value,

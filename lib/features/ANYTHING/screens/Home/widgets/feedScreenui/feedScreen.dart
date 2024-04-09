@@ -216,14 +216,14 @@ class _ExfeedState extends State<Exfeed> {
                         Text(
                           controller.user.value.fullName.substring(0, 7),
                           style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           '@${controller.user.value.fullName.substring(0, 7)}',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 17,
                             color: Colors.grey[500],
                           ),
                         ),
