@@ -31,6 +31,8 @@ class ProfileController extends GetxController {
         await _firestore.collection('Users').doc(_uid.value).get();
     final userData = userDoc.data()! as dynamic;
     String username = userData['Username'];
+    String firstname = userData['FirstName'];
+    String lastname = userData['LastName'];
     String ProfilePicture = userData['ProfilePicture'];
     int likes = 0;
     int followers = 0;
@@ -46,7 +48,7 @@ class ProfileController extends GetxController {
         .collection('Follower')
         .get();
     var followingDoc = await _firestore
-        .collection('users')
+        .collection('Users')
         .doc(_uid.value)
         .collection('Following')
         .get();
@@ -74,6 +76,8 @@ class ProfileController extends GetxController {
       'likes': likes.toString(),
       'ProfilePicture': ProfilePicture,
       'Username': username,
+       'FirstName': firstname,
+        'LastName': lastname,
       'thumbnails': thumbnails,
     };
     update();
@@ -81,7 +85,7 @@ class ProfileController extends GetxController {
 
   followUser() async {
     var doc = await _firestore
-        .collection('users')
+        .collection('Users')
         .doc(_uid.value)
         .collection('Follower')
         .doc(AuthenticationRepository.instance.user.uid)
@@ -95,7 +99,7 @@ class ProfileController extends GetxController {
           .doc(AuthenticationRepository.instance.user.uid)
           .set({});
       await _firestore
-          .collection('users')
+          .collection('Users')
           .doc(AuthenticationRepository.instance.user.uid)
           .collection('Following')
           .doc(_uid.value)
