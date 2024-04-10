@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/forYouFeedScreen.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/post/widget/view_post_screen.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/video/widget/feed_screen.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
 
 class Feed extends StatefulWidget {
@@ -159,10 +161,8 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
           body: TabBarView(
             controller: tabController,
             children: [
-              ForYouScreen(),
-              Container(
-                color: Colors.blue,
-              ),
+              PostScreen(),
+              VideoScreen(),
             ],
           ),
         ),

@@ -3,86 +3,91 @@ import 'dart:core';
 
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/post/model/comment_modelp.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/model/comment.dart';
-class CommentController extends GetxController {
-  final Rx<List<Comment>> _comments = Rx<List<Comment>>([]);
+
+class PCommentController extends GetxController {
+  final Rx<List<PComment>> _pcomments = Rx<List<PComment>>([]);
+
+  //firebase firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  List<Comment> get comments => _comments.value;
-  String _postId = "";
+  List<PComment> get pcomments => _pcomments.value;
 
-  updatePostId(String id) {
-    _postId = id; // Update the postId variable
-    getComment();
+  String _ppostId = "";
+
+  updatePPostId(String id) {
+    _ppostId = id;
+    getPComment();
   }
 
-  getComment() async {
-    _comments.bindStream(_firestore
-        .collection('videos')
-        .doc(_postId)
+  getPComment() async {
+    _pcomments.bindStream(_firestore
+        .collection('post')
+        .doc(_ppostId)
         .collection('comments')
         .snapshots()
         .map((QuerySnapshot query) {
-      List<Comment> retValue = [];
+      List<PComment> retValue = [];
       for (var element in query.docs) {
-        retValue.add(Comment.fromSnap(element));
+        retValue.add(PComment.fromSnap(element));
       }
       return retValue;
     }));
   }
 
-  postComment(String commentText) async {
-    if (commentText.isNotEmpty) {
+  PpostComment(String pcommentText) async {
+    if (pcommentText.isNotEmpty) {
       DocumentSnapshot userDoc = await _firestore
           .collection('Users')
           .doc(AuthenticationRepository.instance.user.uid)
           .get();
 
       var allDocs = await _firestore
-          .collection('videos')
-          .doc(_postId)
+          .collection('post')
+          .doc(_ppostId)
           .collection('comments')
           .get();
       int len = allDocs.docs.length;
 
-      Comment comment = Comment(
+      PComment pcomment = PComment(
           username: (userDoc.data()! as dynamic)['Username'],
-          comment: commentText.trim(),
+          comment: pcommentText.trim(),
           datePublished: DateTime.now(),
           likes: [],
           profilePhoto: (userDoc.data()! as dynamic)['ProfilePicture'],
           uid: AuthenticationRepository.instance.user.uid,
           id: 'Comment $len');
       await _firestore
-          .collection('videos')
-          .doc(_postId)
+          .collection('post')
+          .doc(_ppostId)
           .collection('comments')
           .doc('Comment $len')
           .set(
-            comment.tojson(),
+            pcomment.tojson(),
           );
 
       DocumentSnapshot doc =
-          await _firestore.collection('videos').doc(_postId).get();
-      await _firestore.collection('videos').doc(_postId).update({
+          await _firestore.collection('post').doc(_ppostId).get();
+      await _firestore.collection('post').doc(_ppostId).update({
         'commentCount': (doc.data()! as dynamic)['commentCount'] + 1,
       });
     }
   }
 
-  likeComment(String id) async {
+  likePComment(String id) async {
     var uid = AuthenticationRepository.instance.user.uid;
     DocumentSnapshot doc = await _firestore
-        .collection('videos')
-        .doc(_postId)
+        .collection('post')
+        .doc(_ppostId)
         .collection('comments')
         .doc(id)
         .get();
 
     if ((doc.data()! as dynamic)['likes'].contains(uid)) {
       await _firestore
-          .collection('videos')
-          .doc(_postId)
+          .collection('post')
+          .doc(_ppostId)
           .collection('comments')
           .doc(id)
           .update({
@@ -90,8 +95,8 @@ class CommentController extends GetxController {
       });
     } else {
       await _firestore
-          .collection('videos')
-          .doc(_postId)
+          .collection('post')
+          .doc(_ppostId)
           .collection('comments')
           .doc(id)
           .update({

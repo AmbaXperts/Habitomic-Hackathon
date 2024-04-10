@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/post/controller/comment_controllerP.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/comment_controller.dart';
-import 'package:timeago/timeago.dart' as tago;
-class CommentScreen extends StatelessWidget {
-  final String id;
-  CommentScreen({Key? key, required this.id}) : super(key: key);
 
-  final TextEditingController _commentController = TextEditingController();
-  CommentController commentController = Get.put(CommentController());
+import 'package:timeago/timeago.dart' as tago;
+
+class PCommentScreen extends StatelessWidget {
+  final String id;
+  PCommentScreen({Key? key, required this.id}) : super(key: key);
+
+  final TextEditingController _pcommentController = TextEditingController();
+  PCommentController pcommentController = Get.put(PCommentController());
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    commentController.updatePostId(id); // Update the postId in the controller
+    pcommentController.updatePPostId(id);
     return Scaffold(
         body: SingleChildScrollView(
       child: SizedBox(
@@ -23,27 +26,27 @@ class CommentScreen extends StatelessWidget {
           children: [
             Expanded(child: Obx(() {
               return ListView.builder(
-                  itemCount: commentController.comments.length,
+                  itemCount: pcommentController.pcomments.length,
                   itemBuilder: ((context, index) {
-                    final ccomment = commentController.comments[index];
+                    final cpcomment = pcommentController.pcomments[index];
 
                     return ListTile(
                       leading: CircleAvatar(
                         backgroundColor: Colors.black,
-                        backgroundImage: NetworkImage(ccomment.profilePhoto),
+                        backgroundImage: NetworkImage(cpcomment.profilePhoto),
                       ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "@${ccomment.username} ",
+                            "@${cpcomment.username} ",
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.red,
                                 fontWeight: FontWeight.w700),
                           ),
                           Text(
-                            tago.format(ccomment.datePublished.toDate()),
+                            tago.format(cpcomment.datePublished.toDate()),
                             style: TextStyle(fontSize: 12, color: Colors.white),
                           ),
                         ],
@@ -55,7 +58,7 @@ class CommentScreen extends StatelessWidget {
                             alignment: WrapAlignment.start,
                             children: [
                               Text(
-                                ccomment.comment,
+                                cpcomment.comment,
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.white,
@@ -69,16 +72,16 @@ class CommentScreen extends StatelessWidget {
                         children: [
                           InkWell(
                               onTap: () =>
-                                  commentController.likeComment(ccomment.id),
+                                  pcommentController.likePComment(cpcomment.id),
                               child: Icon(Icons.favorite,
                                   size: 25,
-                                  color: ccomment.likes.contains(
+                                  color: cpcomment.likes.contains(
                                           AuthenticationRepository
                                               .instance.user.uid)
                                       ? Colors.red
                                       : Colors.white)),
                           Text(
-                            ' ${ccomment.likes.length}',
+                            ' ${cpcomment.likes.length}',
                             style: const TextStyle(
                                 fontSize: 12, color: Colors.white),
                           ),
@@ -90,7 +93,7 @@ class CommentScreen extends StatelessWidget {
             const Divider(),
             ListTile(
               title: TextFormField(
-                controller: _commentController,
+                controller: _pcommentController,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -111,7 +114,7 @@ class CommentScreen extends StatelessWidget {
               ),
               trailing: TextButton(
                 onPressed: () =>
-                    commentController.postComment(_commentController.text),
+                    pcommentController.PpostComment(_pcommentController.text),
                 child: const Text(
                   'send',
                   style: TextStyle(fontSize: 16, color: Colors.white),
