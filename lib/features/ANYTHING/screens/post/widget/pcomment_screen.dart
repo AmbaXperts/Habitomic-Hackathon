@@ -47,7 +47,7 @@ class PCommentScreen extends StatelessWidget {
                           ),
                           Text(
                             tago.format(cpcomment.datePublished.toDate()),
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0)),
                           ),
                         ],
                       ),
@@ -61,7 +61,7 @@ class PCommentScreen extends StatelessWidget {
                                 cpcomment.comment,
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: Colors.white,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
                                     fontWeight: FontWeight.w300),
                               ),
                             ],
@@ -79,7 +79,7 @@ class PCommentScreen extends StatelessWidget {
                                           AuthenticationRepository
                                               .instance.user.uid)
                                       ? Colors.red
-                                      : Colors.white)),
+                                      : const Color.fromARGB(255, 201, 201, 201))),
                           Text(
                             ' ${cpcomment.likes.length}',
                             style: const TextStyle(
@@ -96,20 +96,20 @@ class PCommentScreen extends StatelessWidget {
                 controller: _pcommentController,
                 style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
                 decoration: const InputDecoration(
                     labelText: 'comment',
                     labelStyle: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 0, 0, 0),
                       fontWeight: FontWeight.w700,
                     ),
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red)),
+                        borderSide: BorderSide(color: Color.fromARGB(255, 132, 132, 132))),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 168, 168, 168),
                     ))),
               ),
               trailing: TextButton(
@@ -117,7 +117,7 @@ class PCommentScreen extends StatelessWidget {
                     pcommentController.PpostComment(_pcommentController.text),
                 child: const Text(
                   'send',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
                 ),
               ),
             )
