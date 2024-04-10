@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
 import '/data/repositories/user/user_repository.dart';
@@ -22,8 +25,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
 
+  late Rx<User?> _user;
+  late Rx<File?> _pickedImage;
+
+  File? get profilePhoto => _pickedImage.value;
+  User get user => _user.value!;
+
 //firebase firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Firebase Storage instance
+  final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
   //variable
 
@@ -40,8 +52,41 @@ class AuthenticationRepository extends GetxController {
 
     screenRedirect();
   }
-  //function to show relevant screen
 
+  //function to show relevant screen
+  @override
+  void onInit() {
+    super.onInit();
+    _user = Rx<User?>(_auth.currentUser);
+    _pickedImage = Rx<File?>(null);
+    initialize();
+  }
+
+  void initialize() {
+    screenRedirect();
+  }
+
+  void screenRedirect() async {
+    final user = _auth.currentUser;
+
+    if (user != null) {
+      if (user.emailVerified) {
+        Get.offAll(() => NavigationMenu());
+      } else {
+        Get.offAll(() => VerifyEmailScreen(email: user.email));
+      }
+    } else {
+      final deviceStorage = GetStorage();
+      deviceStorage.writeIfNull('isFirstTime', true);
+
+      if (deviceStorage.read('isFirstTime') != true) {
+        Get.offAll(() => LoginScreen());
+      } else {
+        Get.offAll(() => OnBoardingScreen());
+      }
+    }
+  }
+  /*
   screenRedirect() async {
     final user = _auth.currentUser;
 
@@ -61,7 +106,7 @@ class AuthenticationRepository extends GetxController {
           ? Get.offAll(() => const LoginScreen())
           : Get.offAll(const OnBoardingScreen());
     }
-  }
+  }*/
 
   // email auth- signin or login
   Future<UserCredential> loginWithEmailAndPassword(

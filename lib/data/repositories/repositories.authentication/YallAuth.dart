@@ -68,24 +68,27 @@ class YAuth {
   ///join the user to community backend
 
   Future<void> joinUserToCommunity({
-    required List members,
+    required List<Map<String, dynamic>> members,
     required String uuid,
   }) async {
-    DateTime now = DateTime.now();
-
-    Timestamp timestamp = Timestamp.fromDate(now);
-    if (!members.contains(_YAuth.currentUser!.uid)) {
-      await _Yfirestore.collection('Ycommunity').doc(uuid).update(
-        {
-          'commMembers': [
-            {
-              'userId': _YAuth.currentUser!.uid,
-              'date': timestamp,
-            },
-          ],
-        },
-      );
+    String res = 'yelem';
+    for (int i = 0; i < members.length; i++) {
+      if (members[i]['userId'] == FirebaseAuth.instance.currentUser!.uid) {
+        res = 'ale';
+      }
     }
+
+    if (res == 'yelem') {
+      await _Yfirestore.collection('Ycommunity').doc(uuid).update({
+        'commMembers': members,
+      });
+    }
+
+    // if (!commMember.contains(_YAuth.currentUser!.uid)) {
+    //   await _Yfirestore.collection('Ycommunity').doc(uuid).update({
+    //     'commMembers': members,
+    //   });
+    // }
   }
 
   ////********************************************* */
@@ -110,6 +113,7 @@ class YAuth {
       }).then((value) {
         return res;
       });
+
       res = 'success';
     } catch (e) {
       res = e.toString();

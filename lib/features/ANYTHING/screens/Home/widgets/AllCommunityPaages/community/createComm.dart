@@ -9,8 +9,10 @@ import 'package:habitomic_app/data/repositories/repositories.authentication/Stro
 import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/imagePicker.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/creator.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/widget/text.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/widget/textForm.dart';
+import 'package:habitomic_app/utils/popups/loaders.dart';
 import 'package:habitomic_app/utils/snackBar/snackbar.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -59,9 +61,16 @@ class _CreateCommunityState extends State<CreateCommunity> {
 
   PlatformFile? pickedFile;
   PlatformFile? pickaudio;
+
   @override
   Widget build(BuildContext context) {
-    List createHabController = [
+    List vedioImage = [
+      vedioImage1,
+      vedioImage2,
+      vedioImage3,
+      vedioImage4,
+    ];
+    List<TextEditingController> createHabController = [
       commHabits1,
       commHabits2,
       commHabits3,
@@ -75,22 +84,45 @@ class _CreateCommunityState extends State<CreateCommunity> {
       commHabits11,
       commHabits12,
     ];
-    List vedioImage = [
-      vedioImage1,
-      vedioImage2,
-      vedioImage3,
-      vedioImage4,
-    ];
+
     List vediocontroller = [
-      commVedioName1,
-      commVedioLink1,
-      commVedioName2,
-      commVedioLink2,
-      commVedioName3,
-      commVedioLink3,
-      commVedioName4,
-      commVedioLink4,
+      [commVedioName1, commVedioLink1, vedioImage1],
+      [commVedioName2, commVedioLink2, vedioImage2],
+      [commVedioName3, commVedioLink3, vedioImage3],
+      [commVedioName4, commVedioLink4, vedioImage4],
     ];
+
+    void posted() async {
+      if (commBio.text.isNotEmpty &&
+          commName.text.isNotEmpty &&
+          createHabController[0].text.isNotEmpty &&
+          image != null &&
+          vediocontroller[0][0].text.isNotEmpty &&
+          vediocontroller[0][1].text.isNotEmpty &&
+          vediocontroller[0][2] != null) {
+        String result = await authMethod().addProduct(
+            habits: createHabController,
+            commBio: commBio.text,
+            commImg: image!,
+            commTitle: commName.text,
+            videos: vediocontroller);
+
+        if (result == 'success') {
+          Loader.successSnackBar(
+              title: "Community Creation", message: 'Successfully added');
+        } else {
+          Loader.customToast(
+            message: result,
+          );
+        }
+      } else {
+        Loader.errorSnackBar(
+          title: "Error",
+          message: 'Please fill in all the required fields',
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -231,36 +263,16 @@ class _CreateCommunityState extends State<CreateCommunity> {
                                           height: 15,
                                         ),
                                         YTextForm(
-                                          controller: index == 0
-                                              ? createHabController[index]
-                                              : index == 1
-                                                  ? createHabController[
-                                                      index + 2]
-                                                  : index == 2
-                                                      ? createHabController[
-                                                          index + 4]
-                                                      : index == 3
-                                                          ? createHabController[
-                                                              index + 6]
-                                                          : ShowSnacks,
+                                          controller: createHabController[
+                                              0 + 3 * index],
                                           lableText: ' Write Habit 1',
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
                                         YTextForm(
-                                          controller: index == 0
-                                              ? createHabController[index + 1]
-                                              : index == 1
-                                                  ? createHabController[
-                                                      index + 3]
-                                                  : index == 2
-                                                      ? createHabController[
-                                                          index + 5]
-                                                      : index == 3
-                                                          ? createHabController[
-                                                              index + 7]
-                                                          : ShowSnacks,
+                                          controller: createHabController[
+                                              1 + 3 * index],
                                           lableText: ' Write Habit 2',
                                         ),
                                         const SizedBox(
@@ -387,18 +399,8 @@ class _CreateCommunityState extends State<CreateCommunity> {
                                                 height: 15,
                                               ),
                                               YTextForm(
-                                                controller: index == 0
-                                                    ? vediocontroller[index]
-                                                    : index == 1
-                                                        ? vediocontroller[
-                                                            index + 1]
-                                                        : index == 2
-                                                            ? vediocontroller[
-                                                                index + 2]
-                                                            : index == 3
-                                                                ? vediocontroller[
-                                                                    index + 3]
-                                                                : ShowSnacks,
+                                                controller:
+                                                    vediocontroller[index][0],
                                                 lableText:
                                                     'Write the Name of video',
                                               ),

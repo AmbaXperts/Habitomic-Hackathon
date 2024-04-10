@@ -2,7 +2,6 @@ import '/features/personalization/controllers/user_controller.dart';
 import '/utils/constants/sizes.dart';
 import '/utils/constants/text_strings.dart';
 import '/utils/validators/validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -42,12 +41,12 @@ class ReAuthLoginForm extends StatelessWidget {
                       controller: controller.verifyPassword,
                       validator: TValidator.validatePassword,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(Iconsax.password_check),
+                          prefixIcon: const Icon(Iconsax.password_check),
                           labelText: TTexts.email,
                           suffixIcon: IconButton(
                               onPressed: () => controller.hidePassword.value =
                                   !controller.hidePassword.value,
-                              icon: Icon(Iconsax.eye_slash))),
+                              icon: const Icon(Iconsax.eye_slash))),
                     ),
                   ),
                   const SizedBox(

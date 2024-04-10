@@ -204,7 +204,8 @@ class _commSearchState extends State<commSearch> {
                                             ['commPictrue'],
                                         comname: snapshot.data!.docs[index]
                                             ['commName'],
-                                        rating: 7,
+                                        rating: snapshot.data!.docs[index]
+                                            ['commRating'],
                                       ),
                                     ),
                                   );

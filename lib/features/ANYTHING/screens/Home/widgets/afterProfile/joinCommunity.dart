@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
@@ -14,7 +13,7 @@ class joinCommunity extends StatefulWidget {
   final List like;
   final String comname;
   final String comBio;
-  final List comMembers;
+  final List<Map<String, dynamic>> comMembers;
   final List comHabits;
   final int rating;
   final String uuid;
@@ -141,6 +140,8 @@ class _joinCommunityState extends State<joinCommunity>
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: StatefulBuilder(
                           builder: (context, setState) {
+                            List<Map<String, dynamic>> members =
+                                widget.comMembers;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -231,7 +232,7 @@ class _joinCommunityState extends State<joinCommunity>
                                           Icons.people_outline_rounded,
                                         ),
                                         Text(
-                                          '${widget.comMembers.length} Members',
+                                          '${widget.like.length} Likes',
                                         ),
                                       ],
                                     ),
@@ -260,9 +261,26 @@ class _joinCommunityState extends State<joinCommunity>
                                               setState(() {
                                                 isproccess = true;
                                               });
+                                              DateTime now = DateTime.now();
 
+                                              Timestamp timestamp =
+                                                  Timestamp.fromDate(now);
+
+                                              setState(
+                                                () {
+                                                  members.add(
+                                                    {
+                                                      'userId': FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid,
+                                                      'date': timestamp,
+                                                    },
+                                                  );
+                                                },
+                                              );
                                               await YAuth().joinUserToCommunity(
-                                                members: widget.comMembers,
+                                                members: members,
                                                 uuid: widget.uuid,
                                               );
 
