@@ -83,7 +83,7 @@ class PCommentScreen extends StatelessWidget {
                           Text(
                             ' ${cpcomment.likes.length}',
                             style: const TextStyle(
-                                fontSize: 12, color: Colors.white),
+                                fontSize: 12, color: Color.fromARGB(255, 0, 0, 0)),
                           ),
                         ],
                       ),
