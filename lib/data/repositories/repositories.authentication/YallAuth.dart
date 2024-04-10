@@ -67,22 +67,16 @@ class YAuth {
   ////********************************************* */
   ///join the user to community backend
 
-  Future<void> joinUserToCommunity({
-    required List<Map<String, dynamic>> members,
+  Future<String> joinUserToCommunity({
+    required List members,
     required String uuid,
   }) async {
-    String res = 'yelem';
-    for (int i = 0; i < members.length; i++) {
-      if (members[i]['userId'] == FirebaseAuth.instance.currentUser!.uid) {
-        res = 'ale';
-      }
-    }
+    String res = 'Error : UnExpected error';
 
-    if (res == 'yelem') {
-      await _Yfirestore.collection('Ycommunity').doc(uuid).update({
-        'commMembers': members,
-      });
-    }
+    await _Yfirestore.collection('Ycommunity').doc(uuid).update({
+      'commMembers': members,
+    });
+    return res;
 
     // if (!commMember.contains(_YAuth.currentUser!.uid)) {
     //   await _Yfirestore.collection('Ycommunity').doc(uuid).update({
@@ -146,5 +140,17 @@ class YAuth {
       res = e.toString();
     }
     return res;
+  }
+
+  ////********************************************* */
+  ///join the user to community backend
+
+  Future<void> updateRate({
+    required String commUid,
+    required int rating,
+  }) async {
+    await _Yfirestore.collection('Ycommunity').doc(commUid).update({
+      'commRating': rating + 1,
+    });
   }
 }

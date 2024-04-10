@@ -6,9 +6,11 @@ import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfil
 
 class AchivedTab extends StatefulWidget {
   final List habits;
+  final int rating;
   final String commuid;
   const AchivedTab({
     super.key,
+    required this.rating,
     required this.habits,
     required this.commuid,
   });
@@ -28,6 +30,8 @@ class _AchivedTabState extends State<AchivedTab> {
               habitt[0]['week1'][1] &&
               habitt[0]['week1'][2])
             achivedcommonHabits(
+              commuid: widget.commuid,
+              rating: widget.rating,
               widget: widget,
               weekName: 'week1',
               weeks: 1,
@@ -39,6 +43,8 @@ class _AchivedTabState extends State<AchivedTab> {
               habitt[0]['week2'][1] &&
               habitt[0]['week2'][2])
             achivedcommonHabits(
+              rating: widget.rating,
+              commuid: widget.commuid,
               widget: widget,
               weekName: 'week2',
               weeks: 2,
@@ -50,6 +56,8 @@ class _AchivedTabState extends State<AchivedTab> {
               habitt[0]['week3'][1] &&
               habitt[0]['week3'][2])
             achivedcommonHabits(
+              rating: widget.rating,
+              commuid: widget.commuid,
               widget: widget,
               weekName: 'week3',
               weeks: 3,
@@ -61,6 +69,8 @@ class _AchivedTabState extends State<AchivedTab> {
               habitt[0]['week4'][1] &&
               habitt[0]['week4'][2])
             achivedcommonHabits(
+              rating: widget.rating,
+              commuid: widget.commuid,
               widget: widget,
               weekName: 'week4',
               weeks: 4,
@@ -76,13 +86,16 @@ class _AchivedTabState extends State<AchivedTab> {
 
 class achivedcommonHabits extends StatefulWidget {
   final int weeks;
+  final int rating;
   final String weekName;
   final String habit1;
   final String habit2;
   final String habit3;
-
+  final String commuid;
   const achivedcommonHabits({
     super.key,
+    required this.commuid,
+    required this.rating,
     required this.weekName,
     required this.widget,
     required this.habit1,
@@ -99,6 +112,18 @@ class achivedcommonHabits extends StatefulWidget {
 class _achivedcommonHabitsState extends State<achivedcommonHabits> {
   bool isclicked = false;
   List<Map<String, dynamic>> modifiedList = [habitt[0]];
+  @override
+  void initState() {
+    super.initState();
+    changeRating();
+  }
+
+  changeRating() async {
+    await YAuth().updateRate(
+      commUid: widget.commuid,
+      rating: widget.rating,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

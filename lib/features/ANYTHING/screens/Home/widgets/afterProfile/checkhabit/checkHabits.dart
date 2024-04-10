@@ -8,11 +8,13 @@ import 'package:timeline_tile/timeline_tile.dart';
 class CheckHabits extends StatefulWidget {
   final Timestamp? stamp;
   final String commUid;
+  final int rating;
   final String commName;
   final String commPhotoUrl;
   final List habits;
   const CheckHabits({
     super.key,
+    required this.rating,
     required this.stamp,
     required this.habits,
     required this.commUid,
@@ -233,6 +235,7 @@ class _CheckHabitsState extends State<CheckHabits>
               habits: widget.habits,
             ),
             AchivedTab(
+              rating: widget.rating,
               commuid: widget.commUid,
               habits: widget.habits,
             ),

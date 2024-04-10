@@ -697,12 +697,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                             ],
                           }
                         ],
-                        members: [
-                          {
-                            'userId': '',
-                            'date': null,
-                          },
-                        ],
+                        members: [],
                         videoTumnel: [
                           {
                             'video1Tumnel': vedioImage1,

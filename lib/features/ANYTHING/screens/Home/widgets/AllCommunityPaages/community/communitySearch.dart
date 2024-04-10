@@ -136,90 +136,114 @@ class _commSearchState extends State<commSearch> {
                       'you have no communitys yet . Join the community on profile page .',
                     );
                   }
-                  return SizedBox(
-                    height: 270,
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+                  return StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Ycommunity')
+                        .where('commOwner',
+                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (!snapshot.hasData) {
+                        return Text(
+                          'you have no communitys yet . Join the community on profile page .',
+                        );
+                      }
+                      return SizedBox(
+                        height: 270,
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: NetworkImage(
-                                          snapshot.data!.docs[index]
-                                              ['commPictrue'],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        '  ${snapshot.data!.docs[index]['commName']}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                              snapshot.data!.docs[index]
+                                                  ['commPictrue'],
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        '  ${snapshot.data!.docs[index]['commMembers'].length} followers',
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '  ${snapshot.data!.docs[index]['commName']}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          Text(
+                                            '  ${snapshot.data!.docs[index]['commMembers'].length} followers',
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
+                                  IconButton(
+                                    onPressed: () {
+                                      print(
+                                        snapshot.data!.docs[index]
+                                            ['commMembers'],
+                                      );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => joinCommunity(
+                                            like: snapshot.data!.docs[index]
+                                                ['commLikes'],
+                                            uuid: snapshot.data!.docs[index]
+                                                ['Uuid'],
+                                            comBio: snapshot.data!.docs[index]
+                                                ['commBio'],
+                                            comHabits: snapshot.data!
+                                                .docs[index]['commHabits'],
+                                            comMembers: snapshot.data!
+                                                .docs[index]['commMembers'],
+                                            comPicture: snapshot.data!
+                                                .docs[index]['commPictrue'],
+                                            comname: snapshot.data!.docs[index]
+                                                ['commName'],
+                                            rating: snapshot.data!.docs[index]
+                                                ['commRating'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_forward,
+                                      size: 30,
+                                    ),
+                                  ),
                                 ],
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => joinCommunity(
-                                        like: snapshot.data!.docs[index]
-                                            ['commLikes'],
-                                        uuid: snapshot.data!.docs[index]
-                                            ['Uuid'],
-                                        comBio: snapshot.data!.docs[index]
-                                            ['commBio'],
-                                        comHabits: snapshot.data!.docs[index]
-                                            ['commHabits'],
-                                        comMembers: snapshot.data!.docs[index]
-                                            ['commMembers'],
-                                        comPicture: snapshot.data!.docs[index]
-                                            ['commPictrue'],
-                                        comname: snapshot.data!.docs[index]
-                                            ['commName'],
-                                        rating: snapshot.data!.docs[index]
-                                            ['commRating'],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_forward,
-                                  size: 30,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   );
                 },
               ),

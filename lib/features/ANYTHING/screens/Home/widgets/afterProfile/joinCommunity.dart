@@ -13,7 +13,7 @@ class joinCommunity extends StatefulWidget {
   final List like;
   final String comname;
   final String comBio;
-  final List<Map<String, dynamic>> comMembers;
+  final List comMembers;
   final List comHabits;
   final int rating;
   final String uuid;
@@ -43,7 +43,6 @@ class _joinCommunityState extends State<joinCommunity>
       length: 2,
       vsync: this,
     );
-    bool islike = widget.like.contains(FirebaseAuth.instance.currentUser!.uid);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -65,6 +64,9 @@ class _joinCommunityState extends State<joinCommunity>
           actions: [
             StatefulBuilder(
               builder: (context, setState) {
+                bool islike = widget.like
+                    .contains(FirebaseAuth.instance.currentUser!.uid);
+                bool like = false;
                 return Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: ClipOval(
@@ -77,22 +79,10 @@ class _joinCommunityState extends State<joinCommunity>
                             commLikes: widget.like,
                             likeUserId: FirebaseAuth.instance.currentUser!.uid,
                           );
-                          if (res == 'success') {
-                            Get.snackbar(
-                              snackPosition: SnackPosition.BOTTOM,
-                              '',
-                              ' likes',
-                              borderRadius: 15,
-                              backgroundGradient: const LinearGradient(
-                                colors: [
-                                  Colors.blue,
-                                  Colors.black,
-                                ],
-                              ),
-                            );
-                          }
+
                           setState(
                             () {
+                              like = true;
                               islike = widget.like.contains(
                                   FirebaseAuth.instance.currentUser!.uid);
                             },
@@ -102,7 +92,8 @@ class _joinCommunityState extends State<joinCommunity>
                           Icons.favorite,
                           color: widget.like.contains(
                                       FirebaseAuth.instance.currentUser!.uid) ||
-                                  islike
+                                  islike ||
+                                  like
                               ? Colors.red
                               : Colors.grey[200],
                         ),
@@ -140,8 +131,7 @@ class _joinCommunityState extends State<joinCommunity>
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: StatefulBuilder(
                           builder: (context, setState) {
-                            List<Map<String, dynamic>> members =
-                                widget.comMembers;
+                            List members = widget.comMembers;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -262,10 +252,8 @@ class _joinCommunityState extends State<joinCommunity>
                                                 isproccess = true;
                                               });
                                               DateTime now = DateTime.now();
-
                                               Timestamp timestamp =
                                                   Timestamp.fromDate(now);
-
                                               setState(
                                                 () {
                                                   members.add(
@@ -279,33 +267,39 @@ class _joinCommunityState extends State<joinCommunity>
                                                   );
                                                 },
                                               );
-                                              await YAuth().joinUserToCommunity(
+                                              String res = await YAuth()
+                                                  .joinUserToCommunity(
                                                 members: members,
                                                 uuid: widget.uuid,
                                               );
+                                              print(
+                                                  '444444444444444444444444444');
+                                              print(res);
 
                                               setState(() {
                                                 isproccess = false;
+                                                print(members);
                                               });
-                                              Get.snackbar(
-                                                snackPosition:
-                                                    SnackPosition.BOTTOM,
-                                                '',
-                                                'Congratulation! you successfully joined ${widget.comname} community. you can check the habits by clicking the check habit in the community .',
-                                                borderRadius: 15,
-                                                backgroundGradient:
-                                                    const LinearGradient(
-                                                  colors: [
-                                                    Colors.blue,
-                                                    Colors.black,
-                                                  ],
-                                                ),
-                                              );
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (context) =>
-                                                    commSearch(),
-                                              ));
+                                              // Get.snackbar(
+                                              //   snackPosition:
+                                              //       SnackPosition.BOTTOM,
+                                              //   '',
+                                              //   'Congratulation! you successfully joined ${widget.comname} community. you can check the habits by clicking the check habit in the community .',
+                                              //   borderRadius: 15,
+                                              //   backgroundGradient:
+                                              //       const LinearGradient(
+                                              //     colors: [
+                                              //       Colors.blue,
+                                              //       Colors.black,
+                                              //     ],
+                                              //   ),
+                                              // );
+                                              // Navigator.of(context).push(
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         commSearch(),
+                                              //   ),
+                                              // );
                                             },
                                             child: !isproccess
                                                 ? Center(
@@ -372,6 +366,7 @@ class _joinCommunityState extends State<joinCommunity>
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       CheckHabits(
+                                                    rating: widget.rating,
                                                     commUid: widget.uuid,
                                                     stamp: stamp,
                                                     habits: widget.comHabits,
