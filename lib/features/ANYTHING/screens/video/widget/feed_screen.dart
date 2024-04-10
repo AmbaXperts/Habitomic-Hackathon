@@ -4,6 +4,7 @@ import 'package:habitomic_app/data/repositories/repositories.authentication/auth
 import 'package:habitomic_app/features/ANYTHING/screens/video/comment_screen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/video_controller.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/widget/circle_animation.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/video/widget/search_screen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/widget/video_player_item.dart';
 import 'package:video_player/video_player.dart';
 
@@ -174,6 +175,22 @@ class VideoScreen extends StatelessWidget {
                                   ),
                                   Column(
                                     children: [
+                                       InkWell(
+                                         onTap: () {
+            // Navigate to another screen when the search icon is tapped
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SearchScreen(),
+              ),
+            );
+          },
+                                          child: Icon(
+                                            Icons.search,
+                                            size: 40,
+                                            color: const Color.fromARGB(
+                                                255, 255, 255, 255),
+                                          )),
                                       InkWell(
                                           onTap: () {},
                                           child: Icon(

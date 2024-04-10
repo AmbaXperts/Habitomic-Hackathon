@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
 
 class ProfileUtil extends StatefulWidget {
   final String username;
   final String fullname;
   final DateFormat date;
   final bool isuserprofile;
-  const ProfileUtil({
-    super.key,
+
+  ProfileUtil({
+    Key? key,
     required this.username,
     required this.fullname,
     required this.date,
     required this.isuserprofile,
-  });
+  }) : super(key: key);
 
   @override
   State<ProfileUtil> createState() => _ProfileUtilState();
 }
 
-TextEditingController BioController = TextEditingController();
-
 class _ProfileUtilState extends State<ProfileUtil> {
+  final ProfileController profileController = Get.find<ProfileController>();
+  TextEditingController bioController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,7 +48,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+                        profileController.user['ProfilePicture'] ?? '',
                       ),
                       radius: 40,
                     ),
@@ -61,8 +65,8 @@ class _ProfileUtilState extends State<ProfileUtil> {
                             child: IconButton(
                               onPressed: () {},
                               icon: Icon(
-                                color: Colors.white,
                                 Icons.edit,
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -72,21 +76,19 @@ class _ProfileUtilState extends State<ProfileUtil> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                    left: 20,
-                  ),
+                  padding: EdgeInsets.only(left: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${widget.fullname}',
+                        widget.fullname,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '${widget.username}',
+                        widget.username,
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.grey[500],
@@ -95,9 +97,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                       Row(
                         children: [
                           widget.isuserprofile
-                              ? Icon(
-                                  Icons.av_timer_rounded,
-                                )
+                              ? Icon(Icons.av_timer_rounded)
                               : Container(),
                           widget.isuserprofile
                               ? Text(
@@ -126,9 +126,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             Text(
               'Bio',
               style: TextStyle(
@@ -136,40 +134,80 @@ class _ProfileUtilState extends State<ProfileUtil> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => BioDiscription(),
+                    builder: (context) => BioDescription(),
                   ),
                 );
               },
-              child: BioController.text == ""
+              child: bioController.text.isEmpty
                   ? Text(
-                      'write some discription',
+                      'Write some description',
                       style: TextStyle(
                         color: Colors.grey[400],
                       ),
                     )
                   : Text(
-                      BioController.text,
+                      bioController.text,
                       style: TextStyle(
                         color: Colors.grey[400],
                       ),
                     ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                rowcolumn('Community', '2'),
-                rowcolumn('Habits', '3'),
-                rowcolumn('Rating', '5'),
+                rowColumn('Community', '2'),
+                rowColumn('Habits', '3'),
+                rowColumn('Rating', '5'),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      profileController.user['Following'] ?? '0',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Following',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(width: 5),
+                Column(
+                  children: [
+                    Text(
+                      profileController.user['Follower'] ?? '0',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Followers',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
           ],
@@ -178,7 +216,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
     );
   }
 
-  Row rowcolumn(String title, String howMuch) {
+  Widget rowColumn(String title, String howMuch) {
     return Row(
       children: [
         Column(
@@ -189,8 +227,10 @@ class _ProfileUtilState extends State<ProfileUtil> {
             ),
             Text(
               title,
-              style:
-                  TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Text(howMuch),
           ],
@@ -198,8 +238,13 @@ class _ProfileUtilState extends State<ProfileUtil> {
       ],
     );
   }
+}
 
-  Widget BioDiscription() {
+class BioDescription extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController bioController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -226,14 +271,16 @@ class _ProfileUtilState extends State<ProfileUtil> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                controller: BioController,
+                controller: bioController,
                 decoration: InputDecoration(
-                  label: Text('Bio'),
+                  labelText: 'Bio',
                 ),
-                onChanged: (value) => setState(() {}),
+                onChanged: (value) {
+                  bioController.text = value;
+                },
               ),
               Text(
-                'write some discription about your self',
+                'Write some description about yourself',
               ),
             ],
           ),
