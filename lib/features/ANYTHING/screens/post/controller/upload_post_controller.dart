@@ -49,6 +49,7 @@ class UploadPostController extends GetxController {
 
       Post post = Post(
         username: (userDoc.data()! as Map<String, dynamic>)['Username'],
+        
         uid: uid,
         id: "ImagePost $len",
         likes: [],

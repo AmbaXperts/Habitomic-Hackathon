@@ -19,8 +19,13 @@ class UploadVideoController extends GetxController {
 
   _compressVideo(String videoPath) async {
     final compressVideo = await VideoCompress.compressVideo(videoPath,
-        quality: VideoQuality.MediumQuality);
+
+        quality: VideoQuality.MediumQuality, );
     // here we can add different functionality like edit and so on
+
+
+
+
 
     return compressVideo!.file;
   }
