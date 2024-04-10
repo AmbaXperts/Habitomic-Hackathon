@@ -127,11 +127,16 @@ class YAuth {
   }) async {
     String res = 'Error : unExpected error';
     try {
-      await _Yfirestore.collection('Ycommunity').doc(commUid).update({
-        if (commLikes.contains(likeUserId))
+      if (commLikes.contains(likeUserId)) {
+        await _Yfirestore.collection('Ycommunity').doc(commUid).update({
           'commLikes': FieldValue.arrayRemove([likeUserId]),
-        'commLikes': FieldValue.arrayUnion([likeUserId]),
-      });
+        });
+      } else {
+        await _Yfirestore.collection('Ycommunity').doc(commUid).update({
+          'commLikes': FieldValue.arrayUnion([likeUserId]),
+        });
+      }
+
       res = 'success';
     } catch (e) {
       res = e.toString();

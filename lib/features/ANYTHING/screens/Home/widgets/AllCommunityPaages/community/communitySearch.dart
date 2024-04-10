@@ -194,7 +194,8 @@ class _commSearchState extends State<commSearch> {
                                             ['commLikes'],
                                         uuid: snapshot.data!.docs[index]
                                             ['Uuid'],
-                                        comBio: 'this is some discription',
+                                        comBio: snapshot.data!.docs[index]
+                                            ['commBio'],
                                         comHabits: snapshot.data!.docs[index]
                                             ['commHabits'],
                                         comMembers: snapshot.data!.docs[index]

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/communitySearch.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/checkHabits.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
 
@@ -32,16 +34,17 @@ class joinCommunity extends StatefulWidget {
   State<joinCommunity> createState() => _joinCommunityState();
 }
 
-bool isfollowing = false;
-
 class _joinCommunityState extends State<joinCommunity>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    bool isproccess = false;
+
     TabController controller = TabController(
       length: 2,
       vsync: this,
     );
+    bool islike = widget.like.contains(FirebaseAuth.instance.currentUser!.uid);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -61,26 +64,54 @@ class _joinCommunityState extends State<joinCommunity>
             ),
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.grey,
-                  child: IconButton(
-                    onPressed: () async {
-                      String res = await YAuth().likeCommunity(
-                        commUid: widget.uuid,
-                        commLikes: widget.like,
-                        likeUserId: FirebaseAuth.instance.currentUser!.uid,
-                      );
-                    },
-                    icon: Icon(
-                      Icons.favorite,
-                      color: Colors.red,
+            StatefulBuilder(
+              builder: (context, setState) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.grey,
+                      child: IconButton(
+                        onPressed: () async {
+                          String res = await YAuth().likeCommunity(
+                            commUid: widget.uuid,
+                            commLikes: widget.like,
+                            likeUserId: FirebaseAuth.instance.currentUser!.uid,
+                          );
+                          if (res == 'success') {
+                            Get.snackbar(
+                              snackPosition: SnackPosition.BOTTOM,
+                              '',
+                              ' likes',
+                              borderRadius: 15,
+                              backgroundGradient: const LinearGradient(
+                                colors: [
+                                  Colors.blue,
+                                  Colors.black,
+                                ],
+                              ),
+                            );
+                          }
+                          setState(
+                            () {
+                              islike = widget.like.contains(
+                                  FirebaseAuth.instance.currentUser!.uid);
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.favorite,
+                          color: widget.like.contains(
+                                      FirebaseAuth.instance.currentUser!.uid) ||
+                                  islike
+                              ? Colors.red
+                              : Colors.grey[200],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             )
           ],
         ),
@@ -108,220 +139,262 @@ class _joinCommunityState extends State<joinCommunity>
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                        child: StatefulBuilder(
+                          builder: (context, setState) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CircleAvatar(
-                                  radius: 40,
-                                  backgroundImage: NetworkImage(
-                                    widget.comPicture,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Column(
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      widget.comname,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                    CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: NetworkImage(
+                                        widget.comPicture,
                                       ),
                                     ),
-                                    Row(
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Column(
                                       children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.star_border_outlined,
+                                        Text(
+                                          widget.comname,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        Text(
-                                          '${widget.rating} Rating',
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {},
+                                              icon: Icon(
+                                                Icons.star_border_outlined,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${widget.rating} Rating',
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Bio',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              widget.comBio,
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.people_outline_rounded,
-                                    ),
-                                    Text(
-                                      '${widget.comMembers.length} Members',
-                                    ),
-                                  ],
+                                SizedBox(
+                                  height: 10,
                                 ),
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.people_outline_rounded,
-                                    ),
-                                    Text(
-                                      '${widget.comHabits.length} Habits',
-                                    ),
-                                  ],
+                                Text(
+                                  'Bio',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.people_outline_rounded,
-                                    ),
-                                    Text(
-                                      '${widget.comMembers.length} Members',
-                                    ),
-                                  ],
+                                Text(
+                                  widget.comBio,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            !widget.comMembers.any((element) =>
-                                    element['userId'] ==
-                                    FirebaseAuth.instance.currentUser!.uid)
-                                ? Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      MaterialButton(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Icon(
+                                          Icons.people_outline_rounded,
                                         ),
-                                        color:
-                                            Color.fromARGB(255, 139, 87, 148),
-                                        height: 50,
-                                        minWidth: 200,
-                                        onPressed: () async {
-                                          await YAuth().joinUserToCommunity(
-                                            members: widget.comMembers,
-                                            uuid: widget.uuid,
-                                          );
-                                        },
-                                        child: Center(
-                                          child: Text(
-                                            'Join Now',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
+                                        Text(
+                                          '${widget.comMembers.length} Members',
                                         ),
-                                      ),
-                                      ClipOval(
-                                        child: Material(
-                                          color: Colors.grey,
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.share,
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Icon(
+                                          Icons.people_outline_rounded,
+                                        ),
+                                        Text(
+                                          '${widget.comHabits.length} Habits',
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Icon(
+                                          Icons.people_outline_rounded,
+                                        ),
+                                        Text(
+                                          '${widget.comMembers.length} Members',
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                !widget.comMembers.any((element) =>
+                                        element['userId'] ==
+                                        FirebaseAuth.instance.currentUser!.uid)
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          MaterialButton(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      MaterialButton(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        color: const Color.fromARGB(
-                                            255, 155, 85, 168),
-                                        height: 50,
-                                        minWidth: 200,
-                                        onPressed: () async {
-                                          Timestamp? stamp;
-                                          for (int i = 0;
-                                              i < widget.comMembers.length;
-                                              i++) {
-                                            if (widget.comMembers[i]
-                                                    ['userId'] ==
-                                                FirebaseAuth.instance
-                                                    .currentUser!.uid) {
+                                            color: Color.fromARGB(
+                                                255, 139, 87, 148),
+                                            height: 50,
+                                            minWidth: 200,
+                                            onPressed: () async {
                                               setState(() {
-                                                stamp = widget.comMembers[i]
-                                                    ['date'];
+                                                isproccess = true;
                                               });
-                                            }
-                                          }
-                                          print(
-                                              '###########################################');
-                                          print(stamp);
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) => CheckHabits(
-                                                commUid: widget.uuid,
-                                                stamp: stamp,
-                                                habits: widget.comHabits,
-                                                commName: widget.comname,
-                                                commPhotoUrl: widget.comPicture,
+
+                                              await YAuth().joinUserToCommunity(
+                                                members: widget.comMembers,
+                                                uuid: widget.uuid,
+                                              );
+
+                                              setState(() {
+                                                isproccess = false;
+                                              });
+                                              Get.snackbar(
+                                                snackPosition:
+                                                    SnackPosition.BOTTOM,
+                                                '',
+                                                'Congratulation! you successfully joined ${widget.comname} community. you can check the habits by clicking the check habit in the community .',
+                                                borderRadius: 15,
+                                                backgroundGradient:
+                                                    const LinearGradient(
+                                                  colors: [
+                                                    Colors.blue,
+                                                    Colors.black,
+                                                  ],
+                                                ),
+                                              );
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    commSearch(),
+                                              ));
+                                            },
+                                            child: !isproccess
+                                                ? Center(
+                                                    child: Text(
+                                                      'Join Now',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    ),
+                                                  )
+                                                : SizedBox(
+                                                    width: 30,
+                                                    child: Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                  ),
+                                          ),
+                                          ClipOval(
+                                            child: Material(
+                                              color: Colors.grey,
+                                              child: IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.share,
+                                                ),
                                               ),
                                             ),
-                                          );
-                                        },
-                                        child: Center(
-                                          child: Text('Check Habits'),
-                                        ),
-                                      ),
-                                      ClipOval(
-                                        child: Material(
-                                          color: Colors.yellow,
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.kitesurfing_outlined,
+                                          ),
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          MaterialButton(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            color: const Color.fromARGB(
+                                                255, 155, 85, 168),
+                                            height: 50,
+                                            minWidth: 200,
+                                            onPressed: () async {
+                                              Timestamp? stamp;
+                                              for (int i = 0;
+                                                  i < widget.comMembers.length;
+                                                  i++) {
+                                                if (widget.comMembers[i]
+                                                        ['userId'] ==
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid) {
+                                                  setState(() {
+                                                    stamp = widget.comMembers[i]
+                                                        ['date'];
+                                                  });
+                                                }
+                                              }
+                                              print(
+                                                  '###########################################');
+                                              print(stamp);
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CheckHabits(
+                                                    commUid: widget.uuid,
+                                                    stamp: stamp,
+                                                    habits: widget.comHabits,
+                                                    commName: widget.comname,
+                                                    commPhotoUrl:
+                                                        widget.comPicture,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Center(
+                                              child: Text('Check Habits'),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      ClipOval(
-                                        child: Material(
-                                          color: Colors.grey,
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.share,
+                                          ClipOval(
+                                            child: Material(
+                                              color: Colors.yellow,
+                                              child: IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.kitesurfing_outlined,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          ClipOval(
+                                            child: Material(
+                                              color: Colors.grey,
+                                              child: IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.share,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                          ],
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ),
