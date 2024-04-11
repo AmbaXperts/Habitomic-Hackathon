@@ -15,7 +15,6 @@ import 'package:habitomic_app/features/personalization/screens/settings/settings
 import '/features/ANYTHING/screens/Home/widgets/home.dart';
 import 'package:flutter/material.dart';
 
-
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({Key? key});
 
@@ -29,7 +28,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
     const commSearch(),
     const AddPostScreen(),
     const Feed(),
-     PostScreen(),
+    PostScreen(),
   ];
   int page = 0;
   bool isExpanded = false;
@@ -70,23 +69,32 @@ class _NavigationMenuState extends State<NavigationMenu> {
         duration: const Duration(milliseconds: 300),
         height: isExpanded ? 150 : 0,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FloatingActionButton(
                 onPressed: () {
                   Get.to(const AddPostScreen());
                 },
                 tooltip: 'Add Post',
-                child: const Icon(Icons.add),
+                child: Icon(
+                  Icons.add,
+                  color: !isExpanded ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(
+                width: 40,
               ),
               FloatingActionButton(
                 onPressed: () {
                   Get.to(const AddVideoScreen());
                 },
                 tooltip: 'Add Video',
-                child: const Icon(Icons.video_camera_back),
+                child: Icon(
+                  Icons.video_camera_back,
+                  color: !isExpanded ? Colors.white : Colors.black,
+                ),
               ),
             ],
           ),

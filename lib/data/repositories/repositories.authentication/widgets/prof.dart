@@ -27,193 +27,189 @@ class _ProfileUtilState extends State<ProfileUtil> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
-        ),
-      ),
-      height: 380,
-      width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return Obx(() => (Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(40),
+            ),
+          ),
+          height: 380,
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
+                Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        profileController.user['ProfilePicture'] ?? '',
-                      ),
-                      radius: 40,
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            profileController.user['ProfilePicture'] ?? '',
+                          ),
+                          radius: 40,
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      bottom: -2,
-                      right: 0,
-                      child: SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: ClipOval(
-                          clipBehavior: Clip.antiAlias,
-                          child: Material(
-                            color: Color.fromARGB(255, 163, 94, 176),
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                              ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.fullname,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.fullname,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        widget.username,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey[500],
-                        ),
-                      ),
-                      Row(
-                        children: [
+                          Text(
+                            widget.username,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.av_timer_rounded),
+                              Text(
+                                'Member since ${widget.date.format(DateTime.now())}',
+                              ),
+                            ],
+                          ),
                           widget.isuserprofile
-                              ? Icon(Icons.av_timer_rounded)
-                              : Container(),
-                          widget.isuserprofile
-                              ? Text(
-                                  'Member since ${widget.date.format(DateTime.now())}',
-                                )
-                              : MaterialButton(
-                                  height: 50,
-                                  minWidth: 150,
-                                  color: Colors.blue,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Follow',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
+                              ? profileController.user["isFollowing"]
+                                  ? MaterialButton(
+                                      height: 50,
+                                      minWidth: 150,
+                                      color: Colors.grey,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      onPressed: () {},
+                                      child: Text(
+                                        'Followed',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                                  : MaterialButton(
+                                      height: 50,
+                                      minWidth: 150,
+                                      color: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      onPressed: () =>
+                                          profileController.followUser(),
+                                      child: Text(
+                                        'Follow',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                              : Container()
                         ],
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Bio',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BioDescription(),
-                  ),
-                );
-              },
-              child: bioController.text.isEmpty
-                  ? Text(
-                      'Write some description',
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                      ),
-                    )
-                  : Text(
-                      bioController.text,
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                      ),
                     ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                rowColumn('Community', '2'),
-                rowColumn('Habits', '3'),
-                rowColumn('Rating', '5'),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      profileController.user['Following'] ?? '0',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Following',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
                   ],
                 ),
-                SizedBox(width: 5),
-                Column(
-                  children: [
-                    Text(
-                      profileController.user['Follower'] ?? '0',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                SizedBox(height: 10),
+                Text(
+                  'Bio',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BioDescription(),
                       ),
+                    );
+                  },
+                  child: bioController.text.isEmpty
+                      ? Text(
+                          'No Bio',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                          ),
+                        )
+                      : Text(
+                          bioController.text,
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    rowColumn('Community', '2'),
+                    rowColumn('Habits', '3'),
+                    rowColumn('Rating', "${profileController.user["rating"]}"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          profileController.user['Following'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Following',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(width: 5),
-                    Text(
-                      'Followers',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
+                    Column(
+                      children: [
+                        Text(
+                          profileController.user['Follower'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Followers',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        )));
   }
 
   Widget rowColumn(String title, String howMuch) {

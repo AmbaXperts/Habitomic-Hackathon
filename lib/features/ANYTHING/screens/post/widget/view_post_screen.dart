@@ -1,11 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/post/controller/post_controller.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/post/model/post_model.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/post/widget/fullscreen_show.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/post/widget/pcomment_screen.dart';
-
 
 class PostScreen extends StatelessWidget {
   final PostController _postController = Get.put(PostController());
@@ -47,7 +48,6 @@ class PostScreen extends StatelessWidget {
   }
 
   Widget _buildPostItem(BuildContext context, Post post) {
-    
     return /*Card(
       
       margin: EdgeInsets.all(10),
@@ -122,11 +122,12 @@ class PostScreen extends StatelessWidget {
       ),
     );*/
 
-     Padding(
+        Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         color: Colors.grey[100],
-        height: 310,
+        height: 350,
+        margin: EdgeInsets.all(6),
         child: Column(
           children: [
             Row(
@@ -137,12 +138,12 @@ class PostScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 35,
-                      backgroundImage:  NetworkImage(post.profilePhoto),
+                      backgroundImage: NetworkImage(post.profilePhoto),
                     ),
                     Column(
                       children: [
                         Text(
-                         post.username,
+                          post.username,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -218,15 +219,24 @@ class PostScreen extends StatelessWidget {
                   width: 2,
                   color: Colors.black54,
                 ),
-                Container(
-                  height: 150,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(
-                        post.postUrl,
+                GestureDetector(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                    return ImageFullScreenWrapperWidget(
+                        child: Image(
+                      image: NetworkImage(post.postUrl),
+                    ));
+                  })),
+                  child: Container(
+                    height: 150,
+                    width: 250,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(
+                          post.postUrl,
+                        ),
                       ),
                     ),
                   ),
@@ -235,8 +245,7 @@ class PostScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
-                      onTap: () =>
-                          _postController.likePost(post.id),
+                      onTap: () => _postController.likePost(post.id),
                       child: Icon(
                         Icons.favorite,
                         size: 40,
@@ -245,13 +254,13 @@ class PostScreen extends StatelessWidget {
                             ? Color.fromARGB(255, 241, 4, 4)
                             : const Color.fromARGB(255, 193, 186, 186),
                       ),
-                      
-                                     ),
-                                     Text(
-                                            post.likes.length.toString(),
-                                            style: TextStyle(
-                                                fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0)),
-                                          ),
+                    ),
+                    Text(
+                      post.likes.length.toString(),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: const Color.fromARGB(255, 0, 0, 0)),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -263,12 +272,12 @@ class PostScreen extends StatelessWidget {
                         color: Color.fromARGB(255, 189, 184, 184),
                       ),
                     ),
-                    
                     Text(
-                                        post.commentCount.toString(),
-                                        style: TextStyle(
-                                            fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0)),
-                                      ),
+                      post.commentCount.toString(),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: const Color.fromARGB(255, 0, 0, 0)),
+                    ),
                     SizedBox(
                       height: 10,
                     ),

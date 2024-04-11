@@ -11,9 +11,9 @@ class UserProfileScreen extends StatefulWidget {
   final String uid;
 
   const UserProfileScreen({
-    Key? key,
+    super.key,
     required this.uid,
-  }) : super(key: key);
+  });
 
   @override
   State<UserProfileScreen> createState() => _ProfileState();
@@ -41,9 +41,10 @@ class _ProfileState extends State<UserProfileScreen> {
                 Column(
                   children: [
                     ProfileUtil(
-                      isuserprofile: true,
+                      isuserprofile: false,
                       username: controller.user['Username'],
-                      fullname: 'yared',
+                      fullname:
+                          "${controller.user['FirstName'] + " " + controller.user['LastName']}",
                       date: DateFormat.yMMMd(),
                     ),
                     SizedBox(

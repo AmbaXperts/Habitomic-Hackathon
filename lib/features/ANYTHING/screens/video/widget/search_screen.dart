@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:habitomic_app/common/model/user/user_model.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/otherUser.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/userProfilePage.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/search_controller.dart';
-
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -47,7 +47,7 @@ class SearchScreen extends StatelessWidget {
                   return InkWell(
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => UserProfileScreen(uid: user.id),
+                        builder: (context) => OtherUserProfile(uid: user.id),
                       ),
                     ),
                     child: ListTile(
