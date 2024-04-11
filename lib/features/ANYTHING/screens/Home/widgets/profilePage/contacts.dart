@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,25 +17,6 @@ class _ContactsState extends State<Contacts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   leading: IconButton(
-      //     onPressed: () {},
-      //     icon: Icon(
-      //       Icons.arrow_back,
-      //       size: 30,
-      //     ),
-      //   ),
-      //   title: Center(
-      //     child: Text(
-      //       'Find your partner',
-      //       style: TextStyle(
-      //         fontSize: 18,
-      //         fontWeight: FontWeight.bold,
-      //       ),
-      //     ),
-      //   ),
-      // ),
       backgroundColor: Colors.grey[200],
       body: ListView(
         children: [
@@ -143,18 +121,19 @@ class _ContactsState extends State<Contacts> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: GestureDetector(
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const otherPeopleProfile(
-                                  habits: '20',
-                                  members: '20',
-                                  userPhotoUrl:
-                                      'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                  username: 'yared',
-                                  rate: '7',
-                                ),
-                              ),
-                            ),
+                            onTap: () {},
+                            // onTap: () => Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const otherPeopleProfile(
+                            //       habits: '20',
+                            //       members: '20',
+                            //       userPhotoUrl:
+                            //           'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+                            //       username: 'yared',
+                            //       rate: '7',
+                            //     ),
+                            //   ),
+                            // ),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [

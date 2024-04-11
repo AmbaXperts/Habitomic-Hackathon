@@ -30,7 +30,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
           );
         }
         return Container(
-          height: 455,
+          height: 500,
           child: ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
@@ -76,7 +76,7 @@ class _ExfeedState extends State<Exfeed> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         color: Colors.grey[100],
-        height: 310,
+        height: 400,
         child: Column(
           children: [
             Row(

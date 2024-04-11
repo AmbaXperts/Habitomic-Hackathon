@@ -19,8 +19,13 @@ class UploadVideoController extends GetxController {
 
   _compressVideo(String videoPath) async {
     final compressVideo = await VideoCompress.compressVideo(videoPath,
-        quality: VideoQuality.MediumQuality);
+
+        quality: VideoQuality.MediumQuality, );
     // here we can add different functionality like edit and so on
+
+
+
+
 
     return compressVideo!.file;
   }
@@ -55,7 +60,7 @@ class UploadVideoController extends GetxController {
   // upload video function
 
   uploadVideo(String songName, String caption, String videoPath) async {
-    try {
+    //try {
       String uid = _auth.currentUser!.uid;
       DocumentSnapshot userDoc =
           await _firestore.collection('Users').doc(uid).get();
@@ -87,8 +92,8 @@ class UploadVideoController extends GetxController {
       await _firestore.collection('videos').doc('Video $len').set(
             video.tojson(),
           );
-    } catch (e) {
+   /* } catch (e) {
       Get.snackbar("Error Uploading Video", e.toString());
-    }
+    }*/
   }
 }

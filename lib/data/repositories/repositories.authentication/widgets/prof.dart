@@ -1,184 +1,232 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/post/widget/fullscreen_show.dart';
 import 'package:intl/intl.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
 
 class ProfileUtil extends StatefulWidget {
   final String username;
   final String fullname;
   final DateFormat date;
   final bool isuserprofile;
-  const ProfileUtil({
-    super.key,
+
+  ProfileUtil({
+    Key? key,
     required this.username,
     required this.fullname,
     required this.date,
     required this.isuserprofile,
-  });
+  }) : super(key: key);
 
   @override
   State<ProfileUtil> createState() => _ProfileUtilState();
 }
 
-TextEditingController BioController = TextEditingController();
-
 class _ProfileUtilState extends State<ProfileUtil> {
+  final ProfileController profileController = Get.find<ProfileController>();
+  TextEditingController bioController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
-        ),
-      ),
-      height: 380,
-      width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return Obx(() => (Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(40),
+            ),
+          ),
+          height: 380,
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
+                Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                      ),
-                      radius: 40,
-                    ),
-                    Positioned(
-                      bottom: -2,
-                      right: 0,
-                      child: SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: ClipOval(
-                          clipBehavior: Clip.antiAlias,
-                          child: Material(
-                            color: Color.fromARGB(255, 163, 94, 176),
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                color: Colors.white,
-                                Icons.edit,
-                              ),
+                    Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ImageFullScreenWrapperWidget(
+                                      child: Image(
+                                image: NetworkImage(
+                                    profileController.user['ProfilePicture']),
+                              )),
                             ),
                           ),
-                        ),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              profileController.user['ProfilePicture'] ??
+                                  'https://images.mubicdn.net/images/cast_member/286407/cache-139299-1463178721/image-w856.jpg?size=256x',
+                            ),
+                            radius: 40,
+                          ),
+                        )
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.fullname,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            widget.username,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.av_timer_rounded),
+                              Text(
+                                'Member since ${widget.date.format(DateTime.now())}',
+                              ),
+                            ],
+                          ),
+                          widget.isuserprofile
+                              ? profileController.user["isFollowing"]
+                                  ? MaterialButton(
+                                      height: 50,
+                                      minWidth: 150,
+                                      color: Colors.grey,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      onPressed: () {},
+                                      child: Text(
+                                        'Followed',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                                  : MaterialButton(
+                                      height: 50,
+                                      minWidth: 150,
+                                      color: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      onPressed: () =>
+                                          profileController.followUser(),
+                                      child: Text(
+                                        'Follow',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                              : Container()
+                        ],
                       ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 20,
+                SizedBox(height: 10),
+                Text(
+                  'Bio',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${widget.fullname}',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BioDescription(),
+                      ),
+                    );
+                  },
+                  child: bioController.text.isEmpty
+                      ? Text(
+                          'No Bio',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                          ),
+                        )
+                      : Text(
+                          bioController.text,
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${widget.username}',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey[500],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    rowColumn('Community', '2'),
+                    rowColumn('Habits', '3'),
+                    rowColumn('Rating', "${profileController.user["rating"]}"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          profileController.user['Following'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          widget.isuserprofile
-                              ? Icon(
-                                  Icons.av_timer_rounded,
-                                )
-                              : Container(),
-                          widget.isuserprofile
-                              ? Text(
-                                  'Member since ${widget.date.format(DateTime.now())}',
-                                )
-                              : MaterialButton(
-                                  height: 50,
-                                  minWidth: 150,
-                                  color: Colors.blue,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Follow',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Following',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(width: 30),
+                    Column(
+                      children: [
+                        Text(
+                          profileController.user['Follower'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Followers',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Bio',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BioDiscription(),
-                  ),
-                );
-              },
-              child: BioController.text == ""
-                  ? Text(
-                      'write some discription',
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                      ),
-                    )
-                  : Text(
-                      BioController.text,
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                      ),
-                    ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                rowcolumn('Community', '2'),
-                rowcolumn('Habits', '3'),
-                rowcolumn('Rating', '5'),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        )));
   }
 
-  Row rowcolumn(String title, String howMuch) {
+  Widget rowColumn(String title, String howMuch) {
     return Row(
       children: [
         Column(
@@ -189,8 +237,10 @@ class _ProfileUtilState extends State<ProfileUtil> {
             ),
             Text(
               title,
-              style:
-                  TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Text(howMuch),
           ],
@@ -198,8 +248,13 @@ class _ProfileUtilState extends State<ProfileUtil> {
       ],
     );
   }
+}
 
-  Widget BioDiscription() {
+class BioDescription extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController bioController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -226,14 +281,16 @@ class _ProfileUtilState extends State<ProfileUtil> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                controller: BioController,
+                controller: bioController,
                 decoration: InputDecoration(
-                  label: Text('Bio'),
+                  labelText: 'Bio',
                 ),
-                onChanged: (value) => setState(() {}),
+                onChanged: (value) {
+                  bioController.text = value;
+                },
               ),
               Text(
-                'write some discription about your self',
+                'Write some description about yourself',
               ),
             ],
           ),
