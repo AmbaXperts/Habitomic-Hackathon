@@ -1,6 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/createComm.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/communitySearch.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/feedScreen.dart';
@@ -11,7 +10,7 @@ import 'package:habitomic_app/features/ANYTHING/screens/post/widget/view_post_sc
 import 'package:habitomic_app/features/ANYTHING/screens/video/add_video_screen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/widget/feed_screen.dart';
 import 'package:habitomic_app/features/personalization/screens/settings/settings.dart';
-
+import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import '/features/ANYTHING/screens/Home/widgets/home.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +27,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
     const commSearch(),
     const AddPostScreen(),
     const Feed(),
-    PostScreen(),
+    UserProfileScreen(uid: AuthenticationRepository.instance.user.uid),
   ];
   int page = 0;
   bool isExpanded = false;

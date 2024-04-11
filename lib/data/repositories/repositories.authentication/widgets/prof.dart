@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/post/widget/fullscreen_show.dart';
 import 'package:intl/intl.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
 
@@ -46,12 +47,25 @@ class _ProfileUtilState extends State<ProfileUtil> {
                   children: [
                     Stack(
                       children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            profileController.user['ProfilePicture'] ?? '',
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ImageFullScreenWrapperWidget(
+                                      child: Image(
+                                image: NetworkImage(
+                                    profileController.user['ProfilePicture']),
+                              )),
+                            ),
                           ),
-                          radius: 40,
-                        ),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              profileController.user['ProfilePicture'] ??
+                                  'https://images.mubicdn.net/images/cast_member/286407/cache-139299-1463178721/image-w856.jpg?size=256x',
+                            ),
+                            radius: 40,
+                          ),
+                        )
                       ],
                     ),
                     Padding(
@@ -184,7 +198,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                         )
                       ],
                     ),
-                    SizedBox(width: 5),
+                    SizedBox(width: 30),
                     Column(
                       children: [
                         Text(

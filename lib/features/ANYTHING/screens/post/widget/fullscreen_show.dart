@@ -14,12 +14,14 @@ class ImageFullScreenWrapperWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
-          leading: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
+            backgroundColor: Colors.black,
+            leading: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            )),
         body: Container(
             color: Colors.black,
             constraints: BoxConstraints.expand(),

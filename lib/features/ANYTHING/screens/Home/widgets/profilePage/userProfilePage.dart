@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/prof.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/contacts.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
+import 'package:habitomic_app/features/personalization/screens/profile/profile.dart';
 import 'package:intl/intl.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -56,7 +57,11 @@ class _ProfileState extends State<UserProfileScreen> {
                         Icon(Icons.person),
                         'Profile',
                         'Manage your profile',
-                        () {},
+                        () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProfileScreen(),
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(

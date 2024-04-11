@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 class UpdateNameController extends GetxController {
   final firstName = TextEditingController();
   final lastName = TextEditingController();
+  final userName = TextEditingController();
   final userController = UserController.instance;
   final userRepository = Get.put(UserRepository());
 
@@ -25,6 +26,7 @@ class UpdateNameController extends GetxController {
   Future<void> initalizeNames() async {
     firstName.text = userController.user.value.firstName;
     lastName.text = userController.user.value.lastName;
+    userName.text = userController.user.value.username;
   }
 
   Future<void> updateUserName() async {
@@ -49,8 +51,10 @@ class UpdateNameController extends GetxController {
 
       Map<String, dynamic> name = {
         'FirstName': firstName.text.trim(),
-        'lastName': lastName.text.trim()
+        'LastName': lastName.text.trim(),
+        'Username': userName.text.trim()
       };
+
       await userRepository.updateSingleField(name);
 
       FullScreenloader.stopLoading();
