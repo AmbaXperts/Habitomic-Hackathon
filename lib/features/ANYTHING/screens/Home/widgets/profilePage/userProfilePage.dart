@@ -80,30 +80,30 @@ class _ProfileState extends State<UserProfileScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: cardWidget(
-                        Icon(Icons.settings),
-                        'Settings',
-                        'Control your action',
-                        () {},
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: cardWidget(
-                        Icon(Icons.privacy_tip_rounded),
-                        'Privacy',
-                        'update and security',
-                        () {},
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 20,
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: cardWidget(
+                    //     Icon(Icons.settings),
+                    //     'Settings',
+                    //     'Control your action',
+                    //     () {},
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 20,
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: cardWidget(
+                    //     Icon(Icons.privacy_tip_rounded),
+                    //     'Privacy',
+                    //     'update and security',
+                    //     () {},
+                    //   ),
+                    // ),
                   ],
                 ),
               ],

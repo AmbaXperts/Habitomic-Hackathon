@@ -99,10 +99,8 @@ class _ContactsState extends State<Contacts> {
 
               StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection('posts')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .collection('post')
-                    .where('username',
+                    .collection('Users')
+                    .where('Username',
                         isGreaterThanOrEqualTo: searchController.text)
                     .snapshots(),
                 builder: (context, snapshot) {
@@ -113,11 +111,18 @@ class _ContactsState extends State<Contacts> {
                       ),
                     );
                   }
+                  List<DocumentSnapshot> documents = snapshot.data!.docs;
                   return SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
+                      itemCount: documents.length,
                       itemBuilder: (context, index) {
+                        String username = documents[index]['Username'] ?? "";
+                        String profilepic =
+                            documents[index]['ProfilePicture'] ?? "";
+                        List<dynamic> follower =
+                            documents[index]['Follower'] ?? [];
+
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: GestureDetector(
@@ -134,7 +139,7 @@ class _ContactsState extends State<Contacts> {
                             //     ),
                             //   ),
                             // ),
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Row(
@@ -143,9 +148,7 @@ class _ContactsState extends State<Contacts> {
                                   children: [
                                     CircleAvatar(
                                       radius: 40,
-                                      backgroundImage: NetworkImage(
-                                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                      ),
+                                      backgroundImage: NetworkImage(profilepic),
                                     ),
                                     SizedBox(
                                       width: 25,
@@ -153,14 +156,14 @@ class _ContactsState extends State<Contacts> {
                                     Column(
                                       children: [
                                         Text(
-                                          'Yared',
+                                          username,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
                                           ),
                                         ),
                                         Text(
-                                          'Followers',
+                                          '${follower.length} Followers',
                                         )
                                       ],
                                     ),
