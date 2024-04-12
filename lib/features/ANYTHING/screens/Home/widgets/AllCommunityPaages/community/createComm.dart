@@ -2,8 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:habitomic_app/data/repositories/repositories.authentication/Strorage.dart';
+import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
+import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/imagePicker.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/creator.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/widget/text.dart';
@@ -43,17 +47,29 @@ class _CreateCommunityState extends State<CreateCommunity> {
   TextEditingController commVedioName4 = TextEditingController();
   TextEditingController commVedioLink4 = TextEditingController();
 
-  int change = 0;
+  // int change = 0;
+  bool isfinish = true;
+  String? vedioImage1;
+  String? vedioImage2;
+  String? vedioImage3;
+  String? vedioImage4;
+
+  String? photolink;
+  String? commPdf;
+  String? commAudio;
   Uint8List? image;
-  Uint8List? vedioImage1;
-  Uint8List? vedioImage2;
-  Uint8List? vedioImage3;
-  Uint8List? vedioImage4;
+
   PlatformFile? pickedFile;
   PlatformFile? pickaudio;
 
   @override
   Widget build(BuildContext context) {
+    List vedioImage = [
+      vedioImage1,
+      vedioImage2,
+      vedioImage3,
+      vedioImage4,
+    ];
     List<TextEditingController> createHabController = [
       commHabits1,
       commHabits2,
@@ -190,8 +206,9 @@ class _CreateCommunityState extends State<CreateCommunity> {
                             ImageSource.gallery,
                           );
                           setState(
-                            () {
+                            () async {
                               image = f;
+                              photolink = await storageMethods(image!);
                             },
                           );
                         },
@@ -262,8 +279,19 @@ class _CreateCommunityState extends State<CreateCommunity> {
                                           height: 15,
                                         ),
                                         YTextForm(
-                                          controller: createHabController[
-                                              2 + 3 * index],
+                                          controller: index == 0
+                                              ? createHabController[index + 2]
+                                              : index == 1
+                                                  ? createHabController[
+                                                      index + 4]
+                                                  : index == 2
+                                                      ? createHabController[
+                                                          index + 6]
+                                                      : index == 3
+                                                          ? createHabController[
+                                                              index + 8]
+                                                          : createHabController[
+                                                              0],
                                           lableText: ' Write Habit 3',
                                         ),
                                         const SizedBox(
@@ -380,86 +408,99 @@ class _CreateCommunityState extends State<CreateCommunity> {
                                                 height: 15,
                                               ),
                                               YTextForm(
-                                                controller:
-                                                    vediocontroller[index][1],
+                                                controller: index == 0
+                                                    ? vediocontroller[index + 1]
+                                                    : index == 1
+                                                        ? vediocontroller[
+                                                            index + 2]
+                                                        : index == 2
+                                                            ? vediocontroller[
+                                                                index + 3]
+                                                            : index == 3
+                                                                ? vediocontroller[
+                                                                    index + 4]
+                                                                : ShowSnacks,
                                                 lableText: ' Write the link ',
                                               ),
                                               const SizedBox(
                                                 height: 15,
                                               ),
-                                              vediocontroller[index][2] != null
-                                                  ? Container(
-                                                      height: 100,
-                                                      width: 100,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                        image: DecorationImage(
-                                                          fit: BoxFit.fill,
-                                                          image: MemoryImage(
-                                                            vediocontroller[
-                                                                index][2],
+                                              Stack(
+                                                children: [
+                                                  vedioImage[index] == null
+                                                      ? Container(
+                                                          height: 100,
+                                                          width: 100,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .blue),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            image:
+                                                                const DecorationImage(
+                                                              fit: BoxFit.fill,
+                                                              image:
+                                                                  NetworkImage(
+                                                                'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          height: 100,
+                                                          width: 100,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            image:
+                                                                DecorationImage(
+                                                              fit: BoxFit.fill,
+                                                              image:
+                                                                  NetworkImage(
+                                                                vedioImage[
+                                                                    index],
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      child: IconButton(
-                                                        onPressed: () async {
-                                                          Uint8List f =
-                                                              await PickedImage(
-                                                            ImageSource.gallery,
-                                                          );
-                                                          setState(
-                                                            () {
-                                                              vediocontroller[
-                                                                  index][2] = f;
-                                                            },
-                                                          );
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.upload_sharp,
-                                                          size: 40,
-                                                          color: Colors.blue,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Container(
-                                                      height: 100,
-                                                      width: 100,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                        image:
-                                                            const DecorationImage(
-                                                          fit: BoxFit.fill,
-                                                          image: NetworkImage(
-                                                            'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      child: IconButton(
-                                                        onPressed: () async {
-                                                          Uint8List f =
-                                                              await PickedImage(
-                                                            ImageSource.gallery,
-                                                          );
-                                                          setState(
-                                                            () {
-                                                              vediocontroller[
-                                                                  index][2] = f;
-                                                            },
-                                                          );
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.upload_sharp,
-                                                          size: 40,
-                                                          color: Colors.blue,
-                                                        ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      top: 20,
+                                                      left: 20,
+                                                    ),
+                                                    child: IconButton(
+                                                      onPressed: () async {
+                                                        Uint8List f =
+                                                            await PickedImage(
+                                                          ImageSource.gallery,
+                                                        );
+                                                        setState(
+                                                          () async {
+                                                            String a =
+                                                                await storageMethods(
+                                                                    f);
+                                                            vedioImage[index] =
+                                                                a;
+                                                          },
+                                                        );
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.upload_sharp,
+                                                        size: 40,
+                                                        color: Colors.blue,
                                                       ),
                                                     ),
+                                                  ),
+                                                ],
+                                              ),
                                               const SizedBox(
                                                 height: 15,
                                               ),
@@ -534,6 +575,11 @@ class _CreateCommunityState extends State<CreateCommunity> {
 
                                         final str =
                                             await pickingFile(pickedFile!);
+                                        setState(
+                                          () {
+                                            commPdf = str;
+                                          },
+                                        );
                                       }
                                     },
                                     child: const Text('Attach file'),
@@ -567,6 +613,11 @@ class _CreateCommunityState extends State<CreateCommunity> {
 
                                         final str =
                                             await pickingFile(pickaudio!);
+                                        setState(
+                                          () {
+                                            commAudio = str;
+                                          },
+                                        );
                                       }
                                     },
                                     child: const Text('Attach audio'),
@@ -601,14 +652,122 @@ class _CreateCommunityState extends State<CreateCommunity> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    onPressed: () => posted(),
-                    child: const Text(
-                      'Submit',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
+                    onPressed: () async {
+                      setState(() {
+                        isfinish = false;
+                      });
+                      String result = await YAuth().createCommunity(
+                        commName: commName.text.trim(),
+                        commLikes: [],
+                        commOwner: FirebaseAuth.instance.currentUser!.uid,
+                        commPicture: photolink,
+                        commBio: commBio.text.trim(),
+                        commRating: 0,
+                        commPdf: commPdf,
+                        commaudio: commAudio,
+                        habitt: [
+                          {
+                            'week1': [false, false, false],
+                            'week2': [false, false, false],
+                            'week3': [false, false, false],
+                            'week4': [false, false, false],
+                          },
+                        ],
+                        habits: [
+                          {
+                            'week1': [
+                              commHabits1.text,
+                              commHabits2.text,
+                              commHabits3.text,
+                            ],
+                            'week2': [
+                              commHabits4.text,
+                              commHabits5.text,
+                              commHabits6.text,
+                            ],
+                            'week3': [
+                              commHabits7.text,
+                              commHabits8.text,
+                              commHabits9.text,
+                            ],
+                            'week4': [
+                              commHabits10.text,
+                              commHabits11.text,
+                              commHabits12.text,
+                            ],
+                          }
+                        ],
+                        members: [],
+                        videoTumnel: [
+                          {
+                            'video1Tumnel': vedioImage1,
+                            'video2Tumnel': vedioImage2,
+                            'video3Tumnel': vedioImage3,
+                            'video4Tumnel': vedioImage4,
+                          }
+                        ],
+                        videoLink: [
+                          {
+                            'video1Link': commVedioLink1.text,
+                            'video2Link': commVedioLink2.text,
+                            'video3Link': commVedioLink3.text,
+                            'video4Link': commVedioLink4.text,
+                          },
+                        ],
+                        videoName: [
+                          {
+                            'video1Name': commVedioName1.text,
+                            'video2Name': commVedioName2.text,
+                            'video3Name': commVedioName3.text,
+                            'video4Name': commVedioName4.text,
+                          },
+                        ],
+                      );
+                      setState(() {
+                        isfinish = true;
+                      });
+                      if (result == 'success') {
+                        Get.snackbar(
+                          snackPosition: SnackPosition.BOTTOM,
+                          '',
+                          'Congratulation! you successfully created ${commName.text} community',
+                          borderRadius: 15,
+                          backgroundGradient: const LinearGradient(
+                            colors: [
+                              Colors.blue,
+                              Colors.black,
+                            ],
+                          ),
+                        );
+                      } else {
+                        Get.snackbar(
+                          snackPosition: SnackPosition.BOTTOM,
+                          '',
+                          'Error : Unable to create your community',
+                          borderRadius: 15,
+                          backgroundGradient: LinearGradient(
+                            colors: [
+                              Colors.red,
+                              Colors.black,
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child: isfinish
+                        ? const Text(
+                            'Submit',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          )
+                        : SizedBox(
+                            width: 30,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
                   ),
                 ),
               ],

@@ -6,8 +6,6 @@ import 'package:habitomic_app/features/ANYTHING/screens/video/widget/inpu_field.
 import 'package:video_player/video_player.dart';
 import 'dart:io' if (dart.library.io) 'dart:ui' as ui;
 
-
-
 class ConformVideoScreen extends StatefulWidget {
   final File videoFile;
   final String videoPath;
@@ -26,7 +24,8 @@ class _ConformVideoScreenState extends State<ConformVideoScreen> {
   late VideoPlayerController controller;
   TextEditingController _songController = TextEditingController();
   TextEditingController _captionController = TextEditingController();
-  UploadVideoController uploadVideoController = Get.put(UploadVideoController());
+  UploadVideoController uploadVideoController =
+      Get.put(UploadVideoController());
 
   @override
   void initState() {
@@ -45,7 +44,6 @@ class _ConformVideoScreenState extends State<ConformVideoScreen> {
 
   @override
   void dispose() {
-
     super.dispose();
     controller.dispose();
   }

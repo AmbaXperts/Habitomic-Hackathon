@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/conform_video_screen.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,14 +10,15 @@ class AddVideoScreen extends StatelessWidget {
   pickVideo(ImageSource src, BuildContext context) async {
     final video = await ImagePicker().pickVideo(source: src);
 
-    if(video!=null){
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ConformVideoScreen(
-        videoFile: File(video.path),
-        videoPath: video.path,
-      )));
+    if (video != null) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ConformVideoScreen(
+                videoFile: File(video.path),
+                videoPath: video.path,
+              )));
     }
-    
   }
+
   showOptionDialoge(BuildContext context) {
     return showDialog(
         context: context,
@@ -40,7 +40,7 @@ class AddVideoScreen extends StatelessWidget {
                   ),
                 ),
                 SimpleDialogOption(
-                  onPressed:  () => pickVideo(ImageSource.camera, context),
+                  onPressed: () => pickVideo(ImageSource.camera, context),
                   child: Row(
                     children: [
                       const Icon(Icons.camera_alt),
@@ -55,7 +55,7 @@ class AddVideoScreen extends StatelessWidget {
                   ),
                 ),
                 SimpleDialogOption(
-                  onPressed: ()=> Navigator.of(context).pop(),
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Row(
                     children: [
                       const Icon(Icons.cancel),

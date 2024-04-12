@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class smallDots extends StatelessWidget {
   final bool isdone;
+  final Color colors;
   const smallDots({
     super.key,
+    required this.colors,
     required this.isdone,
   });
 
@@ -15,10 +17,10 @@ class smallDots extends StatelessWidget {
             color: Colors.white,
           )
         : Container(
-            height: 10,
-            width: 10,
+            height: 15,
+            width: 15,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: colors,
               borderRadius: BorderRadius.circular(5),
             ),
           );
