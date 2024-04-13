@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:habitomic_app/common/widgets/loader/ShimmerEffect.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/forYouFeedScreen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/post/widget/view_post_screen.dart';
@@ -81,35 +82,59 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 60),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 25,
-                                      width: 60,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.black,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Yared',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage: NetworkImage(
-                                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                               Positioned(
+            right: 20,
+            top: 50,
+            child: Container(
+              width: 120,
+              height: 70,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Obx(() {
+                      if (controller.profileLoading.value) {
+                        return const ShimmerEffect(width: 70, height: 70);
+                      } else {
+                        return Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      controller.user.value.profilePicture),
+                                  fit: BoxFit.cover)),
+                        );
+                      }
+                    }),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Obx(() {
+                      if (controller.profileLoading.value) {
+                        return const ShimmerEffect(width: 70, height: 70);
+                      } else {
+                        return Container(
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, top: 3, bottom: 5),
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blueGrey,
+                          ),
+                          child: Text(
+                            controller.user.value.firstName,
+                            style: TextStyle(fontSize: 15, color: Colors.white),
+                          ),
+                        );
+                      }
+                    }),
+                  ),
+                ],
+              ),
+            ),
+          ),
                             ],
                           ),
                         ),
