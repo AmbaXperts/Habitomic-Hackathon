@@ -12,7 +12,7 @@ class VideoScreen extends StatelessWidget {
    VideoScreen({Key? key}): super(key: key);
 
   final VideoController videoController = Get.put(VideoController());
-  buildProfile(String profilePhoto) {
+  buildProfile(String profilePhoto, bool isDark) {
     return SizedBox(
       width: 60,
       height: 60,
@@ -39,7 +39,7 @@ class VideoScreen extends StatelessWidget {
     );
   }
 
-  buildMusicAlbum(String profilePhoto) {
+  buildMusicAlbum(String profilePhoto, bool isDark) {
     return SizedBox(
       width: 60,
       height: 60,
@@ -67,6 +67,9 @@ class VideoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
+
     return Scaffold(
       body: Obx(
         
@@ -100,14 +103,14 @@ class VideoScreen extends StatelessWidget {
                                       data.username,
                                       style: TextStyle(
                                           fontSize: 20,
-                                          color: Colors.white,
+                                          color: isDark ? Colors.white : Colors.black,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       data.caption,
                                       style: TextStyle(
                                           fontSize: 15,
-                                          color: Colors.white,
+                                          color: isDark ? Colors.white : Colors.black,
                                           fontWeight: FontWeight.normal),
                                     ),
                                     Row(
@@ -118,7 +121,7 @@ class VideoScreen extends StatelessWidget {
                                           data.songName,
                                           style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.white,
+                                              color: isDark ? Colors.white : Colors.black,
                                               fontWeight: FontWeight.normal),
                                         ),
                                       ],
@@ -133,7 +136,7 @@ class VideoScreen extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  buildProfile(data.profilePhoto),
+                                  buildProfile(data.profilePhoto, isDark),
                                   Column(
                                     children: [
                                       InkWell(
@@ -160,8 +163,7 @@ class VideoScreen extends StatelessWidget {
                                           child: Icon(
                                             Icons.comment,
                                             size: 40,
-                                            color: const Color.fromARGB(
-                                                255, 255, 255, 255),
+                                            color: isDark ? Colors.white : Colors.black,
                                           )),
                                       const SizedBox(
                                         height: 7,
@@ -188,16 +190,14 @@ class VideoScreen extends StatelessWidget {
                                           child: Icon(
                                             Icons.search,
                                             size: 40,
-                                            color: const Color.fromARGB(
-                                                255, 255, 255, 255),
+                                            color: Colors.white,
                                           )),
                                       InkWell(
                                           onTap: () {},
                                           child: Icon(
                                             Icons.reply,
                                             size: 40,
-                                            color: const Color.fromARGB(
-                                                255, 255, 255, 255),
+                                            color: Colors.white,
                                           )),
                                       const SizedBox(
                                         height: 7,
@@ -210,7 +210,7 @@ class VideoScreen extends StatelessWidget {
                                     ],
                                   ),
                                   CircleAnimation(
-                                    child: buildMusicAlbum(data.profilePhoto),
+                                    child: buildMusicAlbum(data.profilePhoto, isDark),
                                   )
                                 ],
                               ),

@@ -11,9 +11,10 @@ class THomeAppBar extends StatelessWidget {
   const THomeAppBar({
     super.key,
   });
-
-  @override
+ @override
   Widget build(BuildContext context) {
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
     final controller = Get.put(UserController());
     List<String> days = [
       "Monday",
@@ -44,7 +45,7 @@ class THomeAppBar extends StatelessWidget {
       height: size.height * 0.45,
       width: size.width,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? Colors.grey[900] : Colors.white,
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
               bottomRight: Radius.circular(40))),
@@ -58,14 +59,14 @@ class THomeAppBar extends StatelessWidget {
                 children: [
                   Text(
                     'Happy ${days[DateTime.now().weekday - 1]}!',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800, color: isDark ? Colors.white : Colors.black),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
                     '${DateTime.now().day} ${months[DateTime.now().month - 1].substring(0, 3)}. ${DateTime.now().year}, ${DateTime.now().hour}:${DateTime.now().minute}',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w100),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w100, color: isDark ? Colors.white : Colors.black),
                   ),
                 ],
               )),
@@ -130,7 +131,7 @@ class THomeAppBar extends StatelessWidget {
                 children: [
                   Text(
                     'Today',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black),
                   ),
                   SizedBox(
                     height: 10,

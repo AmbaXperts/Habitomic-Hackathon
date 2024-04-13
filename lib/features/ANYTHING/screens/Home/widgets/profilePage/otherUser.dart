@@ -44,7 +44,7 @@ class _OtherProfile extends State<OtherUserProfile> {
                       isuserprofile: true,
                       username: controller.user['Username'],
                       fullname:
-                          "${controller.user['FirstName'] + " " + controller.user['LastName']}",
+                          "${controller.user['FirstName']} ${controller.user['LastName']}",
                       date: DateFormat.yMMMd(),
                     ),
                     SizedBox(

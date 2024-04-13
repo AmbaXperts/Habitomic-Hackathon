@@ -13,6 +13,9 @@ class PostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Posts'),
@@ -38,7 +41,7 @@ class PostScreen extends StatelessWidget {
               itemCount: _postController.postList.length,
               itemBuilder: (context, index) {
                 final data = _postController.postList[index];
-                return _buildPostItem(context, data);
+                return _buildPostItem(context, data, isDark);
               },
             );
           }
@@ -47,85 +50,11 @@ class PostScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPostItem(BuildContext context, Post post) {
-    return /*Card(
-      
-      margin: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(post.profilePhoto),
-            ),
-            title: Text(post.username),
-            subtitle: Text(post.description),
-          ),
-          post.postUrl.isNotEmpty
-              ? Image.network(post.postUrl)
-              : Container(), // Display image if available
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                 Column(
-                   children: [
-                     InkWell(
-                      onTap: () =>
-                          _postController.likePost(post.id),
-                      child: Icon(
-                        Icons.favorite,
-                        size: 40,
-                        color: post.likes.contains(
-                                AuthenticationRepository.instance.user.uid)
-                            ? Color.fromARGB(255, 241, 4, 4)
-                            : Colors.white,
-                      ),
-                                     ),
-                     Text(
-                                            post.likes.length.toString(),
-                                            style: TextStyle(
-                                                fontSize: 12, color: Colors.white),
-                                          ),
-                   ],
-                 ),
-                Column(
-                  children: [
-                    InkWell(
-                      onTap: () => _onCommentTap(context, post.id),
-                      child: Icon(
-                        Icons.comment,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-                    
-                    Text(
-                                        post.commentCount.toString(),
-                                        style: TextStyle(
-                                            fontSize: 12, color: Colors.white),
-                                      )
-                  ],
-                ),
-                
-                IconButton(
-                  icon: Icon(Icons.share),
-                  onPressed: () {
-                    // Handle share functionality here
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );*/
-
-        Padding(
+  Widget _buildPostItem(BuildContext context, Post post, bool isDark) {
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        color: Colors.grey[100],
+        color: isDark ? Colors.grey[900] : Colors.grey[100],
         height: 350,
         margin: EdgeInsets.all(6),
         child: Column(
@@ -147,6 +76,7 @@ class PostScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black,
                           ),
                         ),
                         Text(
@@ -187,6 +117,7 @@ class PostScreen extends StatelessWidget {
                       icon: Icon(
                         Icons.more_vert_outlined,
                         size: 30,
+                        color: isDark ? Colors.white : Colors.black,
                       ),
                     ),
                   ],
@@ -252,14 +183,14 @@ class PostScreen extends StatelessWidget {
                         color: post.likes.contains(
                                 AuthenticationRepository.instance.user.uid)
                             ? Color.fromARGB(255, 241, 4, 4)
-                            : const Color.fromARGB(255, 193, 186, 186),
+                            : isDark ? Colors.white : Colors.black,
                       ),
                     ),
                     Text(
                       post.likes.length.toString(),
                       style: TextStyle(
                           fontSize: 12,
-                          color: const Color.fromARGB(255, 0, 0, 0)),
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
                       height: 10,
@@ -269,14 +200,14 @@ class PostScreen extends StatelessWidget {
                       child: Icon(
                         Icons.comment,
                         size: 40,
-                        color: Color.fromARGB(255, 189, 184, 184),
+                        color: isDark ? Colors.white : Colors.black,
                       ),
                     ),
                     Text(
                       post.commentCount.toString(),
                       style: TextStyle(
                           fontSize: 12,
-                          color: const Color.fromARGB(255, 0, 0, 0)),
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
                       height: 10,
