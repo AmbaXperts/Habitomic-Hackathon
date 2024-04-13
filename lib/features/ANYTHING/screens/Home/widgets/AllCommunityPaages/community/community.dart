@@ -1,108 +1,242 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:habitomic_app/common/model/community/community_model.dart';
-import 'package:habitomic_app/common/widgets/circular_image/circular_image.dart';
-import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/community_card.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/joinCommunity.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/createComm.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/contacts.dart';
 
-class CommunityPage extends StatelessWidget {
-  CommunityPage({super.key, required this.community});
-  final UserController userController = Get.find();
-  final CommunityModel community;
+class CommunitySeo extends StatefulWidget {
+  const CommunitySeo({super.key});
 
-  final TextEditingController _searchController = TextEditingController();
+  @override
+  State<CommunitySeo> createState() => _CommunitySeoState();
+}
 
+class _CommunitySeoState extends State<CommunitySeo> {
+  var searchterm = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text(
-            'Community Page',
-          ),
-          actions: [
-            GetBuilder<UserController>(
-              builder: (_) {
-                final user = userController.user;
-                return TCircularImage(
-                    image: user.value.profilePicture,
-                    fit: BoxFit.cover,
-                    isNetworkImage: true);
-              },
-            ),
-          ]),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
+      backgroundColor: Colors.grey[200],
+      body: ListView(
+        children: [
+          Column(
             children: [
-              SearchBar(
-                controller: _searchController,
-                hintText: 'Search',
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Text('Your Community'),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Text('See All'),
+              Container(
+                height: 200,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
                   ),
-                ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Text(
+                            'Community search',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      TextFormField(
+                        controller: searchController,
+                        onChanged: (value) => {
+                          setState(() {
+                            searchterm = value;
+                          })
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.search),
+                          label: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Search'),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: Get.height * 0.3,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('communities')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
-
-                    final List<CommunityModel> communities = snapshot.data!.docs
-                        .map((doc) => CommunityModel.fromJson(
-                            doc.data() as Map<String, dynamic>))
-                        .toList();
-
-                    return ListView.builder(
-                      itemCount: communities.length,
-                      itemBuilder: (context, index) {
-                        final CommunityModel community = communities[index];
-                        return CommunityCard(community: community);
-                      },
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Community',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('Ycommunity')
+                    .where("commName", isGreaterThanOrEqualTo: searchterm)
+                    .where('commName', isLessThan: searchterm + 'z')
+                    .orderBy("commName")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
-                  },
-                ),
+                  } else if (!snapshot.hasData) {
+                    return const Text(
+                      'you have no communitys yet . Join the community on profile page .',
+                    );
+                  }
+                  return StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Ycommunity')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (!snapshot.hasData) {
+                        return const Text(
+                          'you have no communitys yet . Join the community on profile page .',
+                        );
+                      }
+                      var doco = snapshot.data!.docs;
+
+                      return SizedBox(
+                        height: 270,
+                        child: ListView.builder(
+                          itemCount: doco.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                              doco[index]['commPictrue'],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '  ${doco[index]['commName']}',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          Text(
+                                            '  ${doco[index]['commMembers'].length} followers',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      print(
+                                        doco[index]['commMembers'],
+                                      );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => joinCommunity(
+                                            like: doco[index]['commLikes'],
+                                            uuid: doco[index]['Uuid'],
+                                            comBio: doco[index]['commBio'],
+                                            comHabits: doco[index]
+                                                ['commHabits'],
+                                            comMembers: doco[index]
+                                                ['commMembers'],
+                                            comPicture: doco[index]
+                                                ['commPictrue'],
+                                            comname: doco[index]['commName'],
+                                            rating: doco[index]['commRating'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_forward,
+                                      size: 30,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Text('Recent Habits'),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Text('See All'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: Get.width * 0.3,
-                child: const Center(
-                  child: Text('No Data'),
-                ),
+              const SizedBox(
+                height: 15,
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

@@ -16,13 +16,12 @@ class SSearchController extends GetxController {
         .where('Username', isGreaterThanOrEqualTo: typedUser)
         .snapshots()
         .map((QuerySnapshot<Map<String, dynamic>> query) {
-      // Specify the generic type of QuerySnapshot
       List<UserModel> retVal = [];
       for (var elem in query.docs) {
         var modelo = UserModel.fromSnapshot(elem);
         if (modelo.id != AuthenticationRepository.instance.user.uid) {
           retVal.add(UserModel.fromSnapshot(elem));
-        } // Use UserModel.fromSnapshot instead of User.fromSnap
+        }
       }
       return retVal;
     }));

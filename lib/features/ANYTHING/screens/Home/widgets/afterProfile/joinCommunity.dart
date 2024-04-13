@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/communitySearch.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/leaderboard.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/checkHabits.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
 
@@ -385,7 +386,13 @@ class _joinCommunityState extends State<joinCommunity>
                                             child: Material(
                                               color: Colors.yellow,
                                               child: IconButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LeaderBoard(),
+                                                  ));
+                                                },
                                                 icon: Icon(
                                                   Icons.kitesurfing_outlined,
                                                 ),

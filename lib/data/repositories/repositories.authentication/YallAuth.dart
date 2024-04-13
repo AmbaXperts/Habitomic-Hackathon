@@ -150,7 +150,7 @@ class YAuth {
     required int rating,
   }) async {
     await _Yfirestore.collection('Ycommunity').doc(commUid).update({
-      'commRating': rating + 1,
+      'commRating': rating + 100,
     });
   }
 }

@@ -4,19 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/community.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/joinCommunity.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/createComm.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/contacts.dart';
 
-class commSearch extends StatefulWidget {
-  const commSearch({super.key});
+class LeaderBoard extends StatefulWidget {
+  const LeaderBoard({super.key});
 
   @override
-  State<commSearch> createState() => _commSearchState();
+  State<LeaderBoard> createState() => _LeaderBoardState();
 }
 
-class _commSearchState extends State<commSearch> {
+class _LeaderBoardState extends State<LeaderBoard> {
+  var searchterm = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +26,7 @@ class _commSearchState extends State<commSearch> {
           Column(
             children: [
               Container(
-                height: 110,
+                height: 100,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -38,47 +38,34 @@ class _commSearchState extends State<commSearch> {
                   padding: const EdgeInsets.all(15),
                   child: Column(
                     children: [
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.black,
+                            ),
+                          ),
                           const Text(
-                            'Community',
+                            'LeaderBoard',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          MaterialButton(
-                            height: 60,
-                            minWidth: 100,
-                            color: const Color.fromARGB(255, 111, 161, 246),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const CreateCommunity(),
-                              ));
-                            },
-                            child: const Text(
-                              'Create community',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () =>
-                                Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const CommunitySeo(),
-                            )),
-                            child: Icon(Icons.search),
+                          SizedBox(
+                            width: 20,
+                            height: 20,
                           )
                         ],
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
                     ],
                   ),
@@ -93,20 +80,10 @@ class _commSearchState extends State<commSearch> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Your Community',
+                      'Rank',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'All',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
                       ),
                     ),
                   ],
@@ -118,6 +95,9 @@ class _commSearchState extends State<commSearch> {
               StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection('Ycommunity')
+                    .where("commName", isGreaterThanOrEqualTo: searchterm)
+                    .where('commName', isLessThan: searchterm + 'z')
+                    .orderBy("commName")
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -144,19 +124,11 @@ class _commSearchState extends State<commSearch> {
                         );
                       }
                       var doco = snapshot.data!.docs;
-                      var newdoc = [];
-                      for (int i = 0; i < doco.length; i++) {
-                        var kelp = doco[i]["commMembers"];
-                        if (kelp.any((element) =>
-                            element['userId'] ==
-                            FirebaseAuth.instance.currentUser!.uid)) {
-                          newdoc.add(doco[i]);
-                        }
-                      }
+
                       return SizedBox(
                         height: 270,
                         child: ListView.builder(
-                          itemCount: newdoc.length,
+                          itemCount: doco.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(15),
@@ -177,7 +149,7 @@ class _commSearchState extends State<commSearch> {
                                           image: DecorationImage(
                                             fit: BoxFit.fill,
                                             image: NetworkImage(
-                                              newdoc[index]['commPictrue'],
+                                              doco[index]['commPictrue'],
                                             ),
                                           ),
                                         ),
@@ -190,14 +162,14 @@ class _commSearchState extends State<commSearch> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '  ${newdoc[index]['commName']}',
+                                            '  ${doco[index]['commName']}',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
                                             ),
                                           ),
                                           Text(
-                                            '  ${newdoc[index]['commMembers'].length} followers',
+                                            '  ${doco[index]['commMembers'].length} followers',
                                           ),
                                         ],
                                       ),
@@ -206,22 +178,22 @@ class _commSearchState extends State<commSearch> {
                                   IconButton(
                                     onPressed: () {
                                       print(
-                                        newdoc[index]['commMembers'],
+                                        doco[index]['commMembers'],
                                       );
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => joinCommunity(
-                                            like: newdoc[index]['commLikes'],
-                                            uuid: newdoc[index]['Uuid'],
-                                            comBio: newdoc[index]['commBio'],
-                                            comHabits: newdoc[index]
+                                            like: doco[index]['commLikes'],
+                                            uuid: doco[index]['Uuid'],
+                                            comBio: doco[index]['commBio'],
+                                            comHabits: doco[index]
                                                 ['commHabits'],
-                                            comMembers: newdoc[index]
+                                            comMembers: doco[index]
                                                 ['commMembers'],
-                                            comPicture: newdoc[index]
+                                            comPicture: doco[index]
                                                 ['commPictrue'],
-                                            comname: newdoc[index]['commName'],
-                                            rating: newdoc[index]['commRating'],
+                                            comname: doco[index]['commName'],
+                                            rating: doco[index]['commRating'],
                                           ),
                                         ),
                                       );
@@ -243,99 +215,6 @@ class _commSearchState extends State<commSearch> {
               ),
               const SizedBox(
                 height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Recent Habits',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'All',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(
-                                    'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Positioned(
-                              right: -3,
-                              bottom: -3,
-                              child: CircleAvatar(
-                                radius: 18,
-                                backgroundImage: NetworkImage(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuKMehy8HD_FTHTVUfOxf4IXYRo0ZcdHL7Y0TGPVuzRA&s',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'A2SV Community',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              '2k Followers',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_forward,
-                        size: 30,
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),

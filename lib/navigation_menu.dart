@@ -73,6 +73,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FloatingActionButton(
+                heroTag: 1,
                 onPressed: () {
                   Get.to(const AddPostScreen());
                 },

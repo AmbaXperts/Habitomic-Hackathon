@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/prof.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/contacts.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
+import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
 import 'package:habitomic_app/features/personalization/screens/profile/profile.dart';
 import 'package:intl/intl.dart';
 
@@ -31,6 +32,7 @@ class _ProfileState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ucontroller = UserController.instance;
     return GetBuilder<ProfileController>(
       init: ProfileController(),
       builder: (controller) {
@@ -43,9 +45,9 @@ class _ProfileState extends State<UserProfileScreen> {
                   children: [
                     ProfileUtil(
                       isuserprofile: false,
-                      username: controller.user['Username'],
+                      username: "${controller.user['Username'] ?? ""}",
                       fullname:
-                          "${controller.user['FirstName'] + " " + controller.user['LastName']}",
+                          "${controller.user['FirstName']} ${controller.user['LastName']}",
                       date: DateFormat.yMMMd(),
                     ),
                     SizedBox(
@@ -80,6 +82,15 @@ class _ProfileState extends State<UserProfileScreen> {
                         ),
                       ),
                     ),
+                    Center(
+                      child: TextButton(
+                          onPressed: () =>
+                              ucontroller.deleteAccountWarningPopup(),
+                          child: const Text(
+                            'Delete Account',
+                            style: TextStyle(color: Colors.red),
+                          )),
+                    )
                     // SizedBox(
                     //   height: 20,
                     // ),
