@@ -5,18 +5,21 @@ class THomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
+
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(17),
       height: size.height * 0.47,
       width: size.width,
-      color: Color(0xffF6F7FB),
+      color: isDark ? Colors.grey[900] : Color(0xffF6F7FB),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Recent Habits',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: isDark ? Colors.white : Colors.black),
           ),
           SizedBox(
             height: 15,
@@ -45,7 +48,7 @@ class THomeBody extends StatelessWidget {
           ),
           Text(
             'Recent Activities',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: isDark ? Colors.white : Colors.black),
           ),
           SizedBox(
             height: 15,
@@ -81,14 +84,14 @@ class THomeBody extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          "Acheved Running Habit",
+                          "Achieved Running Habit",
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w600),
+                              fontSize: 17, fontWeight: FontWeight.w600, color: isDark ? Colors.white : Colors.black),
                         ),
                         Text(
                           "From Sports Club",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w400),
+                              fontSize: 14, fontWeight: FontWeight.w400, color: isDark ? Colors.white : Colors.black),
                         )
                       ],
                     ),

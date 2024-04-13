@@ -33,11 +33,14 @@ class _ProfileState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final ucontroller = UserController.instance;
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
+
     return GetBuilder<ProfileController>(
       init: ProfileController(),
       builder: (controller) {
         return Scaffold(
-          backgroundColor: Colors.grey[200],
+          backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
           body: SafeArea(
             child: ListView(
               children: [
@@ -49,6 +52,7 @@ class _ProfileState extends State<UserProfileScreen> {
                       fullname:
                           "${controller.user['FirstName']} ${controller.user['LastName']}",
                       date: DateFormat.yMMMd(),
+                  
                     ),
                     SizedBox(
                       height: 20,
@@ -64,6 +68,7 @@ class _ProfileState extends State<UserProfileScreen> {
                             builder: (context) => ProfileScreen(),
                           ),
                         ),
+                        isDark,
                       ),
                     ),
                     SizedBox(
@@ -80,41 +85,18 @@ class _ProfileState extends State<UserProfileScreen> {
                             builder: (context) => const Contacts(),
                           ),
                         ),
+                        isDark,
                       ),
                     ),
                     Center(
                       child: TextButton(
                           onPressed: () =>
                               ucontroller.deleteAccountWarningPopup(),
-                          child: const Text(
+                          child: Text(
                             'Delete Account',
                             style: TextStyle(color: Colors.red),
                           )),
                     )
-                    // SizedBox(
-                    //   height: 20,
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                    //   child: cardWidget(
-                    //     Icon(Icons.settings),
-                    //     'Settings',
-                    //     'Control your action',
-                    //     () {},
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 20,
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                    //   child: cardWidget(
-                    //     Icon(Icons.privacy_tip_rounded),
-                    //     'Privacy',
-                    //     'update and security',
-                    //     () {},
-                    //   ),
-                    // ),
                   ],
                 ),
               ],
@@ -130,21 +112,34 @@ class _ProfileState extends State<UserProfileScreen> {
     String title,
     String subtitle,
     VoidCallback? onpressed,
+    bool isDark,
   ) {
     return Card(
+      color: isDark ? Colors.grey[700] : Colors.white,
       child: ListTile(
         leading: icons,
         title: Center(
           child: Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black,
+            ),
           ),
         ),
-        subtitle: Center(child: Text(subtitle)),
+        subtitle: Center(
+          child: Text(
+            subtitle,
+            style: TextStyle(
+              color: isDark ? Colors.white70 : Colors.black54,
+            ),
+          ),
+        ),
         trailing: IconButton(
           onPressed: onpressed,
           icon: Icon(
             Icons.arrow_forward_ios,
+            color: isDark ? Colors.white : Colors.black,
           ),
         ),
       ),

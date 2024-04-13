@@ -8,6 +8,8 @@ import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunit
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/joinCommunity.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/createComm.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/contacts.dart';
+import 'package:habitomic_app/utils/constants/text_strings.dart';
+import '/utils/helpers/helper_function.dart';
 
 class commSearch extends StatefulWidget {
   const commSearch({super.key});
@@ -19,17 +21,20 @@ class commSearch extends StatefulWidget {
 class _commSearchState extends State<commSearch> {
   @override
   Widget build(BuildContext context) {
+    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[200],
       body: ListView(
         children: [
           Column(
             children: [
               Container(
                 height: 110,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey[900] : Colors.white,
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
@@ -41,11 +46,12 @@ class _commSearchState extends State<commSearch> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             'Community',
                             style: TextStyle(
-                              fontSize: 18,
+                              color: isDark ? Colors.white : Colors.black,
                               fontWeight: FontWeight.bold,
+                              fontSize: 18,
                             ),
                           ),
                           MaterialButton(
@@ -69,11 +75,13 @@ class _commSearchState extends State<commSearch> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () =>
-                                Navigator.of(context).push(MaterialPageRoute(
+                            onTap: () => Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const CommunitySeo(),
                             )),
-                            child: Icon(Icons.search),
+                            child: Icon(
+                              Icons.search,
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
                           )
                         ],
                       ),
@@ -92,18 +100,20 @@ class _commSearchState extends State<commSearch> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                     Text(
                       'Your Community',
                       style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: const Text(
+                      child:  Text(
                         'All',
                         style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
@@ -116,40 +126,36 @@ class _commSearchState extends State<commSearch> {
                 height: 15,
               ),
               StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('Ycommunity')
-                    .snapshots(),
+                stream: FirebaseFirestore.instance.collection('Ycommunity').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else if (!snapshot.hasData) {
-                    return const Text(
+                    return Text(
                       'you have no communitys yet . Join the community on profile page .',
+                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
                     );
                   }
                   return StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('Ycommunity')
-                        .snapshots(),
+                    stream: FirebaseFirestore.instance.collection('Ycommunity').snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       } else if (!snapshot.hasData) {
-                        return const Text(
+                        return Text(
                           'you have no communitys yet . Join the community on profile page .',
+                          style: TextStyle(color: isDark ? Colors.white : Colors.black),
                         );
                       }
                       var doco = snapshot.data!.docs;
                       var newdoc = [];
                       for (int i = 0; i < doco.length; i++) {
                         var kelp = doco[i]["commMembers"];
-                        if (kelp.any((element) =>
-                            element['userId'] ==
-                            FirebaseAuth.instance.currentUser!.uid)) {
+                        if (kelp.any((element) => element['userId'] == FirebaseAuth.instance.currentUser!.uid)) {
                           newdoc.add(doco[i]);
                         }
                       }
@@ -161,19 +167,16 @@ class _commSearchState extends State<commSearch> {
                             return Padding(
                               padding: const EdgeInsets.all(15),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         height: 60,
                                         width: 60,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(10),
                                           image: DecorationImage(
                                             fit: BoxFit.fill,
                                             image: NetworkImage(
@@ -186,18 +189,21 @@ class _commSearchState extends State<commSearch> {
                                         width: 15,
                                       ),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             '  ${newdoc[index]['commName']}',
-                                            style: const TextStyle(
+                                            style: TextStyle(
+                                              color: isDark ? Colors.white : Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
                                             ),
                                           ),
                                           Text(
                                             '  ${newdoc[index]['commMembers'].length} followers',
+                                            style: TextStyle(
+                                              color: isDark ? Colors.white : Colors.black,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -205,30 +211,26 @@ class _commSearchState extends State<commSearch> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      print(
-                                        newdoc[index]['commMembers'],
-                                      );
+                                      print(newdoc[index]['commMembers']);
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => joinCommunity(
                                             like: newdoc[index]['commLikes'],
                                             uuid: newdoc[index]['Uuid'],
                                             comBio: newdoc[index]['commBio'],
-                                            comHabits: newdoc[index]
-                                                ['commHabits'],
-                                            comMembers: newdoc[index]
-                                                ['commMembers'],
-                                            comPicture: newdoc[index]
-                                                ['commPictrue'],
+                                            comHabits: newdoc[index]['commHabits'],
+                                            comMembers: newdoc[index]['commMembers'],
+                                            comPicture: newdoc[index]['commPictrue'],
                                             comname: newdoc[index]['commName'],
                                             rating: newdoc[index]['commRating'],
                                           ),
                                         ),
                                       );
                                     },
-                                    icon: const Icon(
+                                    icon:  Icon(
                                       Icons.arrow_forward,
                                       size: 30,
+                                      color: isDark ? Colors.white : Colors.black,
                                     ),
                                   ),
                                 ],
@@ -249,18 +251,20 @@ class _commSearchState extends State<commSearch> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                     Text(
                       'Recent Habits',
                       style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: const Text(
+                      child:  Text(
                         'All',
                         style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
@@ -310,18 +314,22 @@ class _commSearchState extends State<commSearch> {
                         const SizedBox(
                           width: 15,
                         ),
-                        const Column(
+                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'A2SV Community',
                               style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
                             ),
                             Text(
                               '2k Followers',
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),
@@ -329,9 +337,10 @@ class _commSearchState extends State<commSearch> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.arrow_forward,
                         size: 30,
+                        color: isDark ? Colors.white : Colors.black,
                       ),
                     ),
                   ],
