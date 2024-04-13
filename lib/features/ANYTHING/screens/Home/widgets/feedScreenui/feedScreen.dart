@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/common/widgets/loader/ShimmerEffect.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/smallCircleIcon.dart';
-import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/feedScreenui/forYouFeedScreen.dart';
+
 import 'package:habitomic_app/features/ANYTHING/screens/post/widget/view_post_screen.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/widget/feed_screen.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
@@ -25,6 +23,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+        final brightness = Theme.of(context).brightness;
+
+
     final controller = Get.put(UserController());
     TabController tabController = TabController(
       length: 2,
@@ -34,15 +35,16 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       length: 2,
       initialIndex: 0,
       child: Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor:  brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
+                
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: true,
-                backgroundColor: Colors.grey[200],
+                backgroundColor: brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
                 expandedHeight: 150,
                 flexibleSpace: ListView(
                   children: [
@@ -55,7 +57,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                               bottomLeft: Radius.circular(30),
                               bottomRight: Radius.circular(30),
                             ),
-                            color: Colors.white,
+                            color: brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -82,59 +84,70 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
-                               Positioned(
-            right: 20,
-            top: 50,
-            child: Container(
-              width: 120,
-              height: 70,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Obx(() {
-                      if (controller.profileLoading.value) {
-                        return const ShimmerEffect(width: 70, height: 70);
-                      } else {
-                        return Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      controller.user.value.profilePicture),
-                                  fit: BoxFit.cover)),
-                        );
-                      }
-                    }),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Obx(() {
-                      if (controller.profileLoading.value) {
-                        return const ShimmerEffect(width: 70, height: 70);
-                      } else {
-                        return Container(
-                          padding: EdgeInsets.only(
-                              left: 10, right: 10, top: 3, bottom: 5),
-                          height: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.blueGrey,
-                          ),
-                          child: Text(
-                            controller.user.value.firstName,
-                            style: TextStyle(fontSize: 15, color: Colors.white),
-                          ),
-                        );
-                      }
-                    }),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                              Positioned(
+                                right: 20,
+                                top: 50,
+                                child: Container(
+                                  width: 120,
+                                  height: 70,
+                                  color:  brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
+                                  child: Stack(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Obx(() {
+                                          if (controller.profileLoading.value) {
+                                            return const ShimmerEffect(
+                                                width: 70, height: 70);
+                                          } else {
+                                            return Container(
+                                              width: 70,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          controller.user.value
+                                                              .profilePicture),
+                                                      fit: BoxFit.cover)),
+                                            );
+                                          }
+                                        }),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Obx(() {
+                                          if (controller.profileLoading.value) {
+                                            return const ShimmerEffect(
+                                                width: 70, height: 70);
+                                          } else {
+                                            return Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  top: 3,
+                                                  bottom: 5),
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.blueGrey,
+                                              ),
+                                              child: Text(
+                                                controller.user.value.firstName,
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white),
+                                              ),
+                                            );
+                                          }
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -150,7 +163,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color:  brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
                           border: Border.all(
                             color: Colors.greenAccent,
                           ),
@@ -166,7 +179,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color: brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
                           border: Border.all(
                             color: Colors.greenAccent,
                           ),
@@ -180,7 +193,6 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              //////////////////////////////
             ];
           },
           body: TabBarView(
@@ -202,7 +214,7 @@ class Exfeed extends StatefulWidget {
   final String discription;
   final int index;
   const Exfeed({
-    super.key,
+    Key? key,
     required this.username,
     required this.discription,
     required this.photourl,
@@ -217,10 +229,12 @@ class _ExfeedState extends State<Exfeed> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UserController());
+    final brightness = Theme.of(context).brightness;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        color: Colors.grey[100],
+        color: brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
         height: 310,
         child: Column(
           children: [
@@ -243,13 +257,14 @@ class _ExfeedState extends State<Exfeed> {
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
+                            color: brightness == Brightness.light ? Colors.black : Colors.white,
                           ),
                         ),
                         Text(
                           '@${controller.user.value.fullName.substring(0, 7)}',
                           style: TextStyle(
                             fontSize: 17,
-                            color: Colors.grey[500],
+                            color: brightness == Brightness.light ? Colors.grey[500] : Colors.grey[400],
                           ),
                         ),
                       ],
@@ -283,6 +298,7 @@ class _ExfeedState extends State<Exfeed> {
                       icon: Icon(
                         Icons.more_vert_outlined,
                         size: 30,
+                        color: brightness == Brightness.light ? Colors.black : Colors.white,
                       ),
                     ),
                   ],
@@ -295,11 +311,19 @@ class _ExfeedState extends State<Exfeed> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(widget.discription),
+                Text(
+                  widget.discription,
+                  style: TextStyle(
+                    color: brightness == Brightness.light ? Colors.black : Colors.white,
+                  ),
+                ),
                 TextButton(
                   onPressed: () {},
                   child: Text(
                     'more',
+                    style: TextStyle(
+                      color: brightness == Brightness.light ? Colors.blue : Colors.lightBlueAccent,
+                    ),
                   ),
                 ),
               ],
