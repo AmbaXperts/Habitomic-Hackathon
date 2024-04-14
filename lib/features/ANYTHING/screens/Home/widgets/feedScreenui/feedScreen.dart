@@ -23,14 +23,14 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-        final brightness = Theme.of(context).brightness;
-
+    final brightness = Theme.of(context).brightness;
 
     final controller = Get.put(UserController());
     TabController tabController = TabController(
       length: 2,
       vsync: this,
     );
+    print(brightness);
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
@@ -40,11 +40,12 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: true,
+
                 backgroundColor:brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
+
                 expandedHeight: 150,
                 flexibleSpace: ListView(
                   children: [
@@ -57,7 +58,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                               bottomLeft: Radius.circular(30),
                               bottomRight: Radius.circular(30),
                             ),
+
                             color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
+
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -70,6 +73,10 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                                     'Feed  ',
                                     style: TextStyle(
                                       fontSize: 20,
+                                      color: brightness == Brightness.light
+                                          ? const Color.fromARGB(
+                                              255, 56, 56, 56)
+                                          : Colors.white,
                                     ),
                                   ),
                                   MaterialButton(
@@ -163,7 +170,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
+
                           color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
+
                           border: Border.all(
                             color: Colors.greenAccent,
                           ),
@@ -179,7 +188,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
+
                           color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
+
                           border: Border.all(
                             color: Colors.greenAccent,
                           ),
@@ -234,7 +245,9 @@ class _ExfeedState extends State<Exfeed> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        color: brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
+        color: brightness == Brightness.light
+            ? Colors.grey[100]
+            : Colors.grey[900],
         height: 310,
         child: Column(
           children: [
@@ -257,14 +270,18 @@ class _ExfeedState extends State<Exfeed> {
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: brightness == Brightness.light ? Colors.black : Colors.white,
+                            color: brightness == Brightness.light
+                                ? Colors.black
+                                : Colors.white,
                           ),
                         ),
                         Text(
                           '@${controller.user.value.fullName.substring(0, 7)}',
                           style: TextStyle(
                             fontSize: 17,
-                            color: brightness == Brightness.light ? Colors.grey[500] : Colors.grey[400],
+                            color: brightness == Brightness.light
+                                ? Colors.grey[500]
+                                : Colors.grey[400],
                           ),
                         ),
                       ],
@@ -298,7 +315,9 @@ class _ExfeedState extends State<Exfeed> {
                       icon: Icon(
                         Icons.more_vert_outlined,
                         size: 30,
-                        color: brightness == Brightness.light ? Colors.black : Colors.white,
+                        color: brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white,
                       ),
                     ),
                   ],
@@ -314,7 +333,9 @@ class _ExfeedState extends State<Exfeed> {
                 Text(
                   widget.discription,
                   style: TextStyle(
-                    color: brightness == Brightness.light ? Colors.black : Colors.white,
+                    color: brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
                 TextButton(
@@ -322,7 +343,9 @@ class _ExfeedState extends State<Exfeed> {
                   child: Text(
                     'more',
                     style: TextStyle(
-                      color: brightness == Brightness.light ? Colors.blue : Colors.lightBlueAccent,
+                      color: brightness == Brightness.light
+                          ? Colors.blue
+                          : Colors.lightBlueAccent,
                     ),
                   ),
                 ),

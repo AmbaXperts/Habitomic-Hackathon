@@ -34,6 +34,9 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final Brightness brightnessValue =
+        MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
     return Scaffold(
       body: pages[page],
       bottomNavigationBar: ConvexAppBar(
@@ -42,7 +45,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         initialActiveIndex: 0,
         style: TabStyle.fixedCircle,
         color: Colors.grey,
-        backgroundColor: Colors.white,
+        backgroundColor: isDark ? Colors.black26 : Colors.white,
         activeColor: const Color(0xffFFBD59),
         items: [
           TabItem(icon: Icons.home, title: 'Today'),
@@ -78,10 +81,14 @@ class _NavigationMenuState extends State<NavigationMenu> {
                   Get.to(const AddPostScreen());
                 },
                 tooltip: 'Add Post',
-                child: Icon(
-                  Icons.add,
-                  color: !isExpanded ? Colors.white : Colors.black,
-                ),
+                child: Icon(Icons.add,
+                    color: !isExpanded
+                        ? isDark
+                            ? Colors.black26
+                            : Colors.white
+                        : !isDark
+                            ? Colors.black26
+                            : Colors.white),
               ),
               SizedBox(
                 width: 40,
@@ -93,7 +100,13 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 tooltip: 'Add Video',
                 child: Icon(
                   Icons.video_camera_back,
-                  color: !isExpanded ? Colors.white : Colors.black,
+                  color: !isExpanded
+                      ? isDark
+                          ? Colors.black26
+                          : Colors.white
+                      : !isDark
+                          ? Colors.black26
+                          : Colors.white,
                 ),
               ),
             ],
