@@ -186,8 +186,6 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                             like: doco[index]['commLikes'],
                                             uuid: doco[index]['Uuid'],
                                             comBio: doco[index]['commBio'],
-                                            comHabits: doco[index]
-                                                ['commHabits'],
                                             comMembers: doco[index]
                                                 ['commMembers'],
                                             comPicture: doco[index]

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/HabitResources.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/HabitTab.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/achivedHabitsTab.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/comm_controller.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class CheckHabits extends StatefulWidget {
@@ -11,12 +13,10 @@ class CheckHabits extends StatefulWidget {
   final int rating;
   final String commName;
   final String commPhotoUrl;
-  final List habits;
   const CheckHabits({
     super.key,
     required this.rating,
     required this.stamp,
-    required this.habits,
     required this.commUid,
     required this.commName,
     required this.commPhotoUrl,
@@ -36,7 +36,8 @@ class _CheckHabitsState extends State<CheckHabits>
   //   SingleState(stateTitle: "Stage 3"),
   //   SingleState(stateTitle: "Stage 4"),
   // ];
-  List<String> months = [
+  final CommunityController controllero = Get.put(CommunityController());
+  List<String> months = <String>[
     "January",
     "February",
     "March",
@@ -232,14 +233,11 @@ class _CheckHabitsState extends State<CheckHabits>
           children: [
             HabitTab(
               commuid: widget.commUid,
-              habits: widget.habits,
             ),
-            AchivedTab(
-              rating: widget.rating,
+            AchievedTab(
               commuid: widget.commUid,
-              habits: widget.habits,
             ),
-            Resources(),
+            Container()
           ],
         ),
       ),

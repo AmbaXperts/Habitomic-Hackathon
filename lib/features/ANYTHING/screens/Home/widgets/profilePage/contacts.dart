@@ -16,6 +16,7 @@ TextEditingController searchController = TextEditingController();
 class _ContactsState extends State<Contacts> {
   @override
   Widget build(BuildContext context) {
+    var hero = '';
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: ListView(
@@ -76,6 +77,11 @@ class _ContactsState extends State<Contacts> {
                             Icons.search,
                           ),
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            hero = value;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -100,8 +106,7 @@ class _ContactsState extends State<Contacts> {
               StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection('Users')
-                    .where('Username',
-                        isGreaterThanOrEqualTo: searchController.text)
+                    .where('Username', isGreaterThanOrEqualTo: hero)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {

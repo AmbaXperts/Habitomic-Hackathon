@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
+import 'package:habitomic_app/features/ANYTHING/habit%20track/datetime/date_time.dart';
 import 'package:uuid/uuid.dart';
 
 class YAuth {
@@ -22,44 +24,55 @@ class YAuth {
     required String? commPicture,
     required String commBio,
     required int commRating,
-    required String? commPdf,
-    required String? commaudio,
-    required List<Map<String, dynamic>> habits,
+    required List habits,
     required List<Map<String, dynamic>> members,
-    required List videoTumnel,
-    required List videoLink,
-    required List videoName,
-    required List<Map<String, dynamic>> habitt,
   }) async {
     String res = 'Error : UnExpected error';
     try {
       String Yuid = Uuid().v1();
-      await _Yfirestore.collection('Ycommunity').doc(Yuid).set({
+      var snappo = await _Yfirestore.collection("Users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      var commo = snappo.data()!;
+      var comm = commo["JoinComm"];
+      comm.add(Yuid);
+      Map<String, Map> heatmap = {todaysDateFormatted(): {}};
+      await _Yfirestore.collection("Users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({"JoinComm": comm});
+
+      for (int i = 0; i < habits.length; i++) {
+        String Kuid = Uuid().v1();
+        await _Yfirestore.collection('Zcommunity')
+            .doc(Yuid)
+            .collection('habits')
+            .doc(Kuid)
+            .set({'habitName': habits[i], 'heatmap': heatmap, "uid": Kuid});
+        heatmap[todaysDateFormatted()]![Kuid] = false;
+      }
+      await _Yfirestore.collection('Zcommunity').doc(Yuid).set({
         'commName': commName,
         'commPictrue': commPicture,
         'Uuid': Yuid,
-        'commTumnel': videoTumnel,
-        'commVideoLink': videoLink,
-        'commVideoName': videoName,
-        'commPdf': commPdf,
-        'commAudio': commaudio,
         'commMembers': members,
-        'commHabits': habits,
         'commOwner': commOwner,
         'commBio': commBio,
         'commRating': commRating,
         'commLikes': commLikes,
+        'heatmap': heatmap,
       });
-      await _Yfirestore.collection('Ycommunity')
+
+      await _Yfirestore.collection('Users')
+          .doc(AuthenticationRepository.instance.user.uid)
+          .collection("habits")
           .doc(Yuid)
-          .collection('achievedHabits')
-          .doc(_YAuth.currentUser!.uid)
-          .set({
-        'habitt': habitt,
-      });
+          .set({'heatmap': heatmap});
+
+      print(heatmap);
       res = 'success';
     } catch (e) {
       res = e.toString();
+      print(res);
     }
     return res;
   }
@@ -73,9 +86,30 @@ class YAuth {
   }) async {
     String res = 'Error : UnExpected error';
 
-    await _Yfirestore.collection('Ycommunity').doc(uuid).update({
+    await _Yfirestore.collection('Zcommunity').doc(uuid).update({
       'commMembers': members,
     });
+
+    var query = await _Yfirestore.collection('Zcommunity')
+        .doc(uuid)
+        .collection("habits")
+        .get();
+    var starto = query.docs.map((doc) => doc.data()) as Map<String, dynamic>;
+
+    var habits = [];
+    Map<String, List> heatmap = {todaysDateFormatted(): []};
+
+    starto.forEach((key, value) {
+      habits.add(value["uid"]);
+      heatmap[todaysDateFormatted()]![value["uid"]] = false;
+    });
+
+    await _Yfirestore.collection('Users')
+        .doc(AuthenticationRepository.instance.user.uid)
+        .collection("habits")
+        .doc(uuid)
+        .set({'heatmap': heatmap});
+
     return res;
 
     // if (!commMember.contains(_YAuth.currentUser!.uid)) {
@@ -126,11 +160,11 @@ class YAuth {
     String res = 'Error : unExpected error';
     try {
       if (commLikes.contains(likeUserId)) {
-        await _Yfirestore.collection('Ycommunity').doc(commUid).update({
+        await _Yfirestore.collection('Zcommunity').doc(commUid).update({
           'commLikes': FieldValue.arrayRemove([likeUserId]),
         });
       } else {
-        await _Yfirestore.collection('Ycommunity').doc(commUid).update({
+        await _Yfirestore.collection('Zcommunity').doc(commUid).update({
           'commLikes': FieldValue.arrayUnion([likeUserId]),
         });
       }
@@ -149,7 +183,7 @@ class YAuth {
     required String commUid,
     required int rating,
   }) async {
-    await _Yfirestore.collection('Ycommunity').doc(commUid).update({
+    await _Yfirestore.collection('Zcommunity').doc(commUid).update({
       'commRating': rating + 100,
     });
   }

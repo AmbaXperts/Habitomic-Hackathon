@@ -8,9 +8,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Brightness brightnessValue =
+        MediaQuery.of(context).platformBrightness;
+    final bool isDark = brightnessValue == Brightness.dark;
     Size size = MediaQuery.of(context).size;
-    return const Scaffold(
-      backgroundColor: Colors.white,
+    return Scaffold(
+      backgroundColor: isDark ? Colors.black26 : Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [

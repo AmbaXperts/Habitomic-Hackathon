@@ -24,6 +24,8 @@ class CreateCommunity extends StatefulWidget {
 }
 
 class _CreateCommunityState extends State<CreateCommunity> {
+  List habito = [];
+
   TextEditingController commName = TextEditingController();
   TextEditingController commBio = TextEditingController();
   TextEditingController commHabits1 = TextEditingController();
@@ -206,9 +208,14 @@ class _CreateCommunityState extends State<CreateCommunity> {
                             ImageSource.gallery,
                           );
                           setState(
-                            () async {
+                            () {
                               image = f;
-                              photolink = await storageMethods(image!);
+                            },
+                          );
+                          var kelp = await storageMethods(image!);
+                          setState(
+                            () {
+                              photolink = kelp;
                             },
                           );
                         },
@@ -221,126 +228,147 @@ class _CreateCommunityState extends State<CreateCommunity> {
                     ),
                   ],
                 ),
-                const text(
-                  HeadName: 'Create Habits',
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                MaterialButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  color: Colors.blueAccent,
-                  height: 60,
-                  minWidth: 100,
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return StatefulBuilder(
-                          builder: (context, setState) {
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const text(
+                      HeadName: 'Create Habits',
+                    ),
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      color: Colors.blueAccent,
+                      height: 40,
+                      minWidth: 30,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
                             return Dialog(
-                              child: ListView.builder(
-                                itemCount: 4,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 10,
-                                      top: 10,
-                                      right: 10,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        const text(
-                                          HeadName: 'Give 3  Key Habit',
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        text(HeadName: 'Week ${index + 1}'),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        YTextForm(
-                                          controller: createHabController[
-                                              0 + 3 * index],
-                                          lableText: ' Write Habit 1',
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        YTextForm(
-                                          controller: createHabController[
-                                              1 + 3 * index],
-                                          lableText: ' Write Habit 2',
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        YTextForm(
-                                          controller: index == 0
-                                              ? createHabController[index + 2]
-                                              : index == 1
-                                                  ? createHabController[
-                                                      index + 4]
-                                                  : index == 2
-                                                      ? createHabController[
-                                                          index + 6]
-                                                      : index == 3
-                                                          ? createHabController[
-                                                              index + 8]
-                                                          : createHabController[
-                                                              0],
-                                          lableText: ' Write Habit 3',
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        index == 3
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  MaterialButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    height: 50,
-                                                    minWidth: 50,
-                                                    color: Colors.blueAccent,
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text(
-                                                      ' Finish',
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Container(),
-                                      ],
-                                    ),
-                                  );
-                                },
+                                child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                                top: 10,
+                                right: 10,
                               ),
-                            );
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  text(HeadName: 'New Habit'),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  YTextForm(
+                                    controller: createHabController[0],
+                                    lableText: ' Write Habit 1',
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      MaterialButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        height: 50,
+                                        minWidth: 50,
+                                        color: Colors.blueAccent,
+                                        onPressed: () {
+                                          if (createHabController[0].text ==
+                                              "") {
+                                            Loader.errorSnackBar(
+                                                title:
+                                                    "Add the necessary fields with datas");
+                                          } else {
+                                            setState(
+                                              () {
+                                                habito.add(
+                                                    createHabController[0]
+                                                        .text
+                                                        .trim());
+                                                print(habito);
+                                              },
+                                            );
+                                            createHabController[0].text = "";
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: const Text(
+                                          ' Finish',
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ));
                           },
                         );
                       },
-                    );
-                  },
-                  child: const Text(
-                    'Create Habits',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
+                      child: const Icon(Icons.add),
+                    )
+                  ],
+                ),
+                Container(
+                    width: 500,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(41, 110, 110, 110),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListView.builder(
+                      itemCount: habito.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            width: 500,
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 300,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check_circle,
+                                        color: Colors.green[300],
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(habito[index])
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      habito.removeAt(index);
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    )),
+                const SizedBox(
+                  height: 15,
                 ),
                 const SizedBox(
                   height: 15,
@@ -358,292 +386,292 @@ class _CreateCommunityState extends State<CreateCommunity> {
                 const SizedBox(
                   height: 15,
                 ),
-                const text(
-                  HeadName: 'Community Resource',
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                MaterialButton(
-                  color: Colors.blueAccent,
-                  height: 60,
-                  minWidth: 100,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return StatefulBuilder(
-                          builder: (context, setState) {
-                            return Dialog(
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: ListView.builder(
-                                      itemCount: 4,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 10,
-                                            top: 10,
-                                            right: 10,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              const text(
-                                                HeadName: 'Video',
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                              YTextForm(
-                                                controller:
-                                                    vediocontroller[index][0],
-                                                lableText:
-                                                    'Write the Name of video',
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                              YTextForm(
-                                                controller: index == 0
-                                                    ? vediocontroller[index + 1]
-                                                    : index == 1
-                                                        ? vediocontroller[
-                                                            index + 2]
-                                                        : index == 2
-                                                            ? vediocontroller[
-                                                                index + 3]
-                                                            : index == 3
-                                                                ? vediocontroller[
-                                                                    index + 4]
-                                                                : ShowSnacks,
-                                                lableText: ' Write the link ',
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                              Stack(
-                                                children: [
-                                                  vedioImage[index] == null
-                                                      ? Container(
-                                                          height: 100,
-                                                          width: 100,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .blue),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15),
-                                                            image:
-                                                                const DecorationImage(
-                                                              fit: BoxFit.fill,
-                                                              image:
-                                                                  NetworkImage(
-                                                                'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : Container(
-                                                          height: 100,
-                                                          width: 100,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15),
-                                                            image:
-                                                                DecorationImage(
-                                                              fit: BoxFit.fill,
-                                                              image:
-                                                                  NetworkImage(
-                                                                vedioImage[
-                                                                    index],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      top: 20,
-                                                      left: 20,
-                                                    ),
-                                                    child: IconButton(
-                                                      onPressed: () async {
-                                                        Uint8List f =
-                                                            await PickedImage(
-                                                          ImageSource.gallery,
-                                                        );
-                                                        setState(
-                                                          () async {
-                                                            String a =
-                                                                await storageMethods(
-                                                                    f);
-                                                            vedioImage[index] =
-                                                                a;
-                                                          },
-                                                        );
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.upload_sharp,
-                                                        size: 40,
-                                                        color: Colors.blue,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                              index == 3
-                                                  ? Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        MaterialButton(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15),
-                                                          ),
-                                                          height: 40,
-                                                          minWidth: 40,
-                                                          color:
-                                                              Colors.blueAccent,
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: const Text(
-                                                            ' Finish',
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : Container(),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(
-                                      left: 10,
-                                    ),
-                                    child: text(
-                                      HeadName: 'Books',
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  const Text(
-                                    'PDF',
-                                  ),
-                                  MaterialButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    height: 60,
-                                    minWidth: 40,
-                                    color: Colors.blueAccent,
-                                    onPressed: () async {
-                                      final result =
-                                          await FilePicker.platform.pickFiles();
-                                      if (result != null) {
-                                        setState(
-                                          () {
-                                            pickedFile = result.files.first;
-                                          },
-                                        );
+                // const text(
+                //   HeadName: 'Community Resource',
+                // ),
+                // const SizedBox(
+                //   height: 15,
+                // ),
+                // MaterialButton(
+                //   color: Colors.blueAccent,
+                //   height: 60,
+                //   minWidth: 100,
+                //   shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(15),
+                //   ),
+                //   onPressed: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (context) {
+                //         return StatefulBuilder(
+                //           builder: (context, setState) {
+                //             return Dialog(
+                //               child: Column(
+                //                 children: [
+                //                   Expanded(
+                //                     child: ListView.builder(
+                //                       itemCount: 4,
+                //                       itemBuilder: (context, index) {
+                //                         return Padding(
+                //                           padding: const EdgeInsets.only(
+                //                             left: 10,
+                //                             top: 10,
+                //                             right: 10,
+                //                           ),
+                //                           child: Column(
+                //                             children: [
+                //                               const text(
+                //                                 HeadName: 'Video',
+                //                               ),
+                //                               const SizedBox(
+                //                                 height: 15,
+                //                               ),
+                //                               YTextForm(
+                //                                 controller:
+                //                                     vediocontroller[index][0],
+                //                                 lableText:
+                //                                     'Write the Name of video',
+                //                               ),
+                //                               const SizedBox(
+                //                                 height: 15,
+                //                               ),
+                //                               YTextForm(
+                //                                 controller: index == 0
+                //                                     ? vediocontroller[index + 1]
+                //                                     : index == 1
+                //                                         ? vediocontroller[
+                //                                             index + 2]
+                //                                         : index == 2
+                //                                             ? vediocontroller[
+                //                                                 index + 3]
+                //                                             : index == 3
+                //                                                 ? vediocontroller[
+                //                                                     index + 4]
+                //                                                 : ShowSnacks,
+                //                                 lableText: ' Write the link ',
+                //                               ),
+                //                               const SizedBox(
+                //                                 height: 15,
+                //                               ),
+                //                               Stack(
+                //                                 children: [
+                //                                   vedioImage[index] == null
+                //                                       ? Container(
+                //                                           height: 100,
+                //                                           width: 100,
+                //                                           decoration:
+                //                                               BoxDecoration(
+                //                                             border: Border.all(
+                //                                                 color: Colors
+                //                                                     .blue),
+                //                                             borderRadius:
+                //                                                 BorderRadius
+                //                                                     .circular(
+                //                                                         15),
+                //                                             image:
+                //                                                 const DecorationImage(
+                //                                               fit: BoxFit.fill,
+                //                                               image:
+                //                                                   NetworkImage(
+                //                                                 'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+                //                                               ),
+                //                                             ),
+                //                                           ),
+                //                                         )
+                //                                       : Container(
+                //                                           height: 100,
+                //                                           width: 100,
+                //                                           decoration:
+                //                                               BoxDecoration(
+                //                                             borderRadius:
+                //                                                 BorderRadius
+                //                                                     .circular(
+                //                                                         15),
+                //                                             image:
+                //                                                 DecorationImage(
+                //                                               fit: BoxFit.fill,
+                //                                               image:
+                //                                                   NetworkImage(
+                //                                                 vedioImage[
+                //                                                     index],
+                //                                               ),
+                //                                             ),
+                //                                           ),
+                //                                         ),
+                //                                   Padding(
+                //                                     padding:
+                //                                         const EdgeInsets.only(
+                //                                       top: 20,
+                //                                       left: 20,
+                //                                     ),
+                //                                     child: IconButton(
+                //                                       onPressed: () async {
+                //                                         Uint8List f =
+                //                                             await PickedImage(
+                //                                           ImageSource.gallery,
+                //                                         );
+                //                                         setState(
+                //                                           () async {
+                //                                             String a =
+                //                                                 await storageMethods(
+                //                                                     f);
+                //                                             vedioImage[index] =
+                //                                                 a;
+                //                                           },
+                //                                         );
+                //                                       },
+                //                                       icon: const Icon(
+                //                                         Icons.upload_sharp,
+                //                                         size: 40,
+                //                                         color: Colors.blue,
+                //                                       ),
+                //                                     ),
+                //                                   ),
+                //                                 ],
+                //                               ),
+                //                               const SizedBox(
+                //                                 height: 15,
+                //                               ),
+                //                               index == 3
+                //                                   ? Row(
+                //                                       mainAxisAlignment:
+                //                                           MainAxisAlignment
+                //                                               .center,
+                //                                       children: [
+                //                                         MaterialButton(
+                //                                           shape:
+                //                                               RoundedRectangleBorder(
+                //                                             borderRadius:
+                //                                                 BorderRadius
+                //                                                     .circular(
+                //                                                         15),
+                //                                           ),
+                //                                           height: 40,
+                //                                           minWidth: 40,
+                //                                           color:
+                //                                               Colors.blueAccent,
+                //                                           onPressed: () {
+                //                                             Navigator.of(
+                //                                                     context)
+                //                                                 .pop();
+                //                                           },
+                //                                           child: const Text(
+                //                                             ' Finish',
+                //                                           ),
+                //                                         ),
+                //                                       ],
+                //                                     )
+                //                                   : Container(),
+                //                             ],
+                //                           ),
+                //                         );
+                //                       },
+                //                     ),
+                //                   ),
+                //                   const Padding(
+                //                     padding: EdgeInsets.only(
+                //                       left: 10,
+                //                     ),
+                //                     child: text(
+                //                       HeadName: 'Books',
+                //                     ),
+                //                   ),
+                //                   const SizedBox(
+                //                     height: 15,
+                //                   ),
+                //                   const Text(
+                //                     'PDF',
+                //                   ),
+                //                   MaterialButton(
+                //                     shape: RoundedRectangleBorder(
+                //                       borderRadius: BorderRadius.circular(15),
+                //                     ),
+                //                     height: 60,
+                //                     minWidth: 40,
+                //                     color: Colors.blueAccent,
+                //                     onPressed: () async {
+                //                       final result =
+                //                           await FilePicker.platform.pickFiles();
+                //                       if (result != null) {
+                //                         setState(
+                //                           () {
+                //                             pickedFile = result.files.first;
+                //                           },
+                //                         );
 
-                                        //the file url
+                //                         //the file url
 
-                                        final str =
-                                            await pickingFile(pickedFile!);
-                                        setState(
-                                          () {
-                                            commPdf = str;
-                                          },
-                                        );
-                                      }
-                                    },
-                                    child: const Text('Attach file'),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(
-                                      left: 10,
-                                    ),
-                                    child: text(
-                                      HeadName: 'Audio',
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    height: 60,
-                                    minWidth: 40,
-                                    color: Colors.blueAccent,
-                                    onPressed: () async {
-                                      final result =
-                                          await FilePicker.platform.pickFiles();
-                                      if (result != null) {
-                                        setState(
-                                          () {
-                                            pickaudio = result.files.first;
-                                          },
-                                        );
+                //                         final str =
+                //                             await pickingFile(pickedFile!);
+                //                         setState(
+                //                           () {
+                //                             commPdf = str;
+                //                           },
+                //                         );
+                //                       }
+                //                     },
+                //                     child: const Text('Attach file'),
+                //                   ),
+                //                   const Padding(
+                //                     padding: EdgeInsets.only(
+                //                       left: 10,
+                //                     ),
+                //                     child: text(
+                //                       HeadName: 'Audio',
+                //                     ),
+                //                   ),
+                //                   MaterialButton(
+                //                     shape: RoundedRectangleBorder(
+                //                       borderRadius: BorderRadius.circular(15),
+                //                     ),
+                //                     height: 60,
+                //                     minWidth: 40,
+                //                     color: Colors.blueAccent,
+                //                     onPressed: () async {
+                //                       final result =
+                //                           await FilePicker.platform.pickFiles();
+                //                       if (result != null) {
+                //                         setState(
+                //                           () {
+                //                             pickaudio = result.files.first;
+                //                           },
+                //                         );
 
-                                        //the file url
+                //                         //the file url
 
-                                        final str =
-                                            await pickingFile(pickaudio!);
-                                        setState(
-                                          () {
-                                            commAudio = str;
-                                          },
-                                        );
-                                      }
-                                    },
-                                    child: const Text('Attach audio'),
-                                  ),
-                                  const SizedBox(
-                                    height: 150,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: const Text(
-                    'Give Resource',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                //                         final str =
+                //                             await pickingFile(pickaudio!);
+                //                         setState(
+                //                           () {
+                //                             commAudio = str;
+                //                           },
+                //                         );
+                //                       }
+                //                     },
+                //                     child: const Text('Attach audio'),
+                //                   ),
+                //                   const SizedBox(
+                //                     height: 150,
+                //                   ),
+                //                 ],
+                //               ),
+                //             );
+                //           },
+                //         );
+                //       },
+                //     );
+                //   },
+                //   child: const Text(
+                //     'Give Resource',
+                //     style: TextStyle(
+                //       fontSize: 14,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 Center(
                   child: MaterialButton(
                     height: 60,
@@ -663,64 +691,12 @@ class _CreateCommunityState extends State<CreateCommunity> {
                         commPicture: photolink,
                         commBio: commBio.text.trim(),
                         commRating: 0,
-                        commPdf: commPdf,
-                        commaudio: commAudio,
-                        habitt: [
+                        habits: habito,
+                        members: [
                           {
-                            'week1': [false, false, false],
-                            'week2': [false, false, false],
-                            'week3': [false, false, false],
-                            'week4': [false, false, false],
-                          },
-                        ],
-                        habits: [
-                          {
-                            'week1': [
-                              commHabits1.text,
-                              commHabits2.text,
-                              commHabits3.text,
-                            ],
-                            'week2': [
-                              commHabits4.text,
-                              commHabits5.text,
-                              commHabits6.text,
-                            ],
-                            'week3': [
-                              commHabits7.text,
-                              commHabits8.text,
-                              commHabits9.text,
-                            ],
-                            'week4': [
-                              commHabits10.text,
-                              commHabits11.text,
-                              commHabits12.text,
-                            ],
+                            'date': DateTime.now(),
+                            'userId': FirebaseAuth.instance.currentUser!.uid
                           }
-                        ],
-                        members: [],
-                        videoTumnel: [
-                          {
-                            'video1Tumnel': vedioImage1,
-                            'video2Tumnel': vedioImage2,
-                            'video3Tumnel': vedioImage3,
-                            'video4Tumnel': vedioImage4,
-                          }
-                        ],
-                        videoLink: [
-                          {
-                            'video1Link': commVedioLink1.text,
-                            'video2Link': commVedioLink2.text,
-                            'video3Link': commVedioLink3.text,
-                            'video4Link': commVedioLink4.text,
-                          },
-                        ],
-                        videoName: [
-                          {
-                            'video1Name': commVedioName1.text,
-                            'video2Name': commVedioName2.text,
-                            'video3Name': commVedioName3.text,
-                            'video4Name': commVedioName4.text,
-                          },
                         ],
                       );
                       setState(() {
@@ -739,6 +715,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                             ],
                           ),
                         );
+                        Navigator.pop(context);
                       } else {
                         Get.snackbar(
                           snackPosition: SnackPosition.BOTTOM,

@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
+import 'package:habitomic_app/utils/constants/image_strings.dart';
+import 'package:habitomic_app/utils/popups/fullscreen_loader.dart';
+import 'package:habitomic_app/utils/popups/loaders.dart';
 
 class ProfileController extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
@@ -28,6 +31,7 @@ class ProfileController extends GetxController {
 
     DocumentSnapshot userDoc =
         await _firestore.collection('Users').doc(_uid.value).get();
+
     final userData = userDoc.data()! as dynamic;
     print(userData);
     String username = userData['Username'];
@@ -44,32 +48,6 @@ class ProfileController extends GetxController {
     for (var item in myVideos.docs) {
       likes += (item.data()['likes'] as List).length;
     }
-    // var followerDoc = await _firestore
-    //     .collection('Users')
-    //     .doc(_uid.value)
-    //     .collection('Follower')
-    //     .get();
-    // var followingDoc = await _firestore
-    //     .collection('Users')
-    //     .doc(_uid.value)
-    //     .collection('Following')
-    //     .get();
-    // followers = followerDoc.docs.length;
-    // following = followingDoc.docs.length;
-
-    // _firestore
-    //     .collection('Users')
-    //     .doc(_uid.value)
-    //     .collection('Follower')
-    //     .doc(AuthenticationRepository.instance.user.uid)
-    //     .get()
-    //     .then((value) {
-    //   if (value.exists) {
-    //     isFollowing = true;
-    //   } else {
-    //     isFollowing = false;
-    //   }
-    // });
 
     _user.value = {
       'Follower': followers.toString(),

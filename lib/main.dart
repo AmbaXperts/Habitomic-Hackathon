@@ -1,3 +1,6 @@
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import '/app.dart';
 import '/data/repositories/repositories.authentication/authentication_repository.dart';
 import '/firebase_options.dart';
@@ -8,6 +11,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 Future<void> main() async {
+  // initialize hive
+  await Hive.initFlutter();
+
+  // open a box
+  await Hive.openBox("Habit_Database");
+  await Hive.openBox("Habit_group_Database");
 //add widget binding
   final WidgetsBinding widgetsBinding =
       WidgetsFlutterBinding.ensureInitialized();

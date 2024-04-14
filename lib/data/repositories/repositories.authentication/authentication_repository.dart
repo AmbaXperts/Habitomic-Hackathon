@@ -67,23 +67,27 @@ class AuthenticationRepository extends GetxController {
   }
 
   void screenRedirect() async {
-    final user = _auth.currentUser;
+    try {
+      final user = _auth.currentUser;
 
-    if (user != null) {
-      if (user.emailVerified) {
-        Get.offAll(() => NavigationMenu());
+      if (user != null) {
+        if (user.emailVerified) {
+          Get.offAll(() => NavigationMenu());
+        } else {
+          Get.offAll(() => VerifyEmailScreen(email: user.email));
+        }
       } else {
-        Get.offAll(() => VerifyEmailScreen(email: user.email));
-      }
-    } else {
-      final deviceStorage = GetStorage();
-      deviceStorage.writeIfNull('isFirstTime', true);
+        final deviceStorage = GetStorage();
+        deviceStorage.writeIfNull('isFirstTime', true);
 
-      if (deviceStorage.read('isFirstTime') != true) {
-        Get.offAll(() => LoginScreen());
-      } else {
-        Get.offAll(() => OnBoardingScreen());
+        if (deviceStorage.read('isFirstTime') != true) {
+          Get.offAll(() => LoginScreen());
+        } else {
+          Get.offAll(() => OnBoardingScreen());
+        }
       }
+    } catch (e) {
+      print(e);
     }
   }
   /*

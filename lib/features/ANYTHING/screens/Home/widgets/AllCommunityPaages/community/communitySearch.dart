@@ -21,7 +21,8 @@ class commSearch extends StatefulWidget {
 class _commSearchState extends State<commSearch> {
   @override
   Widget build(BuildContext context) {
-    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final Brightness brightnessValue =
+        MediaQuery.of(context).platformBrightness;
     final bool isDark = brightnessValue == Brightness.dark;
 
     return Scaffold(
@@ -75,7 +76,8 @@ class _commSearchState extends State<commSearch> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                            onTap: () =>
+                                Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const CommunitySeo(),
                             )),
                             child: Icon(
@@ -100,7 +102,7 @@ class _commSearchState extends State<commSearch> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Text(
+                    Text(
                       'Your Community',
                       style: TextStyle(
                         color: isDark ? Colors.white : Colors.black,
@@ -110,7 +112,7 @@ class _commSearchState extends State<commSearch> {
                     ),
                     TextButton(
                       onPressed: () {},
-                      child:  Text(
+                      child: Text(
                         'All',
                         style: TextStyle(
                           color: isDark ? Colors.white : Colors.black,
@@ -126,7 +128,9 @@ class _commSearchState extends State<commSearch> {
                 height: 15,
               ),
               StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('Ycommunity').snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection('Zcommunity')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -135,11 +139,14 @@ class _commSearchState extends State<commSearch> {
                   } else if (!snapshot.hasData) {
                     return Text(
                       'you have no communitys yet . Join the community on profile page .',
-                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black),
                     );
                   }
                   return StreamBuilder(
-                    stream: FirebaseFirestore.instance.collection('Ycommunity').snapshots(),
+                    stream: FirebaseFirestore.instance
+                        .collection('Zcommunity')
+                        .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
@@ -148,17 +155,22 @@ class _commSearchState extends State<commSearch> {
                       } else if (!snapshot.hasData) {
                         return Text(
                           'you have no communitys yet . Join the community on profile page .',
-                          style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black),
                         );
                       }
                       var doco = snapshot.data!.docs;
                       var newdoc = [];
+                      print(doco);
                       for (int i = 0; i < doco.length; i++) {
                         var kelp = doco[i]["commMembers"];
-                        if (kelp.any((element) => element['userId'] == FirebaseAuth.instance.currentUser!.uid)) {
+                        if (kelp.any((element) =>
+                            element['userId'] ==
+                            FirebaseAuth.instance.currentUser!.uid)) {
                           newdoc.add(doco[i]);
                         }
                       }
+                      print(newdoc);
                       return SizedBox(
                         height: 270,
                         child: ListView.builder(
@@ -167,20 +179,24 @@ class _commSearchState extends State<commSearch> {
                             return Padding(
                               padding: const EdgeInsets.all(15),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         height: 60,
                                         width: 60,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           image: DecorationImage(
                                             fit: BoxFit.fill,
                                             image: NetworkImage(
-                                              newdoc[index]['commPictrue'],
+                                              newdoc[index]['commPictrue'] ??
+                                                  "",
                                             ),
                                           ),
                                         ),
@@ -189,12 +205,15 @@ class _commSearchState extends State<commSearch> {
                                         width: 15,
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             '  ${newdoc[index]['commName']}',
                                             style: TextStyle(
-                                              color: isDark ? Colors.white : Colors.black,
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
                                             ),
@@ -202,7 +221,9 @@ class _commSearchState extends State<commSearch> {
                                           Text(
                                             '  ${newdoc[index]['commMembers'].length} followers',
                                             style: TextStyle(
-                                              color: isDark ? Colors.white : Colors.black,
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
                                             ),
                                           ),
                                         ],
@@ -211,26 +232,28 @@ class _commSearchState extends State<commSearch> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      print(newdoc[index]['commMembers']);
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => joinCommunity(
                                             like: newdoc[index]['commLikes'],
                                             uuid: newdoc[index]['Uuid'],
                                             comBio: newdoc[index]['commBio'],
-                                            comHabits: newdoc[index]['commHabits'],
-                                            comMembers: newdoc[index]['commMembers'],
-                                            comPicture: newdoc[index]['commPictrue'],
+                                            comMembers: newdoc[index]
+                                                ['commMembers'],
+                                            comPicture: newdoc[index]
+                                                    ['commPictrue'] ??
+                                                '',
                                             comname: newdoc[index]['commName'],
                                             rating: newdoc[index]['commRating'],
                                           ),
                                         ),
                                       );
                                     },
-                                    icon:  Icon(
+                                    icon: Icon(
                                       Icons.arrow_forward,
                                       size: 30,
-                                      color: isDark ? Colors.white : Colors.black,
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
                                     ),
                                   ),
                                 ],
@@ -246,106 +269,80 @@ class _commSearchState extends State<commSearch> {
               const SizedBox(
                 height: 15,
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                     Text(
-                      'Recent Habits',
-                      style: TextStyle(
-                        color: isDark ? Colors.white : Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child:  Text(
-                        'All',
-                        style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+
               const SizedBox(
                 height: 15,
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(
-                                    'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Positioned(
-                              right: -3,
-                              bottom: -3,
-                              child: CircleAvatar(
-                                radius: 18,
-                                backgroundImage: NetworkImage(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuKMehy8HD_FTHTVUfOxf4IXYRo0ZcdHL7Y0TGPVuzRA&s',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'A2SV Community',
-                              style: TextStyle(
-                                color: isDark ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              '2k Followers',
-                              style: TextStyle(
-                                color: isDark ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon:  Icon(
-                        Icons.arrow_forward,
-                        size: 30,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(15),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Stack(
+              //             children: [
+              //               Container(
+              //                 height: 60,
+              //                 width: 60,
+              //                 decoration: BoxDecoration(
+              //                   borderRadius: BorderRadius.circular(10),
+              //                   image: const DecorationImage(
+              //                     fit: BoxFit.fill,
+              //                     image: NetworkImage(
+              //                       'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //               const Positioned(
+              //                 right: -3,
+              //                 bottom: -3,
+              //                 child: CircleAvatar(
+              //                   radius: 18,
+              //                   backgroundImage: NetworkImage(
+              //                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuKMehy8HD_FTHTVUfOxf4IXYRo0ZcdHL7Y0TGPVuzRA&s',
+              //                   ),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //           const SizedBox(
+              //             width: 15,
+              //           ),
+              //           Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text(
+              //                 'A2SV Community',
+              //                 style: TextStyle(
+              //                   color: isDark ? Colors.white : Colors.black,
+              //                   fontWeight: FontWeight.bold,
+              //                   fontSize: 18,
+              //                 ),
+              //               ),
+              //               Text(
+              //                 '2k Followers',
+              //                 style: TextStyle(
+              //                   color: isDark ? Colors.white : Colors.black,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //       IconButton(
+              //         onPressed: () {},
+              //         icon: Icon(
+              //           Icons.arrow_forward,
+              //           size: 30,
+              //           color: isDark ? Colors.white : Colors.black,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ],

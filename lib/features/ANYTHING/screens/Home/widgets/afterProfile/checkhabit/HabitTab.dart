@@ -11,12 +11,11 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/YallAuth.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/smallticker.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/timeline.dart';
+import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/comm_controller.dart';
 
 class HabitTab extends StatefulWidget {
-  final List habits;
   final String commuid;
   const HabitTab({
-    required this.habits,
     required this.commuid,
     super.key,
   });
@@ -28,80 +27,51 @@ class HabitTab extends StatefulWidget {
 List habitt = [];
 
 class _HabitTabState extends State<HabitTab> {
+  final CommunityController controller = Get.put(CommunityController());
+
   @override
   void initState() {
     super.initState();
-    getAchivedHabit();
-  }
-
-  getAchivedHabit() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('Ycommunity')
-        .doc(widget.commuid)
-        .collection('achievedHabits')
-        .doc(
-          FirebaseAuth.instance.currentUser!.uid,
-        )
-        .get();
-    setState(() {
-      habitt = (snap.data() as Map<String, dynamic>)['habitt'];
-    });
+    controller.updateCommId(widget.commuid);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: ListView(
-        children: [
-          Column(
-            children: [
-              commonHabitContainer(
-                widget: widget,
-                weeks: 1,
-                weekName: 'week1',
-                habit1: widget.habits[0]['week1'][0],
-                habit2: widget.habits[0]['week1'][1],
-                habit3: widget.habits[0]['week1'][2],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              commonHabitContainer(
-                widget: widget,
-                weeks: 2,
-                weekName: 'week2',
-                habit1: widget.habits[0]['week2'][0],
-                habit2: widget.habits[0]['week2'][1],
-                habit3: widget.habits[0]['week2'][2],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              commonHabitContainer(
-                widget: widget,
-                weekName: 'week3',
-                weeks: 3,
-                habit1: widget.habits[0]['week3'][0],
-                habit2: widget.habits[0]['week3'][1],
-                habit3: widget.habits[0]['week3'][2],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              commonHabitContainer(
-                widget: widget,
-                weeks: 4,
-                weekName: 'week4',
-                habit1: widget.habits[0]['week4'][0],
-                habit2: widget.habits[0]['week4'][1],
-                habit3: widget.habits[0]['week4'][2],
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+    return GetBuilder<CommunityController>(
+        init: controller,
+        builder: (controllero) {
+          var here = controllero.todayHabit
+              .where((element) => element[1] == false)
+              .toList();
+          print(here);
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView.builder(
+              itemCount: here.length,
+              itemBuilder: (BuildContext context, int index) {
+                var item = here[index];
+                print(item);
+                return Card(
+                  child: CheckboxListTile(
+                    title: Text(
+                      item[2],
+                      style: TextStyle(
+                          decoration:
+                              item[1] ? TextDecoration.lineThrough : null),
+                    ),
+                    value: item[1],
+                    onChanged: (value) {
+                      setState(() {
+                        item[1] = value!;
+                        controllero.pushtoFirebase(item[0], item[1]);
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        });
   }
 }
 

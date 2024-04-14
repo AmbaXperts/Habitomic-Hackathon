@@ -7,6 +7,8 @@ import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
 import 'package:habitomic_app/features/personalization/screens/profile/profile.dart';
+import 'package:habitomic_app/utils/constants/image_strings.dart';
+import 'package:habitomic_app/utils/popups/fullscreen_loader.dart';
 import 'package:intl/intl.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -33,7 +35,8 @@ class _ProfileState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final ucontroller = UserController.instance;
-    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final Brightness brightnessValue =
+        MediaQuery.of(context).platformBrightness;
     final bool isDark = brightnessValue == Brightness.dark;
 
     return GetBuilder<ProfileController>(
@@ -52,7 +55,6 @@ class _ProfileState extends State<UserProfileScreen> {
                       fullname:
                           "${controller.user['FirstName']} ${controller.user['LastName']}",
                       date: DateFormat.yMMMd(),
-                  
                     ),
                     SizedBox(
                       height: 20,

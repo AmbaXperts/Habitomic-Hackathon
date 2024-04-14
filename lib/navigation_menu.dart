@@ -38,6 +38,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         MediaQuery.of(context).platformBrightness;
     final bool isDark = brightnessValue == Brightness.dark;
     return Scaffold(
+      backgroundColor: isDark ? Colors.black26 : Colors.white,
       body: pages[page],
       bottomNavigationBar: ConvexAppBar(
         height: 80,
