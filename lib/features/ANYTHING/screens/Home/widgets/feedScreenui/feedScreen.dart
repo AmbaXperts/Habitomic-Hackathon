@@ -35,7 +35,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       length: 2,
       initialIndex: 0,
       child: Scaffold(
-        backgroundColor:  brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
+        backgroundColor:  brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
@@ -44,7 +44,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: true,
-                backgroundColor: brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
+                backgroundColor:brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
                 expandedHeight: 150,
                 flexibleSpace: ListView(
                   children: [
@@ -57,7 +57,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                               bottomLeft: Radius.circular(30),
                               bottomRight: Radius.circular(30),
                             ),
-                            color: brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
+                            color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -90,7 +90,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                                 child: Container(
                                   width: 120,
                                   height: 70,
-                                  color:  brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
+                                  color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
                                   child: Stack(
                                     children: [
                                       Align(
@@ -163,7 +163,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
-                          color:  brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
+                          color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
                           border: Border.all(
                             color: Colors.greenAccent,
                           ),
@@ -179,7 +179,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
-                          color: brightness == Brightness.light ? const Color.fromARGB(255, 56, 56, 56) : Colors.white,
+                          color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
                           border: Border.all(
                             color: Colors.greenAccent,
                           ),

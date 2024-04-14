@@ -11,35 +11,57 @@ class VideoPlayerItem extends StatefulWidget {
 }
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
-  late VideoPlayerController videoPlayerController;
-  @override 
-  void initState(){
+  late VideoPlayerController _videoPlayerController;
+  late bool _isPlaying;
+
+  @override
+  void initState() {
     super.initState();
- videoPlayerController = VideoPlayerController.network(widget.videoUrl)..initialize().then((value) {
-  videoPlayerController.play();
-  videoPlayerController.setVolume(1);
- });
+    _videoPlayerController = VideoPlayerController.network(widget.videoUrl)
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    _isPlaying = true; // Start the video playing by default
   }
 
-  @override 
-  void dispose(){
+  @override
+  void dispose() {
     super.dispose();
-    videoPlayerController.dispose();
+    _videoPlayerController.dispose();
   }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_videoPlayerController.value.isPlaying) {
+        _videoPlayerController.pause();
+        _isPlaying = false;
+      } else {
+        _videoPlayerController.play();
+        _isPlaying = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size=MediaQuery.of(context).size;
-
-    return Container(
-      width: size.width,
-      height: size.height,
-      decoration: const BoxDecoration(
-        color: Colors.black,
-
+    return GestureDetector(
+      onTap: _togglePlayPause,
+      child: Stack(
+        children: [
+          AspectRatio(
+            aspectRatio: _videoPlayerController.value.aspectRatio,
+            child: VideoPlayer(_videoPlayerController),
+          ),
+          if (!_isPlaying)
+            Center(
+              child: Icon(
+                Icons.play_arrow,
+                size: 50,
+                color: Colors.white,
+              ),
+            ),
+        ],
       ),
-      child: VideoPlayer(videoPlayerController),
-
-
     );
   }
 }
