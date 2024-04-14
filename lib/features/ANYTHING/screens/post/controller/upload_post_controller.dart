@@ -35,39 +35,38 @@ class UploadPostController extends GetxController {
   }
 
   uploadImage(String description, String caption, String postPath) async {
-   // try {
-      String uid = _auth.currentUser!.uid;
-      DocumentSnapshot userDoc =
-          await _firestore.collection('Users').doc(uid).get();
+    // try {
+    String uid = _auth.currentUser!.uid;
+    DocumentSnapshot userDoc =
+        await _firestore.collection('Users').doc(uid).get();
 // get id
 
-      var allDocs = await _firestore.collection('post').get();
-      int len = allDocs.docs.length;
+    var allDocs = await _firestore.collection('post').get();
+    int len = allDocs.docs.length;
 
-      String imageUrl = await _uploadImageToStorage("ImagePost $len", postPath);
-      String thumbnailUrl = await _generateThumbnail(postPath);
+    String imageUrl = await _uploadImageToStorage("ImagePost $len+1", postPath);
+    String thumbnailUrl = await _generateThumbnail(postPath);
 
-      Post post = Post(
-        username: (userDoc.data()! as Map<String, dynamic>)['Username'],
-        
-        uid: uid,
-        id: "ImagePost $len",
-        likes: [],
-        commentCount: 0,
-        shareCount: 0,
-        description: description,
-        caption: caption,
-        postUrl: imageUrl, // Corrected variable name
-        profilePhoto:
-            (userDoc.data()! as Map<String, dynamic>)['ProfilePicture'],
-        thumbnail: thumbnailUrl,
-      );
+    Post post = Post(
+      username: (userDoc.data()! as Map<String, dynamic>)['Username'],
 
-      Get.back();
+      uid: uid,
+      id: "ImagePost $len+1",
+      likes: [],
+      commentCount: 0,
+      shareCount: 0,
+      description: description,
+      caption: caption,
+      postUrl: imageUrl, // Corrected variable name
+      profilePhoto: (userDoc.data()! as Map<String, dynamic>)['ProfilePicture'],
+      thumbnail: thumbnailUrl,
+    );
 
-      await _firestore.collection('post').doc('ImagePost $len').set(
-            post.toJson(), // Corrected method call
-          );
+    Get.back();
+
+    await _firestore.collection('post').doc('ImagePost $len+1').set(
+          post.toJson(), // Corrected method call
+        );
 /* }    catch (e) {
       Get.snackbar("Error Uploading Image", e.toString());
     }*/

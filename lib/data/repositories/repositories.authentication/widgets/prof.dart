@@ -187,9 +187,11 @@ class _ProfileUtilState extends State<ProfileUtil> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    rowColumn('Community', '2'),
+                    rowColumn('Community',
+                        '${profileController.user["commjoin"] ?? 0}'),
                     rowColumn('Habits', '3'),
-                    rowColumn('Rating', "${profileController.user["rating"]}"),
+                    rowColumn(
+                        'Rating', "${profileController.user["rating"] ?? 0}"),
                   ],
                 ),
                 Row(
@@ -218,7 +220,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                     Column(
                       children: [
                         Text(
-                          profileController.user['Follower'],
+                          profileController.user['Follower'] ?? "0",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

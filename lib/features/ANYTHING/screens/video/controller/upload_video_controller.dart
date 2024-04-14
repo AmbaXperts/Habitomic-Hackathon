@@ -18,14 +18,11 @@ class UploadVideoController extends GetxController {
   final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
   _compressVideo(String videoPath) async {
-    final compressVideo = await VideoCompress.compressVideo(videoPath,
-
-        quality: VideoQuality.MediumQuality, );
+    final compressVideo = await VideoCompress.compressVideo(
+      videoPath,
+      quality: VideoQuality.MediumQuality,
+    );
     // here we can add different functionality like edit and so on
-
-
-
-
 
     return compressVideo!.file;
   }
@@ -61,38 +58,37 @@ class UploadVideoController extends GetxController {
 
   uploadVideo(String songName, String caption, String videoPath) async {
     //try {
-      String uid = _auth.currentUser!.uid;
-      DocumentSnapshot userDoc =
-          await _firestore.collection('Users').doc(uid).get();
+    String uid = _auth.currentUser!.uid;
+    DocumentSnapshot userDoc =
+        await _firestore.collection('Users').doc(uid).get();
 // get id
 
-      var allDocs = await _firestore.collection('videos').get();
-      int len = allDocs.docs.length;
+    var allDocs = await _firestore.collection('videos').get();
+    int len = allDocs.docs.length;
 
-      String videourl = await _uploadeVideoToStorage("Video $len", videoPath);
-      String thumbnail = await _uploadImageToStorage("Video $len", videoPath);
+    String videourl = await _uploadeVideoToStorage("Video $len+1", videoPath);
+    String thumbnail = await _uploadImageToStorage("Video $len+1", videoPath);
 
-      Video video = Video(
-        username: (userDoc.data()! as Map<String, dynamic>)['Username'],
-        uid: uid,
-        id: "Video $len",
-        likes: [],
-        commentCount: 0,
-        shareCount: 0,
-        songName: songName,
-        caption: caption,
-        videourl: videourl,
-        profilePhoto:
-            (userDoc.data()! as Map<String, dynamic>)['ProfilePicture'],
-        thumbnail: thumbnail,
-      );
+    Video video = Video(
+      username: (userDoc.data()! as Map<String, dynamic>)['Username'],
+      uid: uid,
+      id: "Video $len+1",
+      likes: [],
+      commentCount: 0,
+      shareCount: 0,
+      songName: songName,
+      caption: caption,
+      videourl: videourl,
+      profilePhoto: (userDoc.data()! as Map<String, dynamic>)['ProfilePicture'],
+      thumbnail: thumbnail,
+    );
 
-      Get.back();
+    Get.back();
 
-      await _firestore.collection('videos').doc('Video $len').set(
-            video.tojson(),
-          );
-   /* } catch (e) {
+    await _firestore.collection('videos').doc('Video $len+1').set(
+          video.tojson(),
+        );
+    /* } catch (e) {
       Get.snackbar("Error Uploading Video", e.toString());
     }*/
   }

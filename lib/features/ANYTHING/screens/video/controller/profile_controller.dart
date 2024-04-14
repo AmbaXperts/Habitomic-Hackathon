@@ -19,105 +19,115 @@ class ProfileController extends GetxController {
   }
 
   getUserData() async {
-    List<String> thumbnails = [];
-    var myVideos = await _firestore
-        .collection('videos')
-        .where('uid', isEqualTo: _uid.value)
-        .get();
+    try {
+      List<String> thumbnails = [];
+      var myVideos = await _firestore
+          .collection('videos')
+          .where('uid', isEqualTo: _uid.value)
+          .get();
 
-    for (int i = 0; i < myVideos.docs.length; i++) {
-      thumbnails.add((myVideos.docs[i].data() as dynamic)['thumbnail']);
+      for (int i = 0; i < myVideos.docs.length; i++) {
+        thumbnails.add((myVideos.docs[i].data() as dynamic)['thumbnail']);
+      }
+
+      DocumentSnapshot userDoc =
+          await _firestore.collection('Users').doc(_uid.value).get();
+
+      final userData = userDoc.data()! as dynamic;
+      print(userData);
+      String username = userData['Username'];
+      String firstname = userData['FirstName'];
+      String lastname = userData['LastName'];
+      String ProfilePicture = userData['ProfilePicture'];
+      int rating = userData['Rating'] ?? 0;
+      int likes = 0;
+      int followers = userData['Follower'].length ?? 0;
+      int following = userData['Following'].length ?? 0;
+      bool isFollowing = userData['Follower']
+          .contains(AuthenticationRepository.instance.user.uid);
+      int joincom = userData["JoinComm"].length ?? 0;
+
+      for (var item in myVideos.docs) {
+        likes += (item.data()['likes'] as List).length;
+      }
+
+      _user.value = {
+        'Follower': followers.toString(),
+        'Following': following.toString(),
+        'isFollowing': isFollowing,
+        'likes': likes.toString(),
+        'ProfilePicture': ProfilePicture,
+        'Username': username,
+        'FirstName': firstname,
+        'LastName': lastname,
+        'thumbnails': thumbnails,
+        'rating': rating.toString(),
+        'commjoin': joincom
+      };
+      update();
+    } catch (e) {
+      print(e);
     }
-
-    DocumentSnapshot userDoc =
-        await _firestore.collection('Users').doc(_uid.value).get();
-
-    final userData = userDoc.data()! as dynamic;
-    print(userData);
-    String username = userData['Username'];
-    String firstname = userData['FirstName'];
-    String lastname = userData['LastName'];
-    String ProfilePicture = userData['ProfilePicture'];
-    int rating = userData['Rating'] ?? 0;
-    int likes = 0;
-    int followers = userData['Follower'].length ?? 0;
-    int following = userData['Following'].length ?? 0;
-    bool isFollowing = userData['Follower']
-        .contains(AuthenticationRepository.instance.user.uid);
-
-    for (var item in myVideos.docs) {
-      likes += (item.data()['likes'] as List).length;
-    }
-
-    _user.value = {
-      'Follower': followers.toString(),
-      'Following': following.toString(),
-      'isFollowing': isFollowing,
-      'likes': likes.toString(),
-      'ProfilePicture': ProfilePicture,
-      'Username': username,
-      'FirstName': firstname,
-      'LastName': lastname,
-      'thumbnails': thumbnails,
-      'rating': rating.toString(),
-    };
-    update();
   }
 
   followUser() async {
-    var doc = await _firestore.collection('Users').doc(_uid.value).get();
-    var anodata = doc.data()! as dynamic;
-    var userDoc = await _firestore
-        .collection('Users')
-        .doc(AuthenticationRepository.instance.user.uid)
-        .get();
-    var udata = userDoc.data()! as dynamic;
-    print(udata);
-    anodata["Follower"].add(AuthenticationRepository.instance.user.uid);
-    udata["Following"].add(_uid.value);
-    _firestore
-        .collection('Users')
-        .doc(AuthenticationRepository.instance.user.uid)
-        .set(udata);
-    _firestore.collection('Users').doc(_uid.value).set(anodata);
-    _user.value.update('isFollowing', (value) => !value);
-    getUserData();
-    // if (!doc.exists) {
-    //   await _firestore
-    //       .collection('Users')
-    //       .doc(_uid.value)
-    //       .collection('Follower')
-    //       .doc(AuthenticationRepository.instance.user.uid)
-    //       .set({});
-    //   await _firestore
-    //       .collection('Users')
-    //       .doc(AuthenticationRepository.instance.user.uid)
-    //       .collection('Following')
-    //       .doc(_uid.value)
-    //       .set({});
-    //   _user.value.update(
-    //     'Follower',
-    //     (value) => (int.parse(value) + 1).toString(),
-    //   );
-    // } else {
-    //   await _firestore
-    //       .collection('Users')
-    //       .doc(_uid.value)
-    //       .collection('Follower')
-    //       .doc(AuthenticationRepository.instance.user.uid)
-    //       .delete();
-    //   await _firestore
-    //       .collection('Users')
-    //       .doc(AuthenticationRepository.instance.user.uid)
-    //       .collection('Following')
-    //       .doc(_uid.value)
-    //       .delete();
-    //   _user.value.update(
-    //     'Follower',
-    //     (value) => (int.parse(value) - 1).toString(),
-    //   );
-    // }
-    // _user.value.update('isFollowing', (value) => !value);
-    update();
+    try {
+      var doc = await _firestore.collection('Users').doc(_uid.value).get();
+      var anodata = doc.data()! as dynamic;
+      var userDoc = await _firestore
+          .collection('Users')
+          .doc(AuthenticationRepository.instance.user.uid)
+          .get();
+      var udata = userDoc.data()! as dynamic;
+      print(udata);
+      anodata["Follower"].add(AuthenticationRepository.instance.user.uid);
+      udata["Following"].add(_uid.value);
+      _firestore
+          .collection('Users')
+          .doc(AuthenticationRepository.instance.user.uid)
+          .set(udata);
+      _firestore.collection('Users').doc(_uid.value).set(anodata);
+      _user.value.update('isFollowing', (value) => !value);
+      getUserData();
+      // if (!doc.exists) {
+      //   await _firestore
+      //       .collection('Users')
+      //       .doc(_uid.value)
+      //       .collection('Follower')
+      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .set({});
+      //   await _firestore
+      //       .collection('Users')
+      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .collection('Following')
+      //       .doc(_uid.value)
+      //       .set({});
+      //   _user.value.update(
+      //     'Follower',
+      //     (value) => (int.parse(value) + 1).toString(),
+      //   );
+      // } else {
+      //   await _firestore
+      //       .collection('Users')
+      //       .doc(_uid.value)
+      //       .collection('Follower')
+      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .delete();
+      //   await _firestore
+      //       .collection('Users')
+      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .collection('Following')
+      //       .doc(_uid.value)
+      //       .delete();
+      //   _user.value.update(
+      //     'Follower',
+      //     (value) => (int.parse(value) - 1).toString(),
+      //   );
+      // }
+      // _user.value.update('isFollowing', (value) => !value);
+      update();
+    } catch (e) {
+      print(e);
+    }
   }
 }

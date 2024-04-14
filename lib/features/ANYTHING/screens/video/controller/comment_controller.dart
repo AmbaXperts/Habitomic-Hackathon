@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/model/comment.dart';
+
 class CommentController extends GetxController {
   final Rx<List<Comment>> _comments = Rx<List<Comment>>([]);
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -52,12 +53,12 @@ class CommentController extends GetxController {
           likes: [],
           profilePhoto: (userDoc.data()! as dynamic)['ProfilePicture'],
           uid: AuthenticationRepository.instance.user.uid,
-          id: 'Comment $len');
+          id: 'Comment $len+1');
       await _firestore
           .collection('videos')
           .doc(_postId)
           .collection('comments')
-          .doc('Comment $len')
+          .doc('Comment $len+1')
           .set(
             comment.tojson(),
           );

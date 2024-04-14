@@ -57,12 +57,12 @@ class PCommentController extends GetxController {
           likes: [],
           profilePhoto: (userDoc.data()! as dynamic)['ProfilePicture'],
           uid: AuthenticationRepository.instance.user.uid,
-          id: 'Comment $len');
+          id: 'Comment ${len + 1}');
       await _firestore
           .collection('post')
           .doc(_ppostId)
           .collection('comments')
-          .doc('Comment $len')
+          .doc('Comment $len+1')
           .set(
             pcomment.tojson(),
           );
