@@ -32,7 +32,9 @@ class _ProfileUtilState extends State<ProfileUtil> {
 
     return Obx(() => Container(
           decoration: BoxDecoration(
-            color: brightness == Brightness.light ? Colors.white : const Color.fromARGB(255, 46, 46, 46),
+            color: brightness == Brightness.light
+                ? Colors.white
+                : const Color.fromARGB(255, 46, 46, 46),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
               bottomRight: Radius.circular(40),
@@ -80,14 +82,18 @@ class _ProfileUtilState extends State<ProfileUtil> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: brightness == Brightness.light ? Colors.black : Colors.white,
+                              color: brightness == Brightness.light
+                                  ? Colors.black
+                                  : Colors.white,
                             ),
                           ),
                           Text(
                             widget.username,
                             style: TextStyle(
                               fontSize: 20,
-                              color: brightness == Brightness.light ? Colors.grey[500] : Colors.grey[400],
+                              color: brightness == Brightness.light
+                                  ? Colors.grey[500]
+                                  : Colors.grey[400],
                             ),
                           ),
                           Row(
@@ -145,7 +151,9 @@ class _ProfileUtilState extends State<ProfileUtil> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: brightness == Brightness.light ? Colors.black : Colors.white,
+                    color: brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
                 SizedBox(height: 10),
@@ -161,13 +169,17 @@ class _ProfileUtilState extends State<ProfileUtil> {
                       ? Text(
                           'No Bio',
                           style: TextStyle(
-                            color: brightness == Brightness.light ? Colors.grey[400] : Colors.grey[300],
+                            color: brightness == Brightness.light
+                                ? Colors.grey[400]
+                                : Colors.grey[300],
                           ),
                         )
                       : Text(
                           bioController.text,
                           style: TextStyle(
-                            color: brightness == Brightness.light ? Colors.grey[400] : Colors.grey[300],
+                            color: brightness == Brightness.light
+                                ? Colors.grey[400]
+                                : Colors.grey[300],
                           ),
                         ),
                 ),
@@ -186,7 +198,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
                     Column(
                       children: [
                         Text(
-                          profileController.user['Following'],
+                          profileController.user['Following'] ?? "0",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -231,7 +243,7 @@ class _ProfileUtilState extends State<ProfileUtil> {
   }
 
   Widget rowColumn(String title, String howMuch) {
-     Brightness brightness = Theme.of(context).brightness;
+    Brightness brightness = Theme.of(context).brightness;
     return Row(
       children: [
         Column(
@@ -242,13 +254,20 @@ class _ProfileUtilState extends State<ProfileUtil> {
             ),
             Text(
               title,
-               style: TextStyle(
-                            color: brightness == Brightness.light ? const Color.fromARGB(255, 31, 31, 31) : Colors.grey[300],
-                          ),
+              style: TextStyle(
+                color: brightness == Brightness.light
+                    ? const Color.fromARGB(255, 31, 31, 31)
+                    : Colors.grey[300],
+              ),
             ),
-            Text(howMuch,  style: TextStyle(
-                            color: brightness == Brightness.light ? const Color.fromARGB(255, 31, 31, 31) : Colors.grey[300],
-                          ),),
+            Text(
+              howMuch,
+              style: TextStyle(
+                color: brightness == Brightness.light
+                    ? const Color.fromARGB(255, 31, 31, 31)
+                    : Colors.grey[300],
+              ),
+            ),
           ],
         ),
       ],
@@ -293,16 +312,22 @@ class BioDescription extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: 'Bio',
                   labelStyle: TextStyle(
-                    color: brightness == Brightness.light ? Colors.black : Colors.white,
+                    color: brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: brightness == Brightness.light ? Colors.black : Colors.white,
+                      color: brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.white,
                     ),
                   ),
                 ),
                 style: TextStyle(
-                  color: brightness == Brightness.light ? Colors.black : Colors.white,
+                  color: brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
                 ),
                 onChanged: (value) {
                   bioController.text = value;
@@ -311,7 +336,9 @@ class BioDescription extends StatelessWidget {
               Text(
                 'Write some description about yourself',
                 style: TextStyle(
-                  color: brightness == Brightness.light ? const Color.fromARGB(255, 46, 46, 46) : Colors.white,
+                  color: brightness == Brightness.light
+                      ? const Color.fromARGB(255, 46, 46, 46)
+                      : Colors.white,
                 ),
               ),
             ],
