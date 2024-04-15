@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -9,6 +10,7 @@ import 'package:habitomic_app/features/ANYTHING/habit%20track/datetime/date_time
 import 'package:habitomic_app/utils/constants/image_strings.dart';
 import 'package:habitomic_app/utils/popups/fullscreen_loader.dart';
 import 'package:habitomic_app/utils/popups/loaders.dart';
+import 'package:uuid/uuid.dart';
 
 class CommunityController extends GetxController {
   final Rx<Map<String, dynamic>> _comm = Rx<Map<String, dynamic>>({});
@@ -45,7 +47,7 @@ class CommunityController extends GetxController {
           await _firestore.collection('Zcommunity').doc(_uid.value).get();
       var detailo = await _firestore
           .collection('Users')
-          .doc(AuthenticationRepository.instance.user.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("habits")
           .doc(_uid.value)
           .get();
@@ -152,13 +154,13 @@ class CommunityController extends GetxController {
   pushtoFirebase(uid, boolo) async {
     var detailo = await _firestore
         .collection('Users')
-        .doc(AuthenticationRepository.instance.user.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("habits")
         .doc(_uid.value)
         .get();
     var usero = await _firestore
         .collection('Users')
-        .doc(AuthenticationRepository.instance.user.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     var obso = detailo.data()!["heatmap"];
     var rato = usero.data()!["Rating"];
@@ -172,17 +174,31 @@ class CommunityController extends GetxController {
     obso[todaysDateFormatted()] = mapo;
     await _firestore
         .collection('Users')
-        .doc(AuthenticationRepository.instance.user.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("habits")
         .doc(_uid.value)
         .update({"heatmap": obso});
     await _firestore
         .collection('Users')
-        .doc(AuthenticationRepository.instance.user.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({"Rating": rato});
     updateCommId(uid);
 
     update();
+  }
+
+  addDataToFireStore(namo) async {
+    try {
+      String Yuid = Uuid().v1();
+      await _firestore
+          .collection("Zcommunity")
+          .doc(_uid.value)
+          .collection("habits")
+          .doc(Yuid)
+          .set({'habitName': namo, 'uid': Yuid, 'heatmap': {}});
+    } catch (e) {
+      print(e);
+    }
   }
 
   double calculateHabitPercentages(arro) {

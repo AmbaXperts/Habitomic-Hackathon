@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/utils/constants/image_strings.dart';
@@ -43,8 +44,8 @@ class ProfileController extends GetxController {
       int likes = 0;
       int followers = userData['Follower'].length ?? 0;
       int following = userData['Following'].length ?? 0;
-      bool isFollowing = userData['Follower']
-          .contains(AuthenticationRepository.instance.user.uid);
+      bool isFollowing =
+          userData['Follower'].contains(FirebaseAuth.instance.currentUser!.uid);
       int joincom = userData["JoinComm"].length ?? 0;
 
       for (var item in myVideos.docs) {
@@ -76,15 +77,15 @@ class ProfileController extends GetxController {
       var anodata = doc.data()! as dynamic;
       var userDoc = await _firestore
           .collection('Users')
-          .doc(AuthenticationRepository.instance.user.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
       var udata = userDoc.data()! as dynamic;
       print(udata);
-      anodata["Follower"].add(AuthenticationRepository.instance.user.uid);
+      anodata["Follower"].add(FirebaseAuth.instance.currentUser!.uid);
       udata["Following"].add(_uid.value);
       _firestore
           .collection('Users')
-          .doc(AuthenticationRepository.instance.user.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .set(udata);
       _firestore.collection('Users').doc(_uid.value).set(anodata);
       _user.value.update('isFollowing', (value) => !value);
@@ -94,11 +95,11 @@ class ProfileController extends GetxController {
       //       .collection('Users')
       //       .doc(_uid.value)
       //       .collection('Follower')
-      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .doc(FirebaseAuth.instance.currentUser!.uid)
       //       .set({});
       //   await _firestore
       //       .collection('Users')
-      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .doc(FirebaseAuth.instance.currentUser!.uid)
       //       .collection('Following')
       //       .doc(_uid.value)
       //       .set({});
@@ -111,11 +112,11 @@ class ProfileController extends GetxController {
       //       .collection('Users')
       //       .doc(_uid.value)
       //       .collection('Follower')
-      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .doc(FirebaseAuth.instance.currentUser!.uid)
       //       .delete();
       //   await _firestore
       //       .collection('Users')
-      //       .doc(AuthenticationRepository.instance.user.uid)
+      //       .doc(FirebaseAuth.instance.currentUser!.uid)
       //       .collection('Following')
       //       .doc(_uid.value)
       //       .delete();

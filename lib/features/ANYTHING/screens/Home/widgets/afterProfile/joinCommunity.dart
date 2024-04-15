@@ -416,26 +416,11 @@ class _joinCommunityState extends State<joinCommunity>
                                                   );
                                                 },
                                                 child: Center(
-                                                  child: Text('Check Habits'),
-                                                ),
-                                              ),
-                                              ClipOval(
-                                                child: Material(
-                                                  color: Colors.yellow,
-                                                  child: IconButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .push(
-                                                              MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            LeaderBoard(),
-                                                      ));
-                                                    },
-                                                    icon: Icon(
-                                                      Icons
-                                                          .kitesurfing_outlined,
-                                                    ),
-                                                  ),
+                                                  child: Text('Check Habits',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
                                                 ),
                                               ),
                                               StreakAnimation(streako, true)

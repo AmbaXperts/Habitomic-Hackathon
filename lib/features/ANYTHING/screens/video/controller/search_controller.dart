@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/common/model/user/user_model.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
@@ -19,7 +20,7 @@ class SSearchController extends GetxController {
       List<UserModel> retVal = [];
       for (var elem in query.docs) {
         var modelo = UserModel.fromSnapshot(elem);
-        if (modelo.id != AuthenticationRepository.instance.user.uid) {
+        if (modelo.id != FirebaseAuth.instance.currentUser!.uid) {
           retVal.add(UserModel.fromSnapshot(elem));
         }
       }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/post/model/post_model.dart';
@@ -8,24 +9,22 @@ class PostController extends GetxController {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  late Rx<List<Post>> _postList= Rx<List<Post>>([]);
+  late Rx<List<Post>> _postList = Rx<List<Post>>([]);
 
   List<Post> get postList => _postList.value;
-  
- // final Rx<List<Post>> _PostList = Rx<List<Post>>([]);
- // List<Post> get PostList => _PostList.value;
+
+  // final Rx<List<Post>> _PostList = Rx<List<Post>>([]);
+  // List<Post> get PostList => _PostList.value;
 
   var isLoading = true.obs;
   var error = ''.obs;
-
-  
 
   @override
   void onInit() {
     super.onInit();
     _postList = Rx<List<Post>>([]);
     _fetchPosts();
-   
+
     _postList.bindStream(
       _firestore.collection('post').snapshots().map((QuerySnapshot query) {
         List<Post> retVal = [];
@@ -39,8 +38,8 @@ class PostController extends GetxController {
     );
   }
 
-  // comment count 
-  
+  // comment count
+
   void _fetchPosts() async {
     try {
       isLoading.value = true;
@@ -70,7 +69,7 @@ class PostController extends GetxController {
     DocumentSnapshot doc = await _firestore.collection('post').doc(id).get();
 
     // Get the current user's UID
-    var uid = AuthenticationRepository.instance.user.uid;
+    var uid = FirebaseAuth.instance.currentUser!.uid;
 
     if ((doc.data()! as dynamic)['likes'].contains(uid)) {
       await _firestore.collection('post').doc(id).update({

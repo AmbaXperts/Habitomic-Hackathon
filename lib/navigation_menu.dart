@@ -1,4 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/createComm.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/AllCommunityPaages/community/communitySearch.dart';
@@ -27,7 +28,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
     const commSearch(),
     const AddPostScreen(),
     const Feed(),
-    UserProfileScreen(uid: AuthenticationRepository.instance.user.uid),
+    UserProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
   int page = 0;
   bool isExpanded = false;

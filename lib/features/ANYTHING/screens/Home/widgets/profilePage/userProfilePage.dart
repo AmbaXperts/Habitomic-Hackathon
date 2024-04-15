@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/widgets/prof.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/profilePage/contacts.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
@@ -93,9 +94,9 @@ class _ProfileState extends State<UserProfileScreen> {
                     Center(
                       child: TextButton(
                           onPressed: () =>
-                              ucontroller.deleteAccountWarningPopup(),
+                              AuthenticationRepository.instance.logout(),
                           child: Text(
-                            'Delete Account',
+                            'Log Out',
                             style: TextStyle(color: Colors.red),
                           )),
                     )

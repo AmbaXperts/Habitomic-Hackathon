@@ -63,7 +63,7 @@ class YAuth {
       });
 
       await _Yfirestore.collection('Users')
-          .doc(AuthenticationRepository.instance.user.uid)
+          .doc()
           .collection("habits")
           .doc(Yuid)
           .set({'heatmap': heatmap});
@@ -105,7 +105,7 @@ class YAuth {
     });
 
     await _Yfirestore.collection('Users')
-        .doc(AuthenticationRepository.instance.user.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("habits")
         .doc(uuid)
         .set({'heatmap': heatmap});

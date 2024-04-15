@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,8 @@ class PostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    final Brightness brightnessValue =
+        MediaQuery.of(context).platformBrightness;
     final bool isDark = brightnessValue == Brightness.dark;
 
     return Scaffold(
@@ -93,25 +95,6 @@ class PostScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.add,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Text('  2hr ago'),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
@@ -181,9 +164,11 @@ class PostScreen extends StatelessWidget {
                         Icons.favorite,
                         size: 40,
                         color: post.likes.contains(
-                                AuthenticationRepository.instance.user.uid)
+                                FirebaseAuth.instance.currentUser!.uid)
                             ? Color.fromARGB(255, 241, 4, 4)
-                            : isDark ? Colors.white : Colors.black,
+                            : isDark
+                                ? Colors.white
+                                : Colors.black,
                       ),
                     ),
                     Text(

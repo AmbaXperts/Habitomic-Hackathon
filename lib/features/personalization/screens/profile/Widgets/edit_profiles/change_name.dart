@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/profile_controller.dart';
 import 'package:habitomic_app/features/personalization/controllers/user_controller.dart';
@@ -76,8 +77,8 @@ class ChangeName extends StatelessWidget {
                   onPressed: () {
                     controller.updateUserName();
                     usercontroller.fetchUserRecord();
-                    profileController.updateUserId(
-                        AuthenticationRepository.instance.user.uid);
+                    profileController
+                        .updateUserId(FirebaseAuth.instance.currentUser!.uid);
                   },
                   child: const Text('Save')),
             )
@@ -136,8 +137,8 @@ class ChangeUserName extends StatelessWidget {
                   onPressed: () {
                     controller.updateUserName();
                     usercontroller.fetchUserRecord();
-                    profileController.updateUserId(
-                        AuthenticationRepository.instance.user.uid);
+                    profileController
+                        .updateUserId(FirebaseAuth.instance.currentUser!.uid);
                   },
                   child: const Text('Save')),
             )

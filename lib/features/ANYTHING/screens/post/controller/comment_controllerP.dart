@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:core';
 
 import 'package:get/get.dart';
@@ -40,7 +41,7 @@ class PCommentController extends GetxController {
     if (pcommentText.isNotEmpty) {
       DocumentSnapshot userDoc = await _firestore
           .collection('Users')
-          .doc(AuthenticationRepository.instance.user.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
 
       var allDocs = await _firestore
@@ -56,7 +57,7 @@ class PCommentController extends GetxController {
           datePublished: DateTime.now(),
           likes: [],
           profilePhoto: (userDoc.data()! as dynamic)['ProfilePicture'],
-          uid: AuthenticationRepository.instance.user.uid,
+          uid: FirebaseAuth.instance.currentUser!.uid,
           id: 'Comment ${len + 1}');
       await _firestore
           .collection('post')
@@ -76,7 +77,7 @@ class PCommentController extends GetxController {
   }
 
   likePComment(String id) async {
-    var uid = AuthenticationRepository.instance.user.uid;
+    var uid = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot doc = await _firestore
         .collection('post')
         .doc(_ppostId)

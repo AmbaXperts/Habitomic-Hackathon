@@ -9,16 +9,21 @@ class UserModel {
   final String email;
   String phoneNumber;
   String profilePicture;
+  List follower;
+  List following;
+  List joincomm;
 
-  UserModel({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.username,
-    required this.email,
-    required this.phoneNumber,
-    required this.profilePicture,
-  });
+  UserModel(
+      {required this.id,
+      required this.firstName,
+      required this.lastName,
+      required this.username,
+      required this.email,
+      required this.phoneNumber,
+      required this.profilePicture,
+      required this.follower,
+      required this.following,
+      required this.joincomm});
 
   // Helper function to get full name
   String get fullName => '$firstName $lastName';
@@ -42,13 +47,17 @@ class UserModel {
   }
 
   static UserModel empty() => UserModel(
-      id: '',
-      firstName: '',
-      lastName: '',
-      username: '',
-      email: '',
-      phoneNumber: '',
-      profilePicture: '');
+        id: '',
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        phoneNumber: '',
+        profilePicture: '',
+        follower: [],
+        following: [],
+        joincomm: [],
+      );
 
   Map<String, dynamic> tojson() {
     return {
@@ -58,6 +67,9 @@ class UserModel {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'ProfilePicture': profilePicture,
+      'JoinComm': joincomm,
+      'Follower': follower,
+      'Following': following
     };
   }
 
@@ -68,14 +80,16 @@ class UserModel {
     final data = document.data();
     if (data != null) {
       return UserModel(
-        id: document.id,
-        firstName: data['FirstName'] ?? '',
-        lastName: data['LastName'] ?? '',
-        username: data['Username'] ?? '',
-        email: data['Email'] ?? '',
-        phoneNumber: data['PhoneNumber'] ?? '',
-        profilePicture: data['ProfilePicture'] ?? '',
-      );
+          id: document.id,
+          firstName: data['FirstName'] ?? '',
+          lastName: data['LastName'] ?? '',
+          username: data['Username'] ?? '',
+          email: data['Email'] ?? '',
+          phoneNumber: data['PhoneNumber'] ?? '',
+          profilePicture: data['ProfilePicture'] ?? '',
+          follower: data["Follower"] ?? [],
+          following: data["Following"] ?? [],
+          joincomm: data["JoinComm"]);
     } else {
       // Handle the case where data is null
       // For example, you might want to throw an exception or return a default UserModel

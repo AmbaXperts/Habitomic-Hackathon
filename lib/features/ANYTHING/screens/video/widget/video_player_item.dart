@@ -48,14 +48,11 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
       onTap: _togglePlayPause,
       child: Stack(
         children: [
-          AspectRatio(
-            aspectRatio: _videoPlayerController.value.aspectRatio,
-            child: VideoPlayer(_videoPlayerController),
-          ),
+          VideoPlayer(_videoPlayerController),
           if (!_isPlaying)
             Center(
               child: Icon(
-                Icons.play_arrow,
+                Icons.play_arrow_rounded,
                 size: 50,
                 color: Colors.white,
               ),

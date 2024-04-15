@@ -35,7 +35,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       length: 2,
       initialIndex: 0,
       child: Scaffold(
-        backgroundColor:  brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
+        backgroundColor: brightness == Brightness.light
+            ? Colors.white
+            : const Color.fromARGB(255, 56, 56, 56),
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
@@ -43,9 +45,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: true,
-
-                backgroundColor:brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
-
+                backgroundColor: brightness == Brightness.light
+                    ? Colors.white
+                    : const Color.fromARGB(255, 56, 56, 56),
                 expandedHeight: 150,
                 flexibleSpace: ListView(
                   children: [
@@ -58,9 +60,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                               bottomLeft: Radius.circular(30),
                               bottomRight: Radius.circular(30),
                             ),
-
-                            color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
-
+                            color: brightness == Brightness.light
+                                ? Colors.white
+                                : const Color.fromARGB(255, 56, 56, 56),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -73,21 +75,11 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                                     'Feed  ',
                                     style: TextStyle(
                                       fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                       color: brightness == Brightness.light
-                                          ? const Color.fromARGB(
-                                              255, 56, 56, 56)
+                                          ? Color.fromARGB(255, 14, 14, 14)
                                           : Colors.white,
                                     ),
-                                  ),
-                                  MaterialButton(
-                                    height: 50,
-                                    minWidth: 50,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    color: Color.fromARGB(255, 62, 70, 182),
-                                    onPressed: () {},
-                                    child: Icon(Icons.format_align_left_sharp),
                                   ),
                                 ],
                               ),
@@ -97,7 +89,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                                 child: Container(
                                   width: 120,
                                   height: 70,
-                                  color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
+                                  color: brightness == Brightness.light
+                                      ? Colors.white
+                                      : const Color.fromARGB(255, 56, 56, 56),
                                   child: Stack(
                                     children: [
                                       Align(
@@ -163,6 +157,13 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ],
                 ),
                 bottom: TabBar(
+                  indicatorWeight: 6,
+                  indicatorColor: Colors.purple,
+                  unselectedLabelStyle: TextStyle(color: Colors.grey),
+                  labelColor: Colors.black,
+                  overlayColor: MaterialStatePropertyAll(
+                    Color.fromARGB(255, 187, 151, 193),
+                  ),
                   controller: tabController,
                   tabs: [
                     Tab(
@@ -170,16 +171,13 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
-
-                          color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
-
-                          border: Border.all(
-                            color: Colors.greenAccent,
-                          ),
+                          color: brightness == Brightness.light
+                              ? Colors.grey[300]
+                              : const Color.fromARGB(255, 56, 56, 56),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Center(
-                          child: Text('For You'),
+                          child: Text('Posts'),
                         ),
                       ),
                     ),
@@ -188,16 +186,15 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                         height: 50,
                         width: 200,
                         decoration: BoxDecoration(
-
-                          color: brightness == Brightness.light ? Colors.white :  const Color.fromARGB(255, 56, 56, 56) ,
-
-                          border: Border.all(
-                            color: Colors.greenAccent,
-                          ),
+                          color: brightness == Brightness.light
+                              ? Colors.grey[300]
+                              : const Color.fromARGB(255, 56, 56, 56),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Center(
-                          child: Text('Following'),
+                          child: Text(
+                            'Videos',
+                          ),
                         ),
                       ),
                     ),
@@ -291,25 +288,6 @@ class _ExfeedState extends State<Exfeed> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.add,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Text('  2hr ago'),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(

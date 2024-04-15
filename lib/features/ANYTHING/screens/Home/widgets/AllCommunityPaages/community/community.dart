@@ -182,7 +182,7 @@ class _CommunitySeoState extends State<CommunitySeo> {
                                           image: DecorationImage(
                                             fit: BoxFit.fill,
                                             image: NetworkImage(
-                                              doco[index]['commPictrue'],
+                                              doco[index]['commPictrue'] ?? "",
                                             ),
                                           ),
                                         ),

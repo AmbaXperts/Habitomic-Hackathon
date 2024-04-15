@@ -42,10 +42,29 @@ class _AchievedState extends State<AchievedTab> {
               itemCount: here.length,
               itemBuilder: (BuildContext context, int index) {
                 var item = here[index];
-                return Text(
-                  item[2],
-                  style: TextStyle(
-                      decoration: item[1] ? TextDecoration.lineThrough : null),
+                return Card(
+                  child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      height: 50,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            item[2],
+                            style: TextStyle(
+                                fontSize: 17,
+                                decoration: item[1]
+                                    ? TextDecoration.lineThrough
+                                    : null),
+                          ),
+                        ],
+                      )),
                 );
               },
             ),

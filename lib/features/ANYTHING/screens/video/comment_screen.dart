@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/comment_controller.dart';
 import 'package:timeago/timeago.dart' as tago;
+
 class CommentScreen extends StatelessWidget {
   final String id;
   CommentScreen({Key? key, required this.id}) : super(key: key);
@@ -72,9 +74,8 @@ class CommentScreen extends StatelessWidget {
                                   commentController.likeComment(ccomment.id),
                               child: Icon(Icons.favorite,
                                   size: 25,
-                                  color: ccomment.likes.contains(
-                                          AuthenticationRepository
-                                              .instance.user.uid)
+                                  color: ccomment.likes.contains(FirebaseAuth
+                                          .instance.currentUser!.uid)
                                       ? Colors.red
                                       : Colors.white)),
                           Text(

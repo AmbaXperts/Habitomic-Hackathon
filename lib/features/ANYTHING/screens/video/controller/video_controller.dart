@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/video/controller/authController.dart';
@@ -35,7 +36,7 @@ class VideoController extends GetxController {
     DocumentSnapshot doc = await _firestore.collection('videos').doc(id).get();
 
     // Get the current user's UID
-    var uid = AuthenticationRepository.instance.user.uid;
+    var uid = FirebaseAuth.instance.currentUser!.uid;
 
     if ((doc.data()! as dynamic)['likes'].contains(uid)) {
       await _firestore.collection('videos').doc(id).update({

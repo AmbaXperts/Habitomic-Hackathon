@@ -25,11 +25,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
 
-  late Rx<User?> _user;
   late Rx<File?> _pickedImage;
 
   File? get profilePhoto => _pickedImage.value;
-  User get user => _user.value!;
 
 //firebase firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -57,7 +55,6 @@ class AuthenticationRepository extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _user = Rx<User?>(_auth.currentUser);
     _pickedImage = Rx<File?>(null);
     initialize();
   }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
@@ -47,7 +48,9 @@ class PCommentScreen extends StatelessWidget {
                           ),
                           Text(
                             tago.format(cpcomment.datePublished.toDate()),
-                            style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0)),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: const Color.fromARGB(255, 0, 0, 0)),
                           ),
                         ],
                       ),
@@ -75,15 +78,16 @@ class PCommentScreen extends StatelessWidget {
                                   pcommentController.likePComment(cpcomment.id),
                               child: Icon(Icons.favorite,
                                   size: 25,
-                                  color: cpcomment.likes.contains(
-                                          AuthenticationRepository
-                                              .instance.user.uid)
+                                  color: cpcomment.likes.contains(FirebaseAuth
+                                          .instance.currentUser!.uid)
                                       ? Colors.red
-                                      : const Color.fromARGB(255, 201, 201, 201))),
+                                      : const Color.fromARGB(
+                                          255, 201, 201, 201))),
                           Text(
                             ' ${cpcomment.likes.length}',
                             style: const TextStyle(
-                                fontSize: 12, color: Color.fromARGB(255, 0, 0, 0)),
+                                fontSize: 12,
+                                color: Color.fromARGB(255, 0, 0, 0)),
                           ),
                         ],
                       ),
@@ -106,7 +110,8 @@ class PCommentScreen extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 132, 132, 132))),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 132, 132, 132))),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                       color: Color.fromARGB(255, 168, 168, 168),
@@ -117,7 +122,8 @@ class PCommentScreen extends StatelessWidget {
                     pcommentController.PpostComment(_pcommentController.text),
                 child: const Text(
                   'send',
-                  style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+                  style: TextStyle(
+                      fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
                 ),
               ),
             )

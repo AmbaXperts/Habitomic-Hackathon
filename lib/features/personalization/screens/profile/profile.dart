@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:habitomic_app/data/repositories/repositories.authentication/authentication_repository.dart';
 import 'package:habitomic_app/data/repositories/user/user_repository.dart';
@@ -51,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             userRepository.updateSingleField({"ProfilePicture": imageUrl});
             controller.fetchUserRecord();
             profileController
-                .updateUserId(AuthenticationRepository.instance.user.uid);
+                .updateUserId(FirebaseAuth.instance.currentUser!.uid);
           });
         });
       }

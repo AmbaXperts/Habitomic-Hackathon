@@ -12,6 +12,12 @@ import 'package:habitomic_app/data/repositories/repositories.authentication/Yall
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/smallticker.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/checkhabit/timeline.dart';
 import 'package:habitomic_app/features/ANYTHING/screens/Home/widgets/afterProfile/comm_controller.dart';
+import 'package:habitomic_app/features/ANYTHING/habit track/components/habit_tile.dart';
+import 'package:habitomic_app/features/ANYTHING/habit track/components/month_summary.dart';
+import 'package:habitomic_app/features/ANYTHING/habit track/components/my_fab.dart';
+import 'package:habitomic_app/features/ANYTHING/habit track/components/my_alert_box.dart';
+import 'package:habitomic_app/features/ANYTHING/habit track/data/habit_database.dart';
+import 'package:habitomic_app/features/ANYTHING/habit track/tester.dart';
 
 class HabitTab extends StatefulWidget {
   final String commuid;
@@ -51,22 +57,13 @@ class _HabitTabState extends State<HabitTab> {
               itemBuilder: (BuildContext context, int index) {
                 var item = here[index];
                 print(item);
-                return Card(
-                  child: CheckboxListTile(
-                    title: Text(
-                      item[2],
-                      style: TextStyle(
-                          decoration:
-                              item[1] ? TextDecoration.lineThrough : null),
-                    ),
-                    value: item[1],
-                    onChanged: (value) {
-                      setState(() {
-                        item[1] = value!;
-                        controllero.pushtoFirebase(item[0], item[1]);
-                      });
-                    },
-                  ),
+                return HabitTile(
+                  habitName: item[2],
+                  habitCompleted: item[1],
+                  onChanged: (value) {
+                    item[1] = value!;
+                    controllero.pushtoFirebase(widget.commuid, item[1]);
+                  },
                 );
               },
             ),
